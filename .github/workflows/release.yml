@@ -1,0 +1,91 @@
+
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: get commit message
+        run: |
+           echo "commitmsg=$(git log --format=%B -n 1 ${{ github.event.after }})" >> $GITHUB_ENV
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - uses: denolib/setup-deno@v2
+        with:
+          deno-version: v1.x
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '1.22.4'
+      # バイナリまとめる用のフォルダ作成
+      - name: Create bundle
+        run: |
+          mkdir -p bundle
+          mkdir -p bundle/android
+          mkdir -p bundle/macos
+      # プラットフォームそれぞれの環境でビルド
+      - name: Build apk
+        run: |
+          flutter pub get
+          flutter test
+          flutter build apk --debug
+          cp build/app/outputs/apk/debug/app-debug.apk bundle/android/app-debug.apk
+      - name: Build macos
+        run: |
+          flutter clean
+          flutter channel master
+          flutter upgrade
+          flutter config --enable-macos-desktop
+          flutter create .
+          flutter build macos --debug
+          cp -r build/macos/Build/Products/Debug/next_synth.app bundle/macos/next_synth.app || true
+      # バイナリファイルをbundle.zipにまとめる
+      - name: Bundle
+        run: zip -r bundle.zip bundle
+      # タグ名でリリースを作成
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
+      # bundle.zipをリリースに追加
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: bundle.zip
+          asset_name: bundle.zip
+          asset_content_type: application/zip
+      # Slack通知/成功
+      - name: Slack Notification
+        if: success()
+        run: deno run --allow-net scripts/notify.ts "${SLACK_WEBHOOK}" "${commitmsg}" "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" "good"
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      # Slack通知/失敗
+      - name: Slack Notification
+        if: failure()
+        run: deno run --allow-net scripts/notify.ts "${SLACK_WEBHOOK}" "${commitmsg}" "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" "danger"
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
