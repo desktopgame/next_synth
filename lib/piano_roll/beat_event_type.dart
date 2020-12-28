@@ -1,0 +1,1 @@
+enum BeatEventType { noteCreated, propagationNoteEvents }

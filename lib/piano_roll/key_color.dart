@@ -1,0 +1,1 @@
+enum KeyColor { white, black }
