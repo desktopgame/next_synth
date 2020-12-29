@@ -12,24 +12,24 @@ import './piano_roll_editor.dart';
 
 class PianoRollEdietorState extends State<PianoRollEditor>
     implements PianoRollModelListener {
-  PianoRollModel _model;
-  PianoRollStyle _style;
+  final PianoRollModel model;
+  final PianoRollStyle style;
   int _scrollAmountX, _scrollAmountY;
   double _scrollX, _scrollY;
   GlobalKey _globalKey = GlobalKey();
 
-  PianoRollEdietorState() {
-    this._model = DefaultPianoRollModel(11 * 12, 4, 4);
-    this._style = PianoRollStyle();
-    _model.addPianoRollModelListener(this);
+  PianoRollEdietorState()
+      : this.model = DefaultPianoRollModel(11 * 12, 4, 4),
+        this.style = PianoRollStyle() {
+    model.addPianoRollModelListener(this);
   }
 
   void _clampScrollPos(PianoRoll p) {
-    if (_style.scrollOffset.dx > 0) {
-      _style.scrollOffset = Offset(0, _style.scrollOffset.dy);
+    if (style.scrollOffset.dx > 0) {
+      style.scrollOffset = Offset(0, style.scrollOffset.dy);
     }
-    if (_style.scrollOffset.dy > 0) {
-      _style.scrollOffset = Offset(_style.scrollOffset.dx, 0);
+    if (style.scrollOffset.dy > 0) {
+      style.scrollOffset = Offset(style.scrollOffset.dx, 0);
     }
     RenderBox box = _globalKey.currentContext.findRenderObject();
     double addW = 0;
@@ -43,19 +43,18 @@ class PianoRollEdietorState extends State<PianoRollEditor>
     double width = p.computeMaxWidth().toDouble() - (addW);
     double height = p.computeMaxHeight().toDouble() - (addH - 50);
     //print('w=$width h=$height');
-    if (_style.scrollOffset.dx < -width) {
-      _style.scrollOffset = Offset(-width, _style.scrollOffset.dy);
+    if (style.scrollOffset.dx < -width) {
+      style.scrollOffset = Offset(-width, style.scrollOffset.dy);
     }
-    if (_style.scrollOffset.dy < -height) {
-      _style.scrollOffset = Offset(_style.scrollOffset.dx, -height);
+    if (style.scrollOffset.dy < -height) {
+      style.scrollOffset = Offset(style.scrollOffset.dx, -height);
     }
-    _style.scrollOffset =
-        Offset(_style.scrollOffset.dx, _style.scrollOffset.dy);
+    style.scrollOffset = Offset(style.scrollOffset.dx, style.scrollOffset.dy);
   }
 
   @override
   Widget build(BuildContext context) {
-    var p = PianoRoll(_model, _style, key: _globalKey);
+    var p = PianoRoll(model, style, key: _globalKey);
     var k = Keyboard(p);
     return Stack(
       children: [
@@ -67,38 +66,38 @@ class PianoRollEdietorState extends State<PianoRollEditor>
               this._scrollX = details.localPosition.dx;
             },
             onHorizontalDragUpdate: (DragUpdateDetails details) {
-              _style.scrollOffset = _style.scrollOffset
+              style.scrollOffset = style.scrollOffset
                   .translate(-(_scrollX - details.localPosition.dx), 0);
               _clampScrollPos(p);
               this._scrollX = details.localPosition.dx;
               if (_scrollAmountX++ % 10 == 0) {
-                _style.refresh();
+                style.refresh();
               }
             },
             onHorizontalDragEnd: (DragEndDetails details) {
-              _style.refresh();
+              style.refresh();
             },
             onVerticalDragStart: (DragStartDetails details) {
               this._scrollAmountY = 0;
               this._scrollY = details.localPosition.dy;
             },
             onVerticalDragUpdate: (DragUpdateDetails details) {
-              _style.scrollOffset = _style.scrollOffset
+              style.scrollOffset = style.scrollOffset
                   .translate(0, -(_scrollY - details.localPosition.dy));
               _clampScrollPos(p);
               this._scrollY = details.localPosition.dy;
               if (_scrollAmountY++ % 10 == 0) {
-                _style.refresh();
+                style.refresh();
               }
             },
             onVerticalDragEnd: (DragEndDetails details) {
-              _style.refresh();
+              style.refresh();
             },
             onDoubleTapDown: (details) {
               double x =
-                  details.localPosition.dx + (-_style.scrollOffset.dx) - 48;
+                  details.localPosition.dx + (-style.scrollOffset.dx) - 48;
               double y =
-                  details.localPosition.dy + (-_style.scrollOffset.dy) - 48;
+                  details.localPosition.dy + (-style.scrollOffset.dy) - 48;
               PianoRollUtilities.generateOrRemoveAt(p, x, y, 0.25);
             },
             onDoubleTap: () {},
