@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import './main_view.dart';
-import './track_list.dart';
-import './piano_roll_editor.dart';
+import '../../piano_roll/main_view.dart';
+import '../../piano_roll/track_list.dart';
+import '../../piano_roll/piano_roll_editor.dart';
 
 class MainViewState extends State<MainView> {
   @override
