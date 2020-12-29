@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './edit_page.dart';
-import './../../piano_roll/main_view.dart';
+import './main_view.dart';
 
 class EditPageState extends State<EditPage> {
   @override
