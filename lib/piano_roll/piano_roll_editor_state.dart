@@ -9,18 +9,21 @@ import './piano_roll_model.dart';
 import './piano_roll_style.dart';
 import 'package:flutter/material.dart';
 import './piano_roll_editor.dart';
+import './piano_roll_layout_info.dart';
 
 class PianoRollEdietorState extends State<PianoRollEditor>
     implements PianoRollModelListener {
   final PianoRollModel model;
   final PianoRollStyle style;
+  final PianoRollLayoutInfo layoutInfo;
   int _scrollAmountX, _scrollAmountY;
   double _scrollX, _scrollY;
   GlobalKey _globalKey = GlobalKey();
 
   PianoRollEdietorState()
       : this.model = DefaultPianoRollModel(11 * 12, 4, 4),
-        this.style = PianoRollStyle() {
+        this.style = PianoRollStyle(),
+        this.layoutInfo = PianoRollLayoutInfo() {
     model.addPianoRollModelListener(this);
   }
 
@@ -41,7 +44,8 @@ class PianoRollEdietorState extends State<PianoRollEditor>
     //1536 2112
     //print('${p.computeMaxWidth()} ${p.computeMaxHeight()}');
     double width = p.computeMaxWidth().toDouble() - (addW);
-    double height = p.computeMaxHeight().toDouble() - (addH - 50);
+    double height =
+        p.computeMaxHeight().toDouble() - (addH - layoutInfo.toolBarHeight);
     //print('w=$width h=$height');
     if (style.scrollOffset.dx < -width) {
       style.scrollOffset = Offset(-width, style.scrollOffset.dy);
@@ -94,17 +98,19 @@ class PianoRollEdietorState extends State<PianoRollEditor>
               style.refresh();
             },
             onDoubleTapDown: (details) {
-              double x =
-                  details.localPosition.dx + (-style.scrollOffset.dx) - 48;
-              double y =
-                  details.localPosition.dy + (-style.scrollOffset.dy) - 48;
+              double x = details.localPosition.dx +
+                  (-style.scrollOffset.dx) -
+                  layoutInfo.keyboardWidth;
+              double y = details.localPosition.dy +
+                  (-style.scrollOffset.dy) -
+                  layoutInfo.toolBarHeight;
               PianoRollUtilities.generateOrRemoveAt(p, x, y, 0.25);
             },
             onDoubleTap: () {},
             onDoubleTapCancel: () {},
             behavior: HitTestBehavior.opaque,
             child: Container(
-              margin: EdgeInsets.only(top: 0, left: 48),
+              margin: EdgeInsets.only(top: 0, left: layoutInfo.keyboardWidth),
               child: SizedBox.expand(child: p),
             ),
           )),
@@ -113,12 +119,12 @@ class PianoRollEdietorState extends State<PianoRollEditor>
             alignment: Alignment.centerLeft,
             child: SizedBox(
               child: k,
-              width: 48,
+              width: layoutInfo.keyboardWidth,
             )),
         Align(
           alignment: Alignment.topCenter,
           child: SizedBox(
-            height: 50,
+            height: layoutInfo.toolBarHeight,
             child: Container(
               child: ButtonBar(
                 alignment: MainAxisAlignment.start,
