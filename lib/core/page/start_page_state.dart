@@ -85,7 +85,16 @@ class StartPageState extends State<StartPage> {
     });
   }
 
-  void _deleteProject() {}
+  void _deleteProject(int i) {
+    setState(() {
+      var data = ProjectListProvider.provide().value.data;
+      if (i >= 0 && i < data.length) {
+        data.removeAt(i);
+        this._selectedProjectIndex = -1;
+        ProjectListProvider.save();
+      }
+    });
+  }
 
   void _selectProject(int i) {
     setState(() {
@@ -112,11 +121,13 @@ class StartPageState extends State<StartPage> {
       ),
       IconButton(
         icon: Icon(Icons.delete),
-        onPressed: () => {},
+        onPressed: () {
+          _deleteProject(this._selectedProjectIndex);
+        },
       ),
       IconButton(
         icon: Icon(Icons.settings),
-        onPressed: () => {},
+        onPressed: () {},
       ),
     ];
   }
