@@ -1,17 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import './core/page/start_page.dart';
 import './core/page/edit_page.dart';
+import './core/system/app_data.dart';
+import './core/system/app_data.save_data.dart';
+import './core/system/project_list.dart';
+import './core/system/project_list.save_data.dart';
+import 'dart:convert';
+import 'package:save_data_lib/save_data_lib.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIOverlays([]);
-  SystemChrome.setPreferredOrientations([
+  await SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
-  ]).then((value) {
-    runApp(MyApp());
-  });
+  ]);
+  // セーブデータ登録
+  //SaveData.instance.clear();
+  AppDataProvider.setup();
+  ProjectListProvider.setup();
+  await AppDataProvider.load();
+  await ProjectListProvider.load();
+  // デバッグ時のみセーブデータ確認
+  if (kDebugMode) {
+    try {
+      var appData = AppDataProvider.provide().value;
+      print('AppData=${json.encode(appData.toJson())}');
+    } catch (Exception) {
+      debugPrint('SaveData: clear');
+      AppDataProvider.discard();
+      return;
+    }
+  }
+  runApp(MyApp());
+  // 起動回数を数える
+  // 初回起動時のみチュートリアルなどあるため
+  AppDataProvider.provide().value.launchCount++;
+  // 終了前に保存する
+  await AppDataProvider.save();
+  await ProjectListProvider.save();
 }
 
 class MyApp extends StatelessWidget {
