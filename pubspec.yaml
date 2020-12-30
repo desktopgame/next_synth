@@ -28,6 +28,7 @@ dependencies:
   json_serializable: ^3.5.1
   save_data_lib: ^1.0.0
   save_data_annotation: ^1.0.0
+  fluttertoast: ^7.1.6
 
 
   # The following adds the Cupertino Icons font to your application.
