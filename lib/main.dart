@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import './core/page/start_page.dart';
 import './core/page/edit_page.dart';
+import './core/page/setting_page.dart';
 import './core/system/app_data.dart';
 import './core/system/app_data.save_data.dart';
 import './core/system/project_list.dart';
@@ -68,7 +69,8 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: <String, WidgetBuilder>{
         "/": (BuildContext context) => StartPage(),
-        "/edit": (BuildContext context) => EditPage()
+        "/edit": (BuildContext context) => EditPage(),
+        "/setting": (BuildContext context) => SettingPage()
       },
     );
   }
