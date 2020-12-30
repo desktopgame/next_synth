@@ -87,6 +87,15 @@ class StartPageState extends State<StartPage> {
 
   void _deleteProject() {}
 
+  void _selectProject(int i) {
+    setState(() {
+      if (this._selectedProjectIndex == i) {
+        i = -1;
+      }
+      this._selectedProjectIndex = i;
+    });
+  }
+
   List<Widget> _buildFooterButtons(BuildContext context) {
     return <Widget>[
       IconButton(
@@ -112,6 +121,24 @@ class StartPageState extends State<StartPage> {
     ];
   }
 
+  Widget _buildGridTile(BuildContext context, int index) {
+    var proj = ProjectListProvider.provide().value.data[index];
+    return GestureDetector(
+        onTap: () {
+          print('tap ${this._selectedProjectIndex}');
+          _selectProject(index);
+        },
+        onTapDown: (details) {},
+        onTapUp: (details) {},
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: Text('${proj.name}'),
+          color: index == this._selectedProjectIndex
+              ? Colors.blue
+              : Colors.teal[100],
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     var projects = ProjectListProvider.provide().value.data;
@@ -125,23 +152,21 @@ class StartPageState extends State<StartPage> {
           ));
     }
     // プロジェクト一覧の表示
-    var projectWidgets = <Widget>[];
-    for (Project proj in projects) {
-      projectWidgets.add(Container(
-        padding: const EdgeInsets.all(8),
-        child: Text('${proj.name}'),
-        color: Colors.teal[100],
-      ));
-    }
     return Scaffold(
       body: Center(
-          child: GridView.count(
+          child: GridView.builder(
         primary: false,
         padding: const EdgeInsets.all(20),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        crossAxisCount: 4,
-        children: projectWidgets,
+        itemBuilder: (context, index) {
+          return _buildGridTile(context, index);
+        },
+        itemCount: ProjectListProvider.provide().value.data.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          crossAxisCount: 4,
+        ),
+        //children: projectWidgets,
       )),
       persistentFooterButtons: footerButtons,
     );
