@@ -81,6 +81,7 @@ class StartPageState extends State<StartPage> {
     setState(() {
       var projectList = ProjectListProvider.provide().value;
       projectList.data.add(Project()..name = name);
+      ProjectListProvider.save();
     });
   }
 
