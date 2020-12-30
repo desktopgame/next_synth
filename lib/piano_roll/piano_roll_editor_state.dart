@@ -20,10 +20,7 @@ class PianoRollEdietorState extends State<PianoRollEditor>
   double _scrollX, _scrollY;
   GlobalKey _globalKey = GlobalKey();
 
-  PianoRollEdietorState()
-      : this.model = DefaultPianoRollModel(11 * 12, 4, 4),
-        this.style = PianoRollStyle(),
-        this.layoutInfo = PianoRollLayoutInfo() {
+  PianoRollEdietorState({this.model, this.style, this.layoutInfo}) {
     model.addPianoRollModelListener(this);
   }
 
