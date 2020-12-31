@@ -28,6 +28,7 @@ dependencies:
   json_serializable: ^3.5.1
   save_data_lib: ^1.0.0
   save_data_annotation: ^1.0.0
+  property_ui_annotation: ^1.0.0
   fluttertoast: ^7.1.6
   settings_ui: ^0.5.0
 
@@ -43,7 +44,8 @@ dev_dependencies:
   change_app_package_name: ^0.1.2
   flutter_launcher_name: "^0.0.1"
   build_runner: ^1.10.11
-  save_data_generator: 1.0.0
+  save_data_generator: ^1.0.0
+  property_ui_generator: ^1.0.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
