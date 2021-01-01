@@ -121,9 +121,11 @@ class StartPageState extends State<StartPage> {
       ),
       IconButton(
         icon: Icon(Icons.delete),
-        onPressed: () {
-          _deleteProject(this._selectedProjectIndex);
-        },
+        onPressed: _selectedProjectIndex == -1
+            ? null
+            : () {
+                _deleteProject(this._selectedProjectIndex);
+              },
       ),
       IconButton(
         icon: Icon(Icons.settings),
