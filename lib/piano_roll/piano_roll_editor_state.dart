@@ -126,45 +126,45 @@ class PianoRollEdietorState extends State<PianoRollEditor>
               child: ButtonBar(
                 alignment: MainAxisAlignment.start,
                 children: [
-                  RaisedButton(
+                  IconButton(
                     onPressed: () {
                       print("push");
                     },
-                    child: Icon(Icons.help),
+                    icon: Icon(Icons.help),
                   ),
-                  RaisedButton(
+                  IconButton(
                     onPressed: () {
                       print("push");
                     },
-                    child: Icon(Icons.undo),
+                    icon: Icon(Icons.undo),
                   ),
-                  RaisedButton(
+                  IconButton(
                     onPressed: () {
                       print("push");
                     },
-                    child: Icon(Icons.redo),
+                    icon: Icon(Icons.redo),
                   ),
-                  RaisedButton(
+                  IconButton(
                       onPressed: () {
                         print("push");
                       },
-                      child: Icon(Icons.save)),
+                      icon: Icon(Icons.save)),
                   Divider(color: Colors.black),
-                  RaisedButton(
+                  IconButton(
                       onPressed: () {
                         print("push");
                       },
-                      child: Icon(Icons.play_arrow)),
-                  RaisedButton(
+                      icon: Icon(Icons.play_arrow)),
+                  IconButton(
                       onPressed: () {
                         print("push");
                       },
-                      child: Icon(Icons.pause)),
-                  RaisedButton(
+                      icon: Icon(Icons.pause)),
+                  IconButton(
                       onPressed: () {
                         print("push");
                       },
-                      child: Icon(Icons.stop)),
+                      icon: Icon(Icons.stop)),
                   Text("ProjectName")
                 ],
               ),
