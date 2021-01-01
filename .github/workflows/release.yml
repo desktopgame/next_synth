@@ -39,7 +39,6 @@ jobs:
       - name: Build apk
         run: |
           flutter pub get
-          flutter test
           flutter build apk --debug
           cp build/app/outputs/apk/debug/app-debug.apk bundle/android/app-debug.apk
       - name: Build macos
