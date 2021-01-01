@@ -138,7 +138,6 @@ class StartPageState extends State<StartPage> {
     var proj = ProjectListProvider.provide().value.data[index];
     return GestureDetector(
         onTap: () {
-          print('tap ${this._selectedProjectIndex}');
           _selectProject(index);
         },
         onTapDown: (details) {},
