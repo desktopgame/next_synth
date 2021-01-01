@@ -170,7 +170,7 @@ class StartPageState extends State<StartPage> {
     return GestureDetector(
         onTap: () {
           if (index == _selectedProjectIndex) {
-            Navigator.pushNamed(context, "/edit");
+            Navigator.pushNamed(context, "/edit", arguments: index);
           } else {
             _selectProject(index);
           }

@@ -5,6 +5,7 @@ import './main_view.dart';
 class EditPageState extends State<EditPage> {
   @override
   Widget build(BuildContext context) {
+    final projectIndex = ModalRoute.of(context).settings.arguments as int;
     return Scaffold(
       //appBar: AppBar(
       //  // Here we take the value from the MyHomePage object that was created by
@@ -14,7 +15,7 @@ class EditPageState extends State<EditPage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: MainView(),
+        child: MainView(projectIndex),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
