@@ -22,47 +22,49 @@ class StartPageState extends State<StartPage> {
       void Function(TextEditingController controller) onCancel}) {
     var controller = TextEditingController();
     showDialog(
-        child: new Dialog(
-          backgroundColor: Colors.transparent,
-          insetPadding: EdgeInsets.all(10),
-          child: Stack(
-            overflow: Overflow.visible,
-            alignment: Alignment.center,
-            children: [
-              SingleChildScrollView(
-                  child: Container(
-                width: double.infinity,
-                height: 200,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15), color: color),
-                padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
-                child: new Column(
-                  children: <Widget>[
-                    new TextField(
-                      decoration: new InputDecoration(hintText: placeholder),
-                      controller: controller,
-                    ),
-                    Row(children: [
-                      Spacer(),
-                      new FlatButton(
-                        child: new Text(cancelText),
-                        onPressed: () {
-                          onCancel(controller);
-                        },
+        builder: (context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding: EdgeInsets.all(10),
+            child: Stack(
+              overflow: Overflow.visible,
+              alignment: Alignment.center,
+              children: [
+                SingleChildScrollView(
+                    child: Container(
+                  width: double.infinity,
+                  height: 200,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15), color: color),
+                  padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
+                  child: new Column(
+                    children: <Widget>[
+                      new TextField(
+                        decoration: new InputDecoration(hintText: placeholder),
+                        controller: controller,
                       ),
-                      new FlatButton(
-                        child: new Text(approveText),
-                        onPressed: () {
-                          onApprrove(controller);
-                        },
-                      ),
-                    ]),
-                  ],
-                ),
-              ))
-            ],
-          ),
-        ),
+                      Row(children: [
+                        Spacer(),
+                        new FlatButton(
+                          child: new Text(cancelText),
+                          onPressed: () {
+                            onCancel(controller);
+                          },
+                        ),
+                        new FlatButton(
+                          child: new Text(approveText),
+                          onPressed: () {
+                            onApprrove(controller);
+                          },
+                        ),
+                      ]),
+                    ],
+                  ),
+                ))
+              ],
+            ),
+          );
+        },
         context: context);
   }
 
