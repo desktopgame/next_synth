@@ -193,6 +193,9 @@ class StartPageState extends State<StartPage> {
     // プロジェクトが一つもない
     if (projects.length == 0) {
       return Scaffold(
+          appBar: AppBar(
+            title: Text('NextSynth'),
+          ),
           persistentFooterButtons: footerButtons,
           body: Center(
             child: Text("プロジェクトがありません。", textAlign: TextAlign.center),
@@ -200,6 +203,9 @@ class StartPageState extends State<StartPage> {
     }
     // プロジェクト一覧の表示
     return Scaffold(
+      appBar: AppBar(
+        title: Text('NextSynth'),
+      ),
       body: Center(
           child: GridView.builder(
         primary: false,
