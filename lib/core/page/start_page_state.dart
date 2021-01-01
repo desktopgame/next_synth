@@ -85,6 +85,33 @@ class StartPageState extends State<StartPage> {
     });
   }
 
+  void _cofirmDelete(BuildContext context, int i) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: Text("本当に削除しますか？"),
+          //content: Text("メッセージメッセージメッセージメッセージメッセージメッセージ"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            FlatButton(
+              child: Text("OK"),
+              onPressed: () {
+                _deleteProject(i);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _deleteProject(int i) {
     setState(() {
       var data = ProjectListProvider.provide().value.data;
@@ -124,7 +151,7 @@ class StartPageState extends State<StartPage> {
         onPressed: _selectedProjectIndex == -1
             ? null
             : () {
-                _deleteProject(this._selectedProjectIndex);
+                _cofirmDelete(context, this._selectedProjectIndex);
               },
       ),
       IconButton(
