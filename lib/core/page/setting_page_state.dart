@@ -8,6 +8,9 @@ class SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('NextSynth'),
+      ),
       body: Center(
         child: AppDataUI(AppDataProvider.provide().value),
       ),
