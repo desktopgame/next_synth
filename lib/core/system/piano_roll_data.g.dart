@@ -7,10 +7,15 @@ part of 'piano_roll_data.dart';
 // **************************************************************************
 
 PianoRollData _$PianoRollDataFromJson(Map json) {
-  return PianoRollData()..measureCount = json['measureCount'] as int;
+  return PianoRollData()
+    ..keyCount = json['keyCount'] as int
+    ..measureCount = json['measureCount'] as int
+    ..beatCount = json['beatCount'] as int;
 }
 
 Map<String, dynamic> _$PianoRollDataToJson(PianoRollData instance) =>
     <String, dynamic>{
+      'keyCount': instance.keyCount,
       'measureCount': instance.measureCount,
+      'beatCount': instance.beatCount,
     };

@@ -7,7 +7,7 @@ part 'app_data.g.dart';
 @Content()
 class AppData {
   @Property(displayName: "オクターブ数")
-  int octaveCount;
+  int keyCount;
   @Property(displayName: "拍の横幅")
   int beatWidth;
   @Property(displayName: "拍の縦幅")
@@ -25,7 +25,7 @@ class AppData {
   int launchCount;
 
   AppData() {
-    this.octaveCount = 11;
+    this.keyCount = 11;
     this.beatWidth = 96;
     this.beatHeight = 16;
     this.measureCount = 4;

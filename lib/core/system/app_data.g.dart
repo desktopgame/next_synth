@@ -8,7 +8,7 @@ part of 'app_data.dart';
 
 AppData _$AppDataFromJson(Map json) {
   return AppData()
-    ..octaveCount = json['octaveCount'] as int
+    ..keyCount = json['keyCount'] as int
     ..beatWidth = json['beatWidth'] as int
     ..beatHeight = json['beatHeight'] as int
     ..measureCount = json['measureCount'] as int
@@ -20,7 +20,7 @@ AppData _$AppDataFromJson(Map json) {
 }
 
 Map<String, dynamic> _$AppDataToJson(AppData instance) => <String, dynamic>{
-      'octaveCount': instance.octaveCount,
+      'keyCount': instance.keyCount,
       'beatWidth': instance.beatWidth,
       'beatHeight': instance.beatHeight,
       'measureCount': instance.measureCount,

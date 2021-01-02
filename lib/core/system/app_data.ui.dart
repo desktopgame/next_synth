@@ -34,7 +34,7 @@ class AppDataUIState extends State<AppDataUI> {
   List<Widget> _header;
   List<Widget> _footer;
   void Function(AppData, String) _onChanged;
-  TextEditingController _octaveCountController;
+  TextEditingController _keyCountController;
   TextEditingController _beatWidthController;
   TextEditingController _beatHeightController;
   TextEditingController _measureCountController;
@@ -55,8 +55,8 @@ class AppDataUIState extends State<AppDataUI> {
   @override
   void initState() {
     super.initState();
-    _octaveCountController = TextEditingController()
-      ..text = _target.octaveCount.toString();
+    _keyCountController = TextEditingController()
+      ..text = _target.keyCount.toString();
     _beatWidthController = TextEditingController()
       ..text = _target.beatWidth.toString();
     _beatHeightController = TextEditingController()
@@ -77,10 +77,10 @@ class AppDataUIState extends State<AppDataUI> {
   Widget build(BuildContext context) {
     return _scrollableColumn(context, [
       ..._header,
-      _inputInt("オクターブ数", "", false, _octaveCountController, (e) {
-        this._target.octaveCount = int.parse(e);
+      _inputInt("オクターブ数", "", false, _keyCountController, (e) {
+        this._target.keyCount = int.parse(e);
         if (this._onChanged != null) {
-          this._onChanged(_target, "octaveCount");
+          this._onChanged(_target, "keyCount");
         }
       }),
       Divider(),
