@@ -144,11 +144,6 @@ class PianoRollEdietorState extends State<PianoRollEditor>
                     },
                     icon: Icon(Icons.redo),
                   ),
-                  IconButton(
-                      onPressed: () {
-                        print("push");
-                      },
-                      icon: Icon(Icons.save)),
                   Divider(color: Colors.black),
                   IconButton(
                       onPressed: () {
