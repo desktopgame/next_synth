@@ -8,8 +8,7 @@ class TrackListState extends State<TrackList> {
   int _selectedTrackIndex;
   bool _show;
 
-  TrackListState() {
-    this._trackListModel = DefaultTrackListModel();
+  TrackListState(this._trackListModel) {
     this._selectedTrackIndex = -1;
     this._show = true;
   }

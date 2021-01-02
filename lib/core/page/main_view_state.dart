@@ -9,12 +9,15 @@ import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
 import 'package:next_synth/piano_roll/piano_roll_style.dart';
 import 'package:next_synth/piano_roll/piano_roll_layout_info.dart';
 import 'package:logging/logging.dart';
+import 'package:next_synth/piano_roll/track_list_model.dart';
+import 'package:next_synth/piano_roll/default_track_list_model.dart';
 
 class MainViewState extends State<MainView> {
   int _projectIndex;
   PianoRollModel model;
   PianoRollStyle style;
   PianoRollLayoutInfo layoutInfo;
+  TrackListModel trackListModel;
   final logger = new Logger('MainViewState');
 
   MainViewState(this._projectIndex) {}
@@ -25,16 +28,22 @@ class MainViewState extends State<MainView> {
     final projList = ProjectListProvider.provide().value;
     final proj = projList.data[_projectIndex];
     debugPrint("MainViewState: ${_projectIndex}=${proj.name}");
+    this.trackListModel = DefaultTrackListModel();
     this.model = DefaultPianoRollModel(11 * 12, 4, 4);
     this.style = PianoRollStyle();
     this.layoutInfo = PianoRollLayoutInfo();
+    for (var t in proj.tracks) {
+      var track = trackListModel.createTrack();
+      track.name = t.name;
+      track.isMute = t.isMute;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        TrackList(),
+        TrackList(trackListModel),
         Expanded(
             child: PianoRollEditor(
           model: model,

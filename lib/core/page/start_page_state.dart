@@ -3,6 +3,9 @@ import './start_page.dart';
 import '../system/project.dart';
 import '../system/project_list.dart';
 import '../system/project_list.save_data.dart';
+import '../system/project.dart';
+import '../system/track_data.dart';
+import '../system/piano_roll_data.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class StartPageState extends State<StartPage> {
@@ -82,7 +85,9 @@ class StartPageState extends State<StartPage> {
     }
     setState(() {
       var projectList = ProjectListProvider.provide().value;
-      projectList.data.add(Project()..name = name);
+      var proj = Project()..name = name;
+      proj.tracks.add(TrackData()..name = "Track1");
+      projectList.data.add(proj);
       ProjectListProvider.save();
     });
   }
