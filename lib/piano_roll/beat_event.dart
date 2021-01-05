@@ -16,5 +16,5 @@ class BeatEvent {
   Beat get source => _source;
   Note get note => _note;
   BeatEventType get beatEventType => _beatEventType;
-  Optional<NoteEvent> get noteEvent => _noteEvent;
+  Optional<NoteEvent> get innerEvent => _noteEvent;
 }

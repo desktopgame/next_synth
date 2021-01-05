@@ -1,15 +1,24 @@
+import 'package:next_synth/undo/undo_manager.dart';
 import 'package:optional/optional.dart';
 
+import './beat_event.dart';
+import './beat_event_type.dart';
 import './default_key.dart';
 import './key.dart';
 import './key_event.dart';
 import './key_listener.dart';
+import './note_event.dart';
+import './note_event_type.dart';
 import './piano_roll_model.dart';
 import './piano_roll_model_event.dart';
 import './piano_roll_model_event_type.dart';
 import './piano_roll_model_listener.dart';
-import './undoable_edit_listener.dart';
 import '../event/event_listener_list.dart';
+import 'undo/note_create_edit.dart';
+import 'undo/note_length_edit.dart';
+import 'undo/note_offset_edit.dart';
+import 'undo/note_remove_edit.dart';
+import 'undo/note_select_edit.dart';
 
 class DefaultPianoRollModel implements PianoRollModel, KeyListener {
   List<Key> _keyList;
@@ -17,7 +26,8 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
   int _keyCount;
   int _measureCount;
   int _beatCount;
-  int undoableEditStack;
+  int _locked;
+  UndoManager _undoManager;
 
   DefaultPianoRollModel(int keyCount, int measureCount, int beatCount) {
     this._keyList = List<Key>();
@@ -25,6 +35,8 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
     this._keyCount = keyCount;
     this._measureCount = measureCount;
     this._beatCount = beatCount;
+    this._locked = 0;
+    this._undoManager = UndoManager();
     for (int i = 0; i < keyCount; i++) {
       _addKey(i);
     }
@@ -36,7 +48,7 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
     k.addKeyListener(this);
     var e = PianoRollModelEvent(
         this, PianoRollModelEventType.keyCreated, Optional.empty());
-    // postUndoableEdit(ee);
+    _postUndoableEdit(e);
     for (PianoRollModelListener l
         in this._listenerList.getListeners<PianoRollModelListener>()) {
       l.pianoRollModelUpdate(e);
@@ -52,29 +64,29 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
     _listenerList.add(listener);
   }
 
-  @override
-  void addUndoableEditListener(UndoableEditListener listener) {
-    // TODO: implement addUndoableEditListener
-  }
+  //@override
+  //void addUndoableEditListener(UndoableEditListener listener) {
+  //  // TODO: implement addUndoableEditListener
+  //}
 
   @override
   void beginApplyUndoableEdit() {
-    // TODO: implement beginApplyUndoableEdit
+    this._locked++;
   }
 
   @override
   void beginCompoundUndoableEdit() {
-    // TODO: implement beginCompoundUndoableEdit
+    _undoManager.beginCompoundEdit();
   }
 
   @override
   void endApplyUndoableEdit() {
-    // TODO: implement endApplyUndoableEdit
+    this._locked--;
   }
 
   @override
   void endCompoundUndoableEdit() {
-    // TODO: implement endCompoundUndoableEdit
+    _undoManager.endCompoundEdit();
   }
 
   @override
@@ -95,10 +107,10 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
     _listenerList.remove(listener);
   }
 
-  @override
-  void removeUndoableEditListener(UndoableEditListener listener) {
-    // TODO: implement removeUndoableEditListener
-  }
+  //@override
+  //void removeUndoableEditListener(UndoableEditListener listener) {
+  //  // TODO: implement removeUndoableEditListener
+  //}
 
   @override
   void resizeBeatCount(int beatCount) {
@@ -123,7 +135,7 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
         this._keyList.remove(_keyList.length - 1);
         var pme = PianoRollModelEvent(
             this, PianoRollModelEventType.keyRemoved, Optional.empty());
-        // postUndoableEdit(ee);
+        _postUndoableEdit(pme);
         for (PianoRollModelListener l
             in this._listenerList.getListeners<PianoRollModelListener>()) {
           l.pianoRollModelUpdate(pme);
@@ -144,10 +156,76 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
   void keyUpdate(KeyEvent e) {
     var pme = PianoRollModelEvent(
         this, PianoRollModelEventType.propagationKeyEvents, Optional.of(e));
-    // postUndoableEdit(ee);
+    _postUndoableEdit(pme);
     for (PianoRollModelListener l
         in this._listenerList.getListeners<PianoRollModelListener>()) {
       l.pianoRollModelUpdate(pme);
     }
+  }
+
+  Optional<BeatEvent> _unwrapBeatEvent(PianoRollModelEvent e) {
+    var a = e.innerEvent;
+    if (!a.isPresent) {
+      return Optional.empty();
+    }
+    var b = a.value.innerEvent;
+    if (!b.isPresent) {
+      return Optional.empty();
+    }
+    return b.value.innerEvent;
+  }
+
+  Optional<NoteEvent> _unwrapNoteEvent(PianoRollModelEvent e) {
+    var be = _unwrapBeatEvent(e);
+    if (be.isPresent) {
+      return be.value.innerEvent;
+    }
+    return Optional.empty();
+  }
+
+  void _postUndoableEdit(PianoRollModelEvent e) {
+    if (_locked > 0) {
+      return;
+    }
+    Optional<BeatEvent> beOpt = _unwrapBeatEvent(e);
+    if (beOpt.isPresent) {
+      BeatEvent be = beOpt.value;
+      if (be.beatEventType == BeatEventType.noteCreated) {
+        _undoManager.submit(NoteCreateEdit(this, be.source, be.note));
+        return;
+      }
+    }
+    Optional<NoteEvent> noOpt = _unwrapNoteEvent(e);
+    if (noOpt.isPresent) {
+      NoteEvent no = noOpt.value;
+      Optional<Object> o = no.oldValue;
+      Optional<Object> n = no.newValue;
+      if (no.type == NoteEventType.removed) {
+        _undoManager.submit(NoteRemoveEdit(this, no.source.beat, no.source));
+      } else if (no.type == NoteEventType.offsetChange) {
+        _undoManager.submit(NoteOffsetEdit(this, no.source, o.value as int));
+      } else if (no.type == NoteEventType.lengthChange) {
+        _undoManager.submit(NoteLengthEdit(this, no.source, o.value as double));
+      } else if (no.type == NoteEventType.selectionChange) {
+        _undoManager.submit(NoteSelectEdit(this, no.source));
+      }
+      return;
+    }
+  }
+
+  @override
+  bool get canRedo => _undoManager.canUndo;
+
+  @override
+  bool get canUndo => _undoManager.canRedo;
+
+  @override
+  void redo() {
+    _undoManager.redo();
+  }
+
+  @override
+  void undo() {
+    _undoManager.undo();
   }
 }

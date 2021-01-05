@@ -1,10 +1,13 @@
 import './key.dart';
 import './piano_roll_model_listener.dart';
-import './undoable_edit_listener.dart';
 
 abstract class PianoRollModel {
-  void addUndoableEditListener(UndoableEditListener listener);
-  void removeUndoableEditListener(UndoableEditListener listener);
+  //void addUndoableEditListener(UndoableEditListener listener);
+  //void removeUndoableEditListener(UndoableEditListener listener);
+  bool get canUndo;
+  bool get canRedo;
+  void undo();
+  void redo();
   void addPianoRollModelListener(PianoRollModelListener listener);
   void removePianoRollModelListener(PianoRollModelListener listener);
   void resizeKeyCount(int keyCount);
