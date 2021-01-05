@@ -110,10 +110,21 @@ class PianoRollUtilities {
         (xOffset + width).toDouble(), (yOffset + height).toDouble());
   }
 
+  static int computeRelativeBeatIndex(
+      PianoRollModel model, PianoRollStyle style, double x) {
+    return (x.toInt() %
+            (style.beatWidth * model.getKeyAt(0).getMeasureAt(0).beatCount)) ~/
+        style.beatWidth;
+  }
+
   static double measureIndexToXOffset(
       PianoRollModel model, PianoRollStyle style, int i) {
     return ((model.getKeyAt(0).getMeasureAt(0).beatCount * style.beatWidth) * i)
         .toDouble();
+  }
+
+  static double relativeBeatIndexToXOffset(PianoRollStyle style, int i) {
+    return (i * style.beatWidth).toDouble();
   }
 
   static List<Note> getAllNoteList(PianoRollModel model) {

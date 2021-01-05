@@ -93,18 +93,14 @@ class PianoRoll extends SingleChildRenderObjectWidget {
     return notes;
   }
 
-  int computeRelativeBeatIndex(double x) {
-    return (x.toInt() %
-            (style.beatWidth * model.getKeyAt(0).getMeasureAt(0).beatCount)) ~/
-        style.beatWidth;
-  }
+  int computeRelativeBeatIndex(double x) =>
+      PianoRollUtilities.computeRelativeBeatIndex(model, style, x);
 
   double measureIndexToXOffset(int i) =>
       PianoRollUtilities.measureIndexToXOffset(model, style, i);
 
-  double relativeBeatIndexToXOffset(int i) {
-    return (i * style.beatWidth).toDouble();
-  }
+  double relativeBeatIndexToXOffset(int i) =>
+      PianoRollUtilities.relativeBeatIndexToXOffset(style, i);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
