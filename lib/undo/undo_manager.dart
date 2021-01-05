@@ -21,8 +21,18 @@ class UndoManager {
   }
 
   void submit(UndoableEdit edit) {
+    _submit(edit, false);
+  }
+
+  void commit(UndoableEdit edit) {
+    _submit(edit, true);
+  }
+
+  void _submit(UndoableEdit edit, bool exec) {
     if (_mode == 0) {
-      edit.redo();
+      if (exec) {
+        edit.redo();
+      }
       _undoStack.push(edit);
     } else {
       _edits.add(edit);
@@ -32,7 +42,7 @@ class UndoManager {
   void endCompoundEdit() {
     _mode--;
     if (_mode == 0) {
-      submit(CompoundUndoableEdit(edits: _edits));
+      commit(CompoundUndoableEdit(edits: _edits));
       _edits.clear();
     }
   }

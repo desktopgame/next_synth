@@ -15,18 +15,18 @@ class NumberModel {
 
   void add(int n) {
     _undoManager.beginCompoundEdit();
-    for (int i = 0; i < n; i++) _undoManager.submit(IncrementEdit(this));
+    for (int i = 0; i < n; i++) _undoManager.commit(IncrementEdit(this));
     _undoManager.endCompoundEdit();
   }
 
   void sub(int n) {
     _undoManager.beginCompoundEdit();
-    for (int i = 0; i < n; i++) _undoManager.submit(DecrementEdit(this));
+    for (int i = 0; i < n; i++) _undoManager.commit(DecrementEdit(this));
     _undoManager.endCompoundEdit();
   }
 
   void overwrite(int n) {
-    _undoManager.submit(SetEdit(this, n));
+    _undoManager.commit(SetEdit(this, n));
   }
 }
 
