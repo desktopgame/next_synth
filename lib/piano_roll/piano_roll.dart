@@ -26,37 +26,15 @@ class PianoRoll extends SingleChildRenderObjectWidget {
   PianoRollModel get model => _model.value;
   PianoRollStyle get style => _style;
 
-  int computeMaxWidth() {
-    if (model == null) {
-      return 0;
-    }
-    return computeWidth(model.getKeyAt(0).measureCount);
-  }
+  int computeMaxWidth() => PianoRollUtilities.computeMaxWidth(model, style);
 
-  int computeMaxHeight() {
-    if (model == null) {
-      return 0;
-    }
-    return computeHeight(model.keyCount);
-  }
+  int computeMaxHeight() => PianoRollUtilities.computeMaxHeight(model, style);
 
-  int computeWidth(int measureCount) {
-    if (model == null) {
-      return 0;
-    }
-    int mc = measureCount;
-    int bc = model.getKeyAt(0).getMeasureAt(0).beatCount;
-    int w = (bc * style.beatWidth) * mc;
-    return w;
-  }
+  int computeWidth(int measureCount) =>
+      PianoRollUtilities.computeWidth(model, style, measureCount);
 
-  int computeHeight(int keyCount) {
-    if (model == null) {
-      return 0;
-    }
-    int h = keyCount * style.beatHeight;
-    return h;
-  }
+  int computeHeight(int keyCount) =>
+      PianoRollUtilities.computeHeight(style, keyCount);
 
   int computeMeasureWidth() {
     return model.getKeyAt(0).getMeasureAt(0).beatCount * style.beatWidth;

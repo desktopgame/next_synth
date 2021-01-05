@@ -6,6 +6,7 @@ import './measure.dart';
 import './note.dart';
 import './piano_roll.dart';
 import './piano_roll_model.dart';
+import './piano_roll_style.dart';
 
 class PianoRollUtilities {
   PianoRollUtilities._();
@@ -51,6 +52,36 @@ class PianoRollUtilities {
       }
     }
     return Optional.empty();
+  }
+
+  static int computeMaxWidth(PianoRollModel model, PianoRollStyle style) {
+    if (model == null) {
+      return 0;
+    }
+    return computeWidth(model, style, model.getKeyAt(0).measureCount);
+  }
+
+  static int computeMaxHeight(PianoRollModel model, PianoRollStyle style) {
+    if (model == null) {
+      return 0;
+    }
+    return computeHeight(style, model.keyCount);
+  }
+
+  static int computeWidth(
+      PianoRollModel model, PianoRollStyle style, int measureCount) {
+    if (model == null) {
+      return 0;
+    }
+    int mc = measureCount;
+    int bc = model.getKeyAt(0).getMeasureAt(0).beatCount;
+    int w = (bc * style.beatWidth) * mc;
+    return w;
+  }
+
+  static int computeHeight(PianoRollStyle style, int keyCount) {
+    int h = keyCount * style.beatHeight;
+    return h;
   }
 
   static List<Note> getAllNoteList(PianoRollModel model) {
