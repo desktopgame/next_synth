@@ -11,11 +11,10 @@ class PianoRollEditor extends StatefulWidget {
   final Reference<PianoRollModel> model;
   final PianoRollStyle style;
   final PianoRollLayoutInfo layoutInfo;
-  final int version;
-  PianoRollEditor({this.model, this.style, this.layoutInfo, this.version});
+  PianoRollEditor({this.model, this.style, this.layoutInfo});
   @override
   State<StatefulWidget> createState() {
     return PianoRollEdietorState(
-        model: model, style: style, layoutInfo: layoutInfo, version: version);
+        model: model, style: style, layoutInfo: layoutInfo);
   }
 }

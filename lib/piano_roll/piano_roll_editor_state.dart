@@ -17,13 +17,11 @@ class PianoRollEdietorState extends State<PianoRollEditor>
   Reference<PianoRollModel> model;
   PianoRollStyle style;
   PianoRollLayoutInfo layoutInfo;
-  int version;
   int _scrollAmountX, _scrollAmountY;
   double _scrollX, _scrollY;
   GlobalKey _globalKey = GlobalKey();
 
-  PianoRollEdietorState(
-      {this.model, this.style, this.layoutInfo, this.version}) {
+  PianoRollEdietorState({this.model, this.style, this.layoutInfo}) {
     model.value.addPianoRollModelListener(this);
   }
 

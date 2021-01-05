@@ -29,7 +29,6 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
   PianoRollStyle style;
   PianoRollLayoutInfo layoutInfo;
   TrackListModel trackListModel;
-  int _version;
   final logger = new Logger('MainViewState');
 
   MainViewState(this._projectIndex) {
@@ -44,7 +43,6 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
     final proj = projList.data[_projectIndex];
     final appData = AppDataProvider.provide().value;
     this.trackListModel = DefaultTrackListModel();
-    this._version = 0;
     //this.model = DefaultPianoRollModel(11 * 12, 4, 4);
     this.style = PianoRollStyle()
       ..beatWidth = appData.beatWidth
@@ -137,7 +135,6 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
           model: model,
           style: style,
           layoutInfo: layoutInfo,
-          version: _version++,
         ))
       ],
     );
