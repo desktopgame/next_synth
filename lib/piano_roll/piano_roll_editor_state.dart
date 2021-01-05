@@ -41,12 +41,9 @@ class PianoRollEdietorState extends State<PianoRollEditor>
       addW = box.size.width;
       addH = box.size.height;
     }
-    //1536 2112
-    //print('${p.computeMaxWidth()} ${p.computeMaxHeight()}');
     double width = p.computeMaxWidth().toDouble() - (addW);
     double height =
         p.computeMaxHeight().toDouble() - (addH - layoutInfo.toolBarHeight);
-    //print('w=$width h=$height');
     if (style.scrollOffset.dx < -width) {
       style.scrollOffset = Offset(-width, style.scrollOffset.dy);
     }
@@ -130,39 +127,21 @@ class PianoRollEdietorState extends State<PianoRollEditor>
                 alignment: MainAxisAlignment.start,
                 children: [
                   IconButton(
-                    onPressed: () {
-                      print("push");
-                    },
+                    onPressed: () {},
                     icon: Icon(Icons.help),
                   ),
                   IconButton(
-                    onPressed: () {
-                      print("push");
-                    },
+                    onPressed: () {},
                     icon: Icon(Icons.undo),
                   ),
                   IconButton(
-                    onPressed: () {
-                      print("push");
-                    },
+                    onPressed: () {},
                     icon: Icon(Icons.redo),
                   ),
                   Divider(color: Colors.black),
-                  IconButton(
-                      onPressed: () {
-                        print("push");
-                      },
-                      icon: Icon(Icons.play_arrow)),
-                  IconButton(
-                      onPressed: () {
-                        print("push");
-                      },
-                      icon: Icon(Icons.pause)),
-                  IconButton(
-                      onPressed: () {
-                        print("push");
-                      },
-                      icon: Icon(Icons.stop)),
+                  IconButton(onPressed: () {}, icon: Icon(Icons.play_arrow)),
+                  IconButton(onPressed: () {}, icon: Icon(Icons.pause)),
+                  IconButton(onPressed: () {}, icon: Icon(Icons.stop)),
                   Text("ProjectName")
                 ],
               ),

@@ -57,7 +57,6 @@ class PianoRollRenderBox extends RenderBox
 
     double sx = _state.style.scrollOffset.dx;
     double sy = _state.style.scrollOffset.dy;
-    //print('sx=$sx sy=$sy');
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(
         offset.dx, offset.dy, size.width + offset.dx, size.height));
@@ -67,7 +66,6 @@ class PianoRollRenderBox extends RenderBox
   }
 
   void _paintImpl(PaintingContext context, Offset offset) {
-    //print('x=${offset.dx} y=${offset.dy}');
     var canvas = context.canvas;
     var style = _state.style;
     var model = _state.model;
