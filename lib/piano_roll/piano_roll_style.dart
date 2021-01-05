@@ -1,8 +1,8 @@
-import 'package:next_synth/event/notification_listener.dart' as P;
 import 'package:flutter/material.dart';
-import '../event/notification_listener.dart';
-import '../event/notification_event.dart';
+import 'package:next_synth/event/notification_listener.dart' as P;
+
 import '../event/event_listener_list.dart';
+import '../event/notification_event.dart';
 
 class PianoRollStyle {
   EventListenerList _listenerList;

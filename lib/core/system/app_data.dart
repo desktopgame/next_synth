@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:save_data_annotation/save_data_annotation.dart';
 import 'package:property_ui_annotation/property_ui_annotation.dart';
+import 'package:save_data_annotation/save_data_annotation.dart';
+
 part 'app_data.g.dart';
 
 @JsonSerializable(anyMap: true)

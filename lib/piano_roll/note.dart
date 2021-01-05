@@ -1,5 +1,5 @@
-import './note_listener.dart';
 import './beat.dart';
+import './note_listener.dart';
 
 abstract class Note {
   void addNoteListener(NoteListener listener);

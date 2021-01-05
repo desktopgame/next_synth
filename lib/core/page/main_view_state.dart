@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:next_synth/core/system/project_list.save_data.dart';
+import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
+import 'package:next_synth/piano_roll/default_track_list_model.dart';
+import 'package:next_synth/piano_roll/piano_roll_editor.dart';
+import 'package:next_synth/piano_roll/piano_roll_layout_info.dart';
+import 'package:next_synth/piano_roll/piano_roll_model.dart';
 import 'package:next_synth/piano_roll/piano_roll_model_event.dart';
+import 'package:next_synth/piano_roll/piano_roll_model_listener.dart';
+import 'package:next_synth/piano_roll/piano_roll_style.dart';
+import 'package:next_synth/piano_roll/reference.dart';
+import 'package:next_synth/piano_roll/track_list.dart';
+import 'package:next_synth/piano_roll/track_list_model.dart';
+
 import './main_view.dart';
-import '../system/app_data.dart';
-import 'dart:convert';
 import '../system/app_data.save_data.dart';
 import '../system/piano_roll_data.dart';
-import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
-import 'package:next_synth/piano_roll/track_list.dart';
-import 'package:next_synth/piano_roll/piano_roll_editor.dart';
-import 'package:next_synth/piano_roll/piano_roll.dart';
-import 'package:next_synth/piano_roll/piano_roll_model.dart';
-import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
-import 'package:next_synth/piano_roll/piano_roll_style.dart';
-import 'package:next_synth/piano_roll/piano_roll_layout_info.dart';
-import 'package:logging/logging.dart';
-import 'package:next_synth/piano_roll/track_list_model.dart';
-import 'package:next_synth/piano_roll/default_track_list_model.dart';
-import 'package:next_synth/piano_roll/piano_roll_model_listener.dart';
-import 'package:next_synth/piano_roll/reference.dart';
-import '../system/track_data.dart';
 import '../system/project.dart';
+import '../system/track_data.dart';
 
 class MainViewState extends State<MainView> implements PianoRollModelListener {
   int _projectIndex;

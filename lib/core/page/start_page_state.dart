@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import './start_page.dart';
-import '../system/app_data.dart';
-import '../system/app_data.save_data.dart';
-import '../system/project.dart';
-import '../system/project_list.dart';
-import '../system/project_list.save_data.dart';
-import '../system/project.dart';
-import '../system/track_data.dart';
-import '../system/piano_roll_data.dart';
-import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
+
+import './start_page.dart';
+import '../system/app_data.save_data.dart';
+import '../system/piano_roll_data.dart';
+import '../system/project.dart';
+import '../system/project_list.save_data.dart';
+import '../system/track_data.dart';
 
 class StartPageState extends State<StartPage> {
   int _selectedProjectIndex;

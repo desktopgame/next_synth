@@ -1,14 +1,15 @@
-import './measure_event.dart';
-import './key_event_type.dart';
-import '../event/event_listener_list.dart';
+import 'package:optional/optional.dart';
+
 import './default_measure.dart';
-import './piano_roll_model.dart';
-import './measure.dart';
-import './key_listener.dart';
 import './key.dart';
 import './key_event.dart';
+import './key_event_type.dart';
+import './key_listener.dart';
+import './measure.dart';
+import './measure_event.dart';
 import './measure_listener.dart';
-import 'package:optional/optional.dart';
+import './piano_roll_model.dart';
+import '../event/event_listener_list.dart';
 
 class DefaultKey implements Key, MeasureListener {
   PianoRollModel _model;

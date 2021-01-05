@@ -1,7 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:save_data_annotation/save_data_annotation.dart';
-import 'package:next_synth/piano_roll/piano_roll_model.dart';
-import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
+
 part 'note_data.g.dart';
 
 @JsonSerializable(anyMap: true)

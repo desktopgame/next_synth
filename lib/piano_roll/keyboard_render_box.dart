@@ -1,7 +1,8 @@
-import 'package:next_synth/piano_roll/keyboard.dart';
 import 'package:flutter/material.dart';
-import './key_table.dart';
+import 'package:next_synth/piano_roll/keyboard.dart';
+
 import './key_color.dart';
+import './key_table.dart';
 
 class KeyboardRenderBox extends RenderBox {
   final Keyboard _keyboard;

@@ -1,16 +1,15 @@
-import 'dart:math';
-
+import 'package:flutter/material.dart';
 import 'package:next_synth/piano_roll/piano_roll_model_event.dart';
 import 'package:next_synth/piano_roll/piano_roll_model_listener.dart';
+
+import './piano_roll_style.dart';
 import '../event/notification_event.dart';
 import '../event/notification_listener.dart' as P;
-import './piano_roll_style.dart';
-import 'piano_roll.dart';
+import 'key.dart' as P;
 import 'key_color.dart';
 import 'key_table.dart';
-import 'key.dart' as P;
 import 'note.dart';
-import 'package:flutter/material.dart';
+import 'piano_roll.dart';
 
 class PianoRollRenderBox extends RenderBox
     implements PianoRollModelListener, P.NotificationListener<PianoRollStyle> {

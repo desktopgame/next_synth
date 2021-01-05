@@ -1,10 +1,11 @@
-import '../event/event_listener_list.dart';
-import './note_listener.dart';
-import './note_event.dart';
-import './note_event_type.dart';
+import 'package:optional/optional.dart';
+
 import './beat.dart';
 import './note.dart';
-import 'package:optional/optional.dart';
+import './note_event.dart';
+import './note_event_type.dart';
+import './note_listener.dart';
+import '../event/event_listener_list.dart';
 
 class DefaultNote implements Note {
   Beat _beat;

@@ -1,7 +1,8 @@
+import 'package:optional/optional.dart';
+
 import './beat_event.dart';
 import './measure.dart';
 import './measure_event_type.dart';
-import 'package:optional/optional.dart';
 
 class MeasureEvent {
   Measure _source;

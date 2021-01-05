@@ -1,10 +1,11 @@
+import 'package:optional/optional.dart';
+
+import './beat.dart';
+import './key.dart' as P;
+import './measure.dart';
+import './note.dart';
 import './piano_roll.dart';
 import './piano_roll_model.dart';
-import './key.dart' as P;
-import './beat.dart';
-import './note.dart';
-import './measure.dart';
-import 'package:optional/optional.dart';
 
 class PianoRollUtilities {
   PianoRollUtilities._();

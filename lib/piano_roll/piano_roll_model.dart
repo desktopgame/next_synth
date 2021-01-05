@@ -1,6 +1,6 @@
+import './key.dart';
 import './piano_roll_model_listener.dart';
 import './undoable_edit_listener.dart';
-import './key.dart';
 
 abstract class PianoRollModel {
   void addUndoableEditListener(UndoableEditListener listener);

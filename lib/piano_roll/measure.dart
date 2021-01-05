@@ -1,6 +1,6 @@
-import './measure_listener.dart';
-import './key.dart';
 import './beat.dart';
+import './key.dart';
+import './measure_listener.dart';
 
 abstract class Measure {
   void addMeasureListener(MeasureListener listener);

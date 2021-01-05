@@ -1,14 +1,15 @@
+import 'package:optional/optional.dart';
+
+import './beat.dart';
 import './beat_event.dart';
+import './beat_listener.dart';
+import './default_beat.dart';
+import './key.dart';
+import './measure.dart';
 import './measure_event.dart';
 import './measure_event_type.dart';
-import '../event/event_listener_list.dart';
 import './measure_listener.dart';
-import './key.dart';
-import './beat.dart';
-import './measure.dart';
-import './default_beat.dart';
-import './beat_listener.dart';
-import 'package:optional/optional.dart';
+import '../event/event_listener_list.dart';
 
 class DefaultMeasure implements Measure, BeatListener {
   Key _key;

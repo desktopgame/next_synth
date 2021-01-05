@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:next_synth/piano_roll/track.dart';
-import './track_list_state.dart';
+
 import './track_list_model.dart';
+import './track_list_state.dart';
 
 class TrackList extends StatefulWidget {
   TrackListModel _trackListModel;

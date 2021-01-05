@@ -1,6 +1,6 @@
 import './beat_listener.dart';
-import './note.dart';
 import './measure.dart';
+import './note.dart';
 
 abstract class Beat {
   void addBeatListener(BeatListener listener);

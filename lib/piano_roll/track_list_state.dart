@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:next_synth/piano_roll/track_list.dart';
 import 'package:next_synth/piano_roll/track_list_model.dart';
-import 'package:next_synth/piano_roll/default_track_list_model.dart';
-import 'package:flutter/material.dart';
+
 import './track.dart';
 
 class TrackListState extends State<TrackList> {

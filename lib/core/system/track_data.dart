@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:save_data_annotation/save_data_annotation.dart';
+
 import './piano_roll_data.dart';
+
 part 'track_data.g.dart';
 
 @JsonSerializable(anyMap: true)

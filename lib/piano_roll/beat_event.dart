@@ -1,9 +1,9 @@
-import './beat_event_type.dart';
-import './note_event.dart';
 import 'package:optional/optional.dart';
 
 import './beat.dart';
+import './beat_event_type.dart';
 import './note.dart';
+import './note_event.dart';
 
 class BeatEvent {
   Beat _source;

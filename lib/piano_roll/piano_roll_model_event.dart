@@ -1,7 +1,8 @@
 import 'package:optional/optional.dart';
+
+import './key_event.dart';
 import './piano_roll_model.dart';
 import './piano_roll_model_event_type.dart';
-import './key_event.dart';
 
 class PianoRollModelEvent {
   PianoRollModel _source;

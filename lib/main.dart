@@ -1,15 +1,14 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
-import './core/page/start_page.dart';
+
 import './core/page/edit_page.dart';
 import './core/page/setting_page.dart';
-import './core/system/app_data.dart';
+import './core/page/start_page.dart';
 import './core/system/app_data.save_data.dart';
-import './core/system/project_list.dart';
 import './core/system/project_list.save_data.dart';
-import 'dart:convert';
-import 'package:save_data_lib/save_data_lib.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
