@@ -1,3 +1,1 @@
-import '../event/event_listener.dart';
-
-abstract class UndoableEditListener implements EventListener {}
+export '../undo/undoable_edit_listener.dart';
