@@ -96,7 +96,6 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
     final projList = ProjectListProvider.provide().value;
     final proj = projList.data[_projectIndex];
     var appData = AppDataProvider.provide().value;
-    debugPrint("MainViewState: build");
     return Row(
       children: [
         TrackList(
@@ -106,11 +105,6 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
               return;
             }
             setState(() {
-              debugPrint("MainViewState: select track=$index");
-              if (model != null) {
-                debugPrint(
-                    "MainViewState: before ${PianoRollUtilities.getAllNoteList(model.value).length}");
-              }
               stopListen();
               //PianoRollUtilities.getAllNoteList(model).forEach((element) {
               //  element.removeFromBeat();
@@ -119,8 +113,6 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
               //trackListModel.getTrackAt(index).model = this.model;
               this.model.value = trackListModel.getTrackAt(index).model;
               //this.model = DefaultPianoRollModel(11 * 12, 4, 4);
-              debugPrint(
-                  "MainViewState: after ${PianoRollUtilities.getAllNoteList(model.value).length}");
               this._trackIndex = index;
               model.value.addPianoRollModelListener(this);
               style.refresh();

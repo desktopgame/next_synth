@@ -28,7 +28,7 @@ void main() async {
   if (kDebugMode) {
     try {
       var appData = AppDataProvider.provide().value;
-      print('AppData=${json.encode(appData.toJson())}');
+      debugPrint('AppData=${json.encode(appData.toJson())}');
     } catch (Exception) {
       debugPrint('SaveData: clear');
       AppDataProvider.discard();

@@ -96,8 +96,6 @@ class StartPageState extends State<StartPage> {
             appData.keyCount * 12, appData.measureCount, appData.beatCount));
       proj.tracks.add(track);
       projectList.data.add(proj);
-      debugPrint(
-          'keyCount=${track.pianoRollData.keyCount} measureCount=${track.pianoRollData.measureCount} beatCount=${track.pianoRollData.beatCount}');
 
       ProjectListProvider.save();
     });

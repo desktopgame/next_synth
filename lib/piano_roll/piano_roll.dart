@@ -19,16 +19,11 @@ class PianoRoll extends SingleChildRenderObjectWidget {
   final Reference<PianoRollModel> _model;
   final PianoRollStyle _style;
 
-  PianoRoll(this._model, this._style, {Key key}) : super(key: key) {
-    debugPrint("PianoRoll: ctor");
-  }
+  PianoRoll(this._model, this._style, {Key key}) : super(key: key) {}
 
   @override
   void updateRenderObject(
       BuildContext context, covariant PianoRollRenderBox renderObject) {
-    final state = context.findAncestorStateOfType<PianoRollEdietorState>();
-    debugPrint(
-        "updateRenderObject ${PianoRollUtilities.getAllNoteList(model).length}");
     renderObject.state = this;
   }
 
@@ -156,7 +151,6 @@ class PianoRoll extends SingleChildRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    debugPrint("PianoRoll: createRenderObject");
     return PianoRollRenderBox(this);
   }
 }
