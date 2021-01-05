@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:optional/optional.dart';
 
 import './beat.dart';
@@ -82,6 +83,37 @@ class PianoRollUtilities {
   static int computeHeight(PianoRollStyle style, int keyCount) {
     int h = keyCount * style.beatHeight;
     return h;
+  }
+
+  static int computeMeasureWidth(PianoRollModel model, PianoRollStyle style) {
+    return model.getKeyAt(0).getMeasureAt(0).beatCount * style.beatWidth;
+  }
+
+  static int computeKeyWidth(PianoRollModel model, PianoRollStyle style) {
+    return computeMeasureWidth(model, style) * model.getKeyAt(0).measureCount;
+  }
+
+  static Rect computeNoteRect(
+      PianoRollStyle style, Note note, int offset, double length) {
+    var beat = note.beat;
+    var measure = beat.measure;
+    var key = measure.key;
+    var model = key.model;
+    double xOffset = measureIndexToXOffset(model, style, measure.index);
+    xOffset += style.beatWidth * beat.index;
+    xOffset += offset;
+    int yOffset = style.beatHeight * (model.keyCount - key.index + 1);
+    yOffset = (style.beatHeight * model.keyCount) - yOffset;
+    int width = (length * style.beatWidth.toDouble()).round();
+    int height = style.beatHeight;
+    return Rect.fromLTRB(xOffset.toDouble(), yOffset.toDouble(),
+        (xOffset + width).toDouble(), (yOffset + height).toDouble());
+  }
+
+  static double measureIndexToXOffset(
+      PianoRollModel model, PianoRollStyle style, int i) {
+    return ((model.getKeyAt(0).getMeasureAt(0).beatCount * style.beatWidth) * i)
+        .toDouble();
   }
 
   static List<Note> getAllNoteList(PianoRollModel model) {

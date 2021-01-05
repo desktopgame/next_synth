@@ -36,28 +36,13 @@ class PianoRoll extends SingleChildRenderObjectWidget {
   int computeHeight(int keyCount) =>
       PianoRollUtilities.computeHeight(style, keyCount);
 
-  int computeMeasureWidth() {
-    return model.getKeyAt(0).getMeasureAt(0).beatCount * style.beatWidth;
-  }
+  int computeMeasureWidth() =>
+      PianoRollUtilities.computeMeasureWidth(model, style);
 
-  int computeKeyWidth() {
-    return computeMeasureWidth() * model.getKeyAt(0).measureCount;
-  }
+  int computeKeyWidth() => PianoRollUtilities.computeKeyWidth(model, style);
 
-  Rect computeNoteRect(Note note, int offset, double length) {
-    var beat = note.beat;
-    var measure = beat.measure;
-    var key = measure.key;
-    double xOffset = measureIndexToXOffset(measure.index);
-    xOffset += style.beatWidth * beat.index;
-    xOffset += offset;
-    int yOffset = style.beatHeight * (model.keyCount - key.index + 1);
-    yOffset = (style.beatHeight * model.keyCount) - yOffset;
-    int width = (length * style.beatWidth.toDouble()).round();
-    int height = style.beatHeight;
-    return Rect.fromLTRB(xOffset.toDouble(), yOffset.toDouble(),
-        (xOffset + width).toDouble(), (yOffset + height).toDouble());
-  }
+  Rect computeNoteRect(Note note, int offset, double length) =>
+      PianoRollUtilities.computeNoteRect(style, note, offset, length);
 
   Optional<P.Key> getKeyAt(double y) {
     int i = y ~/ style.beatHeight;
@@ -114,10 +99,8 @@ class PianoRoll extends SingleChildRenderObjectWidget {
         style.beatWidth;
   }
 
-  double measureIndexToXOffset(int i) {
-    return ((model.getKeyAt(0).getMeasureAt(0).beatCount * style.beatWidth) * i)
-        .toDouble();
-  }
+  double measureIndexToXOffset(int i) =>
+      PianoRollUtilities.measureIndexToXOffset(model, style, i);
 
   double relativeBeatIndexToXOffset(int i) {
     return (i * style.beatWidth).toDouble();
