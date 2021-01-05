@@ -10,7 +10,10 @@ PianoRollData _$PianoRollDataFromJson(Map json) {
   return PianoRollData()
     ..keyCount = json['keyCount'] as int
     ..measureCount = json['measureCount'] as int
-    ..beatCount = json['beatCount'] as int;
+    ..beatCount = json['beatCount'] as int
+    ..notes = (json['notes'] as List)
+        ?.map((e) => e == null ? null : NoteData.fromJson(e as Map))
+        ?.toList();
 }
 
 Map<String, dynamic> _$PianoRollDataToJson(PianoRollData instance) =>
@@ -18,4 +21,5 @@ Map<String, dynamic> _$PianoRollDataToJson(PianoRollData instance) =>
       'keyCount': instance.keyCount,
       'measureCount': instance.measureCount,
       'beatCount': instance.beatCount,
+      'notes': instance.notes,
     };

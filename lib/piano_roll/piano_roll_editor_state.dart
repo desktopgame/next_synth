@@ -10,18 +10,21 @@ import './piano_roll_style.dart';
 import 'package:flutter/material.dart';
 import './piano_roll_editor.dart';
 import './piano_roll_layout_info.dart';
+import './reference.dart';
 
 class PianoRollEdietorState extends State<PianoRollEditor>
     implements PianoRollModelListener {
-  final PianoRollModel model;
-  final PianoRollStyle style;
-  final PianoRollLayoutInfo layoutInfo;
+  Reference<PianoRollModel> model;
+  PianoRollStyle style;
+  PianoRollLayoutInfo layoutInfo;
+  int version;
   int _scrollAmountX, _scrollAmountY;
   double _scrollX, _scrollY;
   GlobalKey _globalKey = GlobalKey();
 
-  PianoRollEdietorState({this.model, this.style, this.layoutInfo}) {
-    model.addPianoRollModelListener(this);
+  PianoRollEdietorState(
+      {this.model, this.style, this.layoutInfo, this.version}) {
+    model.value.addPianoRollModelListener(this);
   }
 
   void _clampScrollPos(PianoRoll p) {

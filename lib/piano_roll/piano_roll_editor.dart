@@ -5,15 +5,17 @@ import './piano_roll_style.dart';
 import './piano_roll.dart';
 import './piano_roll_layout_info.dart';
 import 'package:flutter/material.dart';
+import './reference.dart';
 
 class PianoRollEditor extends StatefulWidget {
-  final PianoRollModel model;
+  final Reference<PianoRollModel> model;
   final PianoRollStyle style;
   final PianoRollLayoutInfo layoutInfo;
-  PianoRollEditor({this.model, this.style, this.layoutInfo});
+  final int version;
+  PianoRollEditor({this.model, this.style, this.layoutInfo, this.version});
   @override
   State<StatefulWidget> createState() {
     return PianoRollEdietorState(
-        model: model, style: style, layoutInfo: layoutInfo);
+        model: model, style: style, layoutInfo: layoutInfo, version: version);
   }
 }

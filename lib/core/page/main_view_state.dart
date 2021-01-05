@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:next_synth/core/system/project_list.save_data.dart';
+import 'package:next_synth/piano_roll/piano_roll_model_event.dart';
 import './main_view.dart';
 import '../system/app_data.dart';
+import 'dart:convert';
 import '../system/app_data.save_data.dart';
 import '../system/piano_roll_data.dart';
+import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
 import 'package:next_synth/piano_roll/track_list.dart';
 import 'package:next_synth/piano_roll/piano_roll_editor.dart';
 import 'package:next_synth/piano_roll/piano_roll.dart';
@@ -14,38 +17,66 @@ import 'package:next_synth/piano_roll/piano_roll_layout_info.dart';
 import 'package:logging/logging.dart';
 import 'package:next_synth/piano_roll/track_list_model.dart';
 import 'package:next_synth/piano_roll/default_track_list_model.dart';
+import 'package:next_synth/piano_roll/piano_roll_model_listener.dart';
+import 'package:next_synth/piano_roll/reference.dart';
 import '../system/track_data.dart';
 import '../system/project.dart';
 
-class MainViewState extends State<MainView> {
+class MainViewState extends State<MainView> implements PianoRollModelListener {
   int _projectIndex;
-  PianoRollModel model;
+  int _trackIndex;
+  Reference<PianoRollModel> model;
   PianoRollStyle style;
   PianoRollLayoutInfo layoutInfo;
   TrackListModel trackListModel;
+  int _version;
   final logger = new Logger('MainViewState');
 
-  MainViewState(this._projectIndex) {}
+  MainViewState(this._projectIndex) {
+    this.model = Reference();
+  }
 
   @override
   void initState() {
     super.initState();
+    stopListen();
     final projList = ProjectListProvider.provide().value;
     final proj = projList.data[_projectIndex];
-    debugPrint("MainViewState: ${_projectIndex}=${proj.name}");
+    final appData = AppDataProvider.provide().value;
     this.trackListModel = DefaultTrackListModel();
+    this._version = 0;
     //this.model = DefaultPianoRollModel(11 * 12, 4, 4);
-    this.style = PianoRollStyle();
-    this.layoutInfo = PianoRollLayoutInfo();
+    this.style = PianoRollStyle()
+      ..beatWidth = appData.beatWidth
+      ..beatHeight = appData.beatHeight
+      ..beatSplitCount = appData.beatSplitCount;
+    this.layoutInfo = PianoRollLayoutInfo()
+      ..toolBarHeight = appData.toolBarHeight.toDouble()
+      ..keyboardWidth = appData.keyboardWidth.toDouble();
+    this.model.value = null;
     for (var t in proj.tracks) {
       var track = trackListModel.createTrack();
       track.name = t.name;
       track.isMute = t.isMute;
       track.model = t.pianoRollData.toModel();
       // プロジェクトを開いたときに必ず0番目が選択状態になるため、対応するモデルを持っておく
-      if (this.model == null) {
-        this.model = track.model;
+      if (this.model.value == null) {
+        this.model.value = track.model;
+        this._trackIndex = 0;
+        model.value.addPianoRollModelListener(this);
       }
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    stopListen();
+  }
+
+  void stopListen() {
+    if (model.value != null) {
+      model.value.removePianoRollModelListener(this);
     }
   }
 
@@ -65,12 +96,35 @@ class MainViewState extends State<MainView> {
     final projList = ProjectListProvider.provide().value;
     final proj = projList.data[_projectIndex];
     var appData = AppDataProvider.provide().value;
+    debugPrint("MainViewState: build");
     return Row(
       children: [
         TrackList(
           trackListModel,
           onSelected: (index) {
-            this.model = proj.tracks[index].pianoRollData.toModel();
+            if (!this.mounted) {
+              return;
+            }
+            setState(() {
+              debugPrint("MainViewState: select track=$index");
+              if (model != null) {
+                debugPrint(
+                    "MainViewState: before ${PianoRollUtilities.getAllNoteList(model.value).length}");
+              }
+              stopListen();
+              //PianoRollUtilities.getAllNoteList(model).forEach((element) {
+              //  element.removeFromBeat();
+              //});
+              //this.model = proj.tracks[index].pianoRollData.toModel();
+              //trackListModel.getTrackAt(index).model = this.model;
+              this.model.value = trackListModel.getTrackAt(index).model;
+              //this.model = DefaultPianoRollModel(11 * 12, 4, 4);
+              debugPrint(
+                  "MainViewState: after ${PianoRollUtilities.getAllNoteList(model.value).length}");
+              this._trackIndex = index;
+              model.value.addPianoRollModelListener(this);
+              style.refresh();
+            });
           },
           onCreated: (t) {
             var track = TrackData()
@@ -91,8 +145,17 @@ class MainViewState extends State<MainView> {
           model: model,
           style: style,
           layoutInfo: layoutInfo,
+          version: _version++,
         ))
       ],
     );
+  }
+
+  @override
+  void pianoRollModelUpdate(PianoRollModelEvent e) async {
+    //final projList = ProjectListProvider.provide().value;
+    //final proj = projList.data[_projectIndex];
+    //proj.tracks[_trackIndex].pianoRollData = PianoRollData.fromModel(model);
+    //await ProjectListProvider.save();
   }
 }

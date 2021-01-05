@@ -18,10 +18,23 @@ class PianoRollRenderBox extends RenderBox
   List<Rect> _highlightRects;
 
   PianoRollRenderBox(this._state) {
+    debugPrint("PianoRollRenderBox: ctor");
     this._highlightRects = List<Rect>();
     _state.style.addNotificationListener(this);
     _state.model.addPianoRollModelListener(this);
   }
+
+  PianoRoll get state => _state;
+  set state(PianoRoll state) {
+    debugPrint("update model");
+    _state.style.removeNotificationListener(this);
+    _state.model.removePianoRollModelListener(this);
+    _state = state;
+    _state.style.addNotificationListener(this);
+    _state.model.addPianoRollModelListener(this);
+    markNeedsPaint();
+  }
+
   @override
   bool get sizedByParent => true;
 
