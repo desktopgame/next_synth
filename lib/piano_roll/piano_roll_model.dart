@@ -10,7 +10,7 @@ abstract class PianoRollModel {
   void undo();
   void redo();
   void clear();
-  void merge(PianoRollModel model);
+  bool merge(PianoRollModel model);
   void addPianoRollModelListener(PianoRollModelListener listener);
   void removePianoRollModelListener(PianoRollModelListener listener);
   void resizeKeyCount(int keyCount);
