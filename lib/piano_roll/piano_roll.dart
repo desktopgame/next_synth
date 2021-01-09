@@ -19,7 +19,7 @@ class PianoRoll extends SingleChildRenderObjectWidget {
   @override
   void updateRenderObject(
       BuildContext context, covariant PianoRollRenderBox renderObject) {
-    renderObject.state = this;
+    renderObject.pianoRoll = this;
   }
 
   PianoRollModel get model => _model;

@@ -13,22 +13,22 @@ import 'piano_roll.dart';
 
 class PianoRollRenderBox extends RenderBox
     implements PianoRollModelListener, P.NotificationListener<PianoRollStyle> {
-  PianoRoll _state;
+  PianoRoll _pianoRoll;
   List<Rect> _highlightRects;
 
-  PianoRollRenderBox(this._state) {
+  PianoRollRenderBox(this._pianoRoll) {
     this._highlightRects = List<Rect>();
-    _state.style.addNotificationListener(this);
-    _state.model.addPianoRollModelListener(this);
+    _pianoRoll.style.addNotificationListener(this);
+    _pianoRoll.model.addPianoRollModelListener(this);
   }
 
-  PianoRoll get state => _state;
-  set state(PianoRoll state) {
-    _state.style.removeNotificationListener(this);
-    _state.model.removePianoRollModelListener(this);
-    _state = state;
-    _state.style.addNotificationListener(this);
-    _state.model.addPianoRollModelListener(this);
+  PianoRoll get pianoRoll => _pianoRoll;
+  set pianoRoll(PianoRoll pianoRoll) {
+    _pianoRoll.style.removeNotificationListener(this);
+    _pianoRoll.model.removePianoRollModelListener(this);
+    _pianoRoll = pianoRoll;
+    _pianoRoll.style.addNotificationListener(this);
+    _pianoRoll.model.addPianoRollModelListener(this);
     markNeedsPaint();
   }
 
@@ -41,8 +41,8 @@ class PianoRollRenderBox extends RenderBox
   }
 
   Rect computeClipRect() {
-    double sx = -_state.style.scrollOffset.dx;
-    double sy = -_state.style.scrollOffset.dy;
+    double sx = -_pianoRoll.style.scrollOffset.dx;
+    double sy = -_pianoRoll.style.scrollOffset.dy;
     double w = size.width;
     double h = size.height;
     return Rect.fromLTWH(sx, sy, w, h);
@@ -52,8 +52,8 @@ class PianoRollRenderBox extends RenderBox
   void paint(PaintingContext context, Offset offset) {
     var canvas = context.canvas;
 
-    double sx = _state.style.scrollOffset.dx;
-    double sy = _state.style.scrollOffset.dy;
+    double sx = _pianoRoll.style.scrollOffset.dx;
+    double sy = _pianoRoll.style.scrollOffset.dy;
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(
         offset.dx, offset.dy, size.width + offset.dx, size.height));
@@ -64,8 +64,8 @@ class PianoRollRenderBox extends RenderBox
 
   void _paintImpl(PaintingContext context, Offset offset) {
     var canvas = context.canvas;
-    var style = _state.style;
-    var model = _state.model;
+    var style = _pianoRoll.style;
+    var model = _pianoRoll.model;
     int bw = style.beatWidth;
     int bh = style.beatHeight;
     var clipRect = computeClipRect();
@@ -89,11 +89,11 @@ class PianoRollRenderBox extends RenderBox
   }
 
   void _drawBackground(Canvas canvas, Size size) {
-    var style = _state.style;
-    var model = _state.model;
+    var style = _pianoRoll.style;
+    var model = _pianoRoll.model;
     int bw = style.beatWidth;
     int bh = style.beatHeight;
-    int cw = _state.computeMaxWidth();
+    int cw = _pianoRoll.computeMaxWidth();
     var clipRect = computeClipRect();
     int startKey = clipRect.top.toInt();
     int endKey = (clipRect.top + clipRect.height).toInt();
@@ -117,60 +117,60 @@ class PianoRollRenderBox extends RenderBox
       _drawKey(canvas, size, model.getKeyAt(index), y, nextY);
       canvas.drawLine(
           Offset(0, y.toDouble()),
-          Offset(_state.computeKeyWidth().toDouble(), y.toDouble()),
+          Offset(_pianoRoll.computeKeyWidth().toDouble(), y.toDouble()),
           _getPaintForKey(KeyColor.black));
       y = nextY;
       index++;
     }
     //*
     canvas.drawLine(
-        Offset(0, _state.computeMaxHeight().toDouble()),
-        Offset(_state.computeMaxWidth().toDouble(),
-            _state.computeMaxHeight().toDouble()),
+        Offset(0, _pianoRoll.computeMaxHeight().toDouble()),
+        Offset(_pianoRoll.computeMaxWidth().toDouble(),
+            _pianoRoll.computeMaxHeight().toDouble()),
         _getPaintForKey(KeyColor.black));
     canvas.drawLine(
-        Offset(_state.computeMaxWidth().toDouble(), 0),
-        Offset(_state.computeMaxWidth().toDouble(),
-            _state.computeMaxHeight().toDouble()),
+        Offset(_pianoRoll.computeMaxWidth().toDouble(), 0),
+        Offset(_pianoRoll.computeMaxWidth().toDouble(),
+            _pianoRoll.computeMaxHeight().toDouble()),
         _getPaintForKey(KeyColor.black));
     //*/
   }
 
   void _drawKey(Canvas canvas, Size size, P.Key key, int topY, int bottomY) {
-    int bw = _state.style.beatWidth;
-    int bh = _state.style.beatHeight;
+    int bw = _pianoRoll.style.beatWidth;
+    int bh = _pianoRoll.style.beatHeight;
     int mx = 0;
     for (int i = 0; i < key.measureCount; i++) {
       var m = key.getMeasureAt(i);
       int bx = (bw * m.beatCount) * i;
       for (int j = 0; j < m.beatCount; j++) {
         int nextBx = bx + bw;
-        for (int k = 0; k < _state.style.beatSplitCount; k++) {
-          double lineX = bx + (k * (bw / _state.style.beatSplitCount));
+        for (int k = 0; k < _pianoRoll.style.beatSplitCount; k++) {
+          double lineX = bx + (k * (bw / _pianoRoll.style.beatSplitCount));
           canvas.drawLine(
               Offset(lineX, topY.toDouble()),
               Offset(lineX, bottomY.toDouble()),
-              _state.style.verticalLinePaint);
+              _pianoRoll.style.verticalLinePaint);
         }
         canvas.drawLine(
             Offset(bx.toDouble(), topY.toDouble()),
             Offset(bx.toDouble(), bottomY.toDouble()),
-            _state.style.verticalLinePaint);
+            _pianoRoll.style.verticalLinePaint);
         bx = nextBx;
       }
       int nextMx = mx + m.beatCount * bw;
       canvas.drawLine(
           Offset(mx.toDouble(), topY.toDouble()),
           Offset(mx.toDouble(), bottomY.toDouble()),
-          _state.style.verticalHighlightLinePaint);
+          _pianoRoll.style.verticalHighlightLinePaint);
       mx = nextMx;
     }
   }
 
   void _drawNotes(Canvas canvas, Size size, P.Key key, int topY, int bottomY,
       bool onionSkin, Color onionSkinColor) {
-    int bw = _state.style.beatWidth;
-    int bh = _state.style.beatHeight;
+    int bw = _pianoRoll.style.beatWidth;
+    int bh = _pianoRoll.style.beatHeight;
     for (int i = 0; i < key.measureCount; i++) {
       var m = key.getMeasureAt(i);
       int bx = (bw * m.beatCount) * i;
@@ -183,7 +183,7 @@ class PianoRollRenderBox extends RenderBox
               canvas,
               size,
               note,
-              _state.computeNoteRect(note, note.offset, note.length),
+              _pianoRoll.computeNoteRect(note, note.offset, note.length),
               onionSkin,
               onionSkinColor);
         }
@@ -199,22 +199,22 @@ class PianoRollRenderBox extends RenderBox
       return;
     }
     var paint = note.selected
-        ? _state.style.selectedNotePaint
-        : _state.style.unselectedNotePaint;
+        ? _pianoRoll.style.selectedNotePaint
+        : _pianoRoll.style.unselectedNotePaint;
     canvas.drawRect(rect, paint);
     if (!onionSkin) {
-      canvas.drawRect(rect, _state.style.noteFramePaint1);
+      canvas.drawRect(rect, _pianoRoll.style.noteFramePaint1);
       var innerRect = Rect.fromLTRB(rect.left + 1, rect.top + 1,
           rect.left + rect.width - 1, rect.top + rect.height - 1);
-      canvas.drawRect(innerRect, _state.style.noteFramePaint2);
+      canvas.drawRect(innerRect, _pianoRoll.style.noteFramePaint2);
     }
   }
 
   Paint _getPaintForKey(KeyColor color) {
     if (color == KeyColor.black) {
-      return _state.style.blackKeyPaint;
+      return _pianoRoll.style.blackKeyPaint;
     }
-    return _state.style.whiteKeyPaint;
+    return _pianoRoll.style.whiteKeyPaint;
   }
 
   @override
