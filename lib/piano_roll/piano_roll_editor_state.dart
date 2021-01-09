@@ -129,11 +129,15 @@ class PianoRollEdietorState extends State<PianoRollEditor>
                     icon: Icon(Icons.help),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      model.value.undo();
+                    },
                     icon: Icon(Icons.undo),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      model.value.redo();
+                    },
                     icon: Icon(Icons.redo),
                   ),
                   Divider(color: Colors.black),

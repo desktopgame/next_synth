@@ -67,6 +67,7 @@ class DefaultBeat implements Beat, NoteListener {
 
   @override
   void restoreNote(Note note) {
+    note.addNoteListener(this);
     _noteList.add(note);
     var be = BeatEvent(this, note, BeatEventType.noteCreated, Optional.empty());
     for (BeatListener l in _listenerList.getListeners<BeatListener>()) {
