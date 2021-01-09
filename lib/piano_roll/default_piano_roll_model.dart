@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart' hide Key;
 import 'package:next_synth/undo/undo_manager.dart';
 import 'package:optional/optional.dart';
 
@@ -14,6 +15,8 @@ import './piano_roll_model_event.dart';
 import './piano_roll_model_event_type.dart';
 import './piano_roll_model_listener.dart';
 import '../event/event_listener_list.dart';
+import '../undo/undo_manager.dart';
+import '../undo/undoable_edit_listener.dart';
 import 'undo/note_create_edit.dart';
 import 'undo/note_length_edit.dart';
 import 'undo/note_offset_edit.dart';
@@ -64,10 +67,11 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
     _listenerList.add(listener);
   }
 
-  //@override
-  //void addUndoableEditListener(UndoableEditListener listener) {
-  //  // TODO: implement addUndoableEditListener
-  //}
+  @override
+  void addUndoableEditListener(UndoableEditListener listener) {
+    debugPrint("add u");
+    _undoManager.addUndoableEditListener(listener);
+  }
 
   @override
   void beginApplyUndoableEdit() {
@@ -107,10 +111,10 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
     _listenerList.remove(listener);
   }
 
-  //@override
-  //void removeUndoableEditListener(UndoableEditListener listener) {
-  //  // TODO: implement removeUndoableEditListener
-  //}
+  @override
+  void removeUndoableEditListener(UndoableEditListener listener) {
+    _undoManager.removeUndoableEditListener(listener);
+  }
 
   @override
   void resizeBeatCount(int beatCount) {
