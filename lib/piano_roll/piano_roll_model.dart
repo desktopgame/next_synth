@@ -9,6 +9,7 @@ abstract class PianoRollModel {
   bool get canRedo;
   void undo();
   void redo();
+  void clear();
   void merge(PianoRollModel model);
   void addPianoRollModelListener(PianoRollModelListener listener);
   void removePianoRollModelListener(PianoRollModelListener listener);

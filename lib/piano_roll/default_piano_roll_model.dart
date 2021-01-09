@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Key;
+import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
 import 'package:next_synth/undo/undo_manager.dart';
 import 'package:optional/optional.dart';
 
@@ -231,6 +232,14 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
   @override
   void undo() {
     _undoManager.undo();
+  }
+
+  @override
+  void clear() {
+    PianoRollUtilities.getAllNoteList(this).forEach((element) {
+      element.removeFromBeat();
+    });
+    _undoManager.discardAllEdits();
   }
 
   @override
