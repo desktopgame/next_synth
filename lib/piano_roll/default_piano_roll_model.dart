@@ -232,4 +232,35 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
   void undo() {
     _undoManager.undo();
   }
+
+  @override
+  bool merge(PianoRollModel model) {
+    if (keyCount != model.keyCount) {
+      return false;
+    }
+    for (int i = 0; i < model.keyCount; i++) {
+      var dstKey = this.getKeyAt(i);
+      var srcKey = model.getKeyAt(i);
+      if (dstKey.measureCount != srcKey.measureCount) {
+        return false;
+      }
+      for (int j = 0; j < dstKey.measureCount; j++) {
+        var dstMeasure = dstKey.getMeasureAt(j);
+        var srcMeasure = srcKey.getMeasureAt(j);
+        if (dstMeasure.beatCount != srcMeasure.beatCount) {
+          return false;
+        }
+        for (int k = 0; k < dstMeasure.beatCount; k++) {
+          var dstBeat = dstMeasure.getBeatAt(k);
+          var srcBeat = srcMeasure.getBeatAt(k);
+          for (int L = 0; L < srcBeat.noteCount; L++) {
+            var srcNote = srcBeat.getNoteAt(L);
+            dstBeat.generateNote(srcNote.offset, srcNote.length);
+          }
+        }
+      }
+    }
+    _undoManager.discardAllEdits();
+    return true;
+  }
 }
