@@ -243,10 +243,20 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
   }
 
   @override
+  PianoRollModel duplicate() {
+    var ret = new DefaultPianoRollModel(keyCount, getKeyAt(0).measureCount,
+        getKeyAt(0).getMeasureAt(0).beatCount);
+    ret.merge(this);
+    return ret;
+  }
+
+  @override
   bool merge(PianoRollModel model) {
     if (keyCount != model.keyCount) {
       return false;
     }
+    int n = 0;
+    var notes = PianoRollUtilities.getAllNoteList(model);
     for (int i = 0; i < model.keyCount; i++) {
       var dstKey = this.getKeyAt(i);
       var srcKey = model.getKeyAt(i);
@@ -265,10 +275,12 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
           for (int L = 0; L < srcBeat.noteCount; L++) {
             var srcNote = srcBeat.getNoteAt(L);
             dstBeat.generateNote(srcNote.offset, srcNote.length);
+            n++;
           }
         }
       }
     }
+    debugPrint("merge ${n} : ${notes.length}");
     _undoManager.discardAllEdits();
     return true;
   }
