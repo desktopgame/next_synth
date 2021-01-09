@@ -1,12 +1,16 @@
+import 'package:flutter/material.dart' hide Stack;
 import 'package:stack/stack.dart';
 
 import './compound_undoable_edit.dart';
 import './undoable_edit.dart';
+import './undoable_edit_event.dart';
+import './undoable_edit_listener.dart';
 
 class UndoManager {
   Stack<UndoableEdit> _undoStack;
   Stack<UndoableEdit> _redoStack;
   List<UndoableEdit> _edits;
+  List<UndoableEditListener> _listeners;
   int _mode;
 
   UndoManager() {
@@ -14,6 +18,22 @@ class UndoManager {
     this._redoStack = Stack<UndoableEdit>();
     this._edits = List<UndoableEdit>();
     this._mode = 0;
+    this._listeners = List<UndoableEditListener>();
+  }
+
+  void addUndoableEditListener(UndoableEditListener listener) {
+    _listeners.add(listener);
+  }
+
+  void removeUndoableEditListener(UndoableEditListener listener) {
+    _listeners.remove(listener);
+  }
+
+  void _fire(UndoableEditEvent e) {
+    debugPrint("fire ${_listeners.length}");
+    for (var listener in _listeners) {
+      listener.undoableEdit(e);
+    }
   }
 
   void beginCompoundEdit() {
@@ -37,6 +57,7 @@ class UndoManager {
     } else {
       _edits.add(edit);
     }
+    _fire(UndoableEditEvent(this));
   }
 
   void endCompoundEdit() {
@@ -52,6 +73,7 @@ class UndoManager {
       var edit = _undoStack.pop();
       edit.undo();
       _redoStack.push(edit);
+      _fire(UndoableEditEvent(this));
     }
   }
 
@@ -60,12 +82,14 @@ class UndoManager {
       var edit = _redoStack.pop();
       edit.redo();
       _undoStack.push(edit);
+      _fire(UndoableEditEvent(this));
     }
   }
 
   void discardAllEdits() {
     while (_undoStack.isNotEmpty) _undoStack.pop();
     while (_redoStack.isNotEmpty) _redoStack.pop();
+    _fire(UndoableEditEvent(this));
   }
 
   bool get canUndo => _undoStack.isNotEmpty;
