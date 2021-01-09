@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
@@ -10,19 +12,25 @@ import './piano_roll_model.dart';
 import './piano_roll_model_event.dart';
 import './piano_roll_model_listener.dart';
 import './piano_roll_style.dart';
-import './reference.dart';
+import '../undo/undoable_edit_event.dart';
+import '../undo/undoable_edit_listener.dart';
 
 class PianoRollEdietorState extends State<PianoRollEditor>
-    implements PianoRollModelListener {
-  Reference<PianoRollModel> model;
+    implements PianoRollModelListener, UndoableEditListener {
+  PianoRollModel model;
   PianoRollStyle style;
   PianoRollLayoutInfo layoutInfo;
   int _scrollAmountX, _scrollAmountY;
   double _scrollX, _scrollY;
+  StreamController<UndoableEditEvent> _undoController;
+  StreamController<UndoableEditEvent> _redoController;
   GlobalKey _globalKey = GlobalKey();
 
   PianoRollEdietorState({this.model, this.style, this.layoutInfo}) {
-    model.value.addPianoRollModelListener(this);
+    model.addPianoRollModelListener(this);
+    model.addUndoableEditListener(this);
+    this._undoController = StreamController<UndoableEditEvent>();
+    this._redoController = StreamController<UndoableEditEvent>();
   }
 
   void _clampScrollPos(PianoRoll p) {
@@ -128,18 +136,30 @@ class PianoRollEdietorState extends State<PianoRollEditor>
                     onPressed: () {},
                     icon: Icon(Icons.help),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      model.value.undo();
-                    },
-                    icon: Icon(Icons.undo),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      model.value.redo();
-                    },
-                    icon: Icon(Icons.redo),
-                  ),
+                  StreamBuilder(
+                      stream: _undoController.stream,
+                      builder: (builder, snapshot) {
+                        return IconButton(
+                          onPressed: model.canUndo
+                              ? () {
+                                  model.undo();
+                                }
+                              : null,
+                          icon: Icon(Icons.undo),
+                        );
+                      }),
+                  StreamBuilder(
+                      stream: _redoController.stream,
+                      builder: (builder, snapshot) {
+                        return IconButton(
+                          onPressed: model.canRedo
+                              ? () {
+                                  model.redo();
+                                }
+                              : null,
+                          icon: Icon(Icons.redo),
+                        );
+                      }),
                   Divider(color: Colors.black),
                   IconButton(onPressed: () {}, icon: Icon(Icons.play_arrow)),
                   IconButton(onPressed: () {}, icon: Icon(Icons.pause)),
@@ -157,4 +177,10 @@ class PianoRollEdietorState extends State<PianoRollEditor>
 
   @override
   void pianoRollModelUpdate(PianoRollModelEvent e) {}
+
+  @override
+  void undoableEdit(UndoableEditEvent e) {
+    _undoController.sink.add(e);
+    _redoController.sink.add(e);
+  }
 }

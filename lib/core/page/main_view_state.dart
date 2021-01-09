@@ -9,7 +9,6 @@ import 'package:next_synth/piano_roll/piano_roll_model.dart';
 import 'package:next_synth/piano_roll/piano_roll_model_event.dart';
 import 'package:next_synth/piano_roll/piano_roll_model_listener.dart';
 import 'package:next_synth/piano_roll/piano_roll_style.dart';
-import 'package:next_synth/piano_roll/reference.dart';
 import 'package:next_synth/piano_roll/track_list.dart';
 import 'package:next_synth/piano_roll/track_list_model.dart';
 
@@ -22,14 +21,14 @@ import '../system/track_data.dart';
 class MainViewState extends State<MainView> implements PianoRollModelListener {
   int _projectIndex;
   int _trackIndex;
-  Reference<PianoRollModel> model;
+  PianoRollModel model;
   PianoRollStyle style;
   PianoRollLayoutInfo layoutInfo;
   TrackListModel trackListModel;
   final logger = new Logger('MainViewState');
 
   MainViewState(this._projectIndex) {
-    this.model = Reference();
+//    this.model = Reference();
   }
 
   @override
@@ -48,17 +47,17 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
     this.layoutInfo = PianoRollLayoutInfo()
       ..toolBarHeight = appData.toolBarHeight.toDouble()
       ..keyboardWidth = appData.keyboardWidth.toDouble();
-    this.model.value = null;
+    this.model = null;
     for (var t in proj.tracks) {
       var track = trackListModel.createTrack();
       track.name = t.name;
       track.isMute = t.isMute;
       track.model = t.pianoRollData.toModel();
       // プロジェクトを開いたときに必ず0番目が選択状態になるため、対応するモデルを持っておく
-      if (this.model.value == null) {
-        this.model.value = track.model;
+      if (this.model == null) {
+        this.model = track.model.duplicate();
         this._trackIndex = 0;
-        model.value.addPianoRollModelListener(this);
+        model.addPianoRollModelListener(this);
       }
     }
   }
@@ -70,8 +69,8 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
   }
 
   void stopListen() {
-    if (model.value != null) {
-      model.value.removePianoRollModelListener(this);
+    if (model != null) {
+      model.removePianoRollModelListener(this);
     }
   }
 
@@ -106,10 +105,14 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
               //});
               //this.model = proj.tracks[index].pianoRollData.toModel();
               //trackListModel.getTrackAt(index).model = this.model;
-              this.model.value = trackListModel.getTrackAt(index).model;
+              trackListModel.getTrackAt(_trackIndex).model =
+                  this.model.duplicate();
+              this.model.clear();
+              debugPrint(
+                  "${this.model.merge(trackListModel.getTrackAt(index).model)}");
               //this.model = DefaultPianoRollModel(11 * 12, 4, 4);
               this._trackIndex = index;
-              model.value.addPianoRollModelListener(this);
+              model.addPianoRollModelListener(this);
               style.refresh();
             });
           },

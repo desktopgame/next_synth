@@ -219,10 +219,10 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
   }
 
   @override
-  bool get canRedo => _undoManager.canUndo;
+  bool get canRedo => _undoManager.canRedo;
 
   @override
-  bool get canUndo => _undoManager.canRedo;
+  bool get canUndo => _undoManager.canUndo;
 
   @override
   void redo() {
@@ -280,7 +280,6 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
         }
       }
     }
-    debugPrint("merge ${n} : ${notes.length}");
     _undoManager.discardAllEdits();
     return true;
   }

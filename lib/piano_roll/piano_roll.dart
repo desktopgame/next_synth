@@ -8,11 +8,10 @@ import './piano_roll_model.dart';
 import './piano_roll_render_box.dart';
 import './piano_roll_style.dart';
 import './piano_roll_utilities.dart';
-import './reference.dart';
 import 'piano_roll_render_box.dart';
 
 class PianoRoll extends SingleChildRenderObjectWidget {
-  final Reference<PianoRollModel> _model;
+  final PianoRollModel _model;
   final PianoRollStyle _style;
 
   PianoRoll(this._model, this._style, {Key key}) : super(key: key) {}
@@ -23,7 +22,7 @@ class PianoRoll extends SingleChildRenderObjectWidget {
     renderObject.state = this;
   }
 
-  PianoRollModel get model => _model.value;
+  PianoRollModel get model => _model;
   PianoRollStyle get style => _style;
 
   int computeMaxWidth() => PianoRollUtilities.computeMaxWidth(model, style);

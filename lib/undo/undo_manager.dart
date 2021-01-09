@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart' hide Stack;
 import 'package:stack/stack.dart';
 
 import './compound_undoable_edit.dart';
@@ -30,7 +29,6 @@ class UndoManager {
   }
 
   void _fire(UndoableEditEvent e) {
-    debugPrint("fire ${_listeners.length}");
     for (var listener in _listeners) {
       listener.undoableEdit(e);
     }
