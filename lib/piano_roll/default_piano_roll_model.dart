@@ -70,7 +70,6 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
 
   @override
   void addUndoableEditListener(UndoableEditListener listener) {
-    debugPrint("add u");
     _undoManager.addUndoableEditListener(listener);
   }
 

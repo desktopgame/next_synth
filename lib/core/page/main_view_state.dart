@@ -108,8 +108,6 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
               trackListModel.getTrackAt(_trackIndex).model =
                   this.model.duplicate();
               this.model.clear();
-              debugPrint(
-                  "${this.model.merge(trackListModel.getTrackAt(index).model)}");
               //this.model = DefaultPianoRollModel(11 * 12, 4, 4);
               this._trackIndex = index;
               model.addPianoRollModelListener(this);
