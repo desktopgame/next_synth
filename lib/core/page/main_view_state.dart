@@ -130,12 +130,7 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
             proj.tracks.removeAt(i);
           },
         ),
-        Expanded(
-            child: PianoRollEditor(
-          model: model,
-          style: style,
-          layoutInfo: layoutInfo,
-        ))
+        Expanded(child: PianoRollEditor(model, style, layoutInfo))
       ],
     );
   }
