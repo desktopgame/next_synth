@@ -14,8 +14,8 @@ class ToolBarState extends State<ToolBar>
   final PianoRollModel _model;
   final StreamController<UndoableEditEvent> _undoController;
   final StreamController<UndoableEditEvent> _redoController;
-  var _selectedValue = 'Hawaii';
-  var _usStates = ["California", "Hawaii", "Texas"];
+  var _selectedValue = 'タップ選択';
+  var _usStates = ["タップ選択", "矩形選択", "ドラッグドロップ"];
 
   ToolBarState(this._model)
       : this._undoController = StreamController<UndoableEditEvent>(),
