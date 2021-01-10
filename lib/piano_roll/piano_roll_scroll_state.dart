@@ -81,6 +81,18 @@ class PianoRollEdietorState extends State<PianoRollScroll> {
       onVerticalDragEnd: (DragEndDetails details) {
         style.refresh();
       },
+      onTapDown: (details) {
+        double x = details.localPosition.dx +
+            (-style.scrollOffset.dx) -
+            layoutInfo.keyboardWidth;
+        double y = details.localPosition.dy +
+            (-style.scrollOffset.dy) -
+            layoutInfo.toolBarHeight;
+        var notes = pianoRoll.getNotesAt(x, y);
+        if (notes.isNotEmpty) {
+          notes[0].selected = !notes[0].selected;
+        }
+      },
       onDoubleTapDown: (details) {
         double x = details.localPosition.dx +
             (-style.scrollOffset.dx) -
