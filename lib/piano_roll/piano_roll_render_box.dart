@@ -155,7 +155,7 @@ class PianoRollRenderBox extends RenderBox
         canvas.drawLine(
             Offset(bx.toDouble(), topY.toDouble()),
             Offset(bx.toDouble(), bottomY.toDouble()),
-            _pianoRoll.style.verticalLinePaint);
+            _pianoRoll.style.verticalLinePaint2);
         bx = nextBx;
       }
       int nextMx = mx + m.beatCount * bw;

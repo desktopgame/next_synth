@@ -22,7 +22,12 @@ class PianoRollStyle {
     ..strokeWidth = 1
     ..style = PaintingStyle.stroke;
   Paint verticalLinePaint = Paint()..color = Color.fromARGB(255, 105, 112, 112);
-  Paint verticalHighlightLinePaint = Paint()..color = Colors.yellow;
+  Paint verticalLinePaint2 = Paint()
+    ..color = Color.fromARGB(255, 35, 100, 50)
+    ..strokeWidth = 2;
+  Paint verticalHighlightLinePaint = Paint()
+    ..color = Colors.yellow
+    ..strokeWidth = 2;
   Offset scrollOffset = Offset(0, 0);
   PianoRollStyle() {
     this._listenerList = EventListenerList();
