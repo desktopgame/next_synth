@@ -136,9 +136,9 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
 
   @override
   void pianoRollModelUpdate(PianoRollModelEvent e) async {
-    //final projList = ProjectListProvider.provide().value;
-    //final proj = projList.data[_projectIndex];
-    //proj.tracks[_trackIndex].pianoRollData = PianoRollData.fromModel(model);
-    //await ProjectListProvider.save();
+    final projList = ProjectListProvider.provide().value;
+    final proj = projList.data[_projectIndex];
+    proj.tracks[_trackIndex].pianoRollData = PianoRollData.fromModel(model);
+    await ProjectListProvider.save();
   }
 }
