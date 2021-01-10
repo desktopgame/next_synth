@@ -81,7 +81,8 @@ class PianoRollEdietorState extends State<PianoRollScroll> {
       onVerticalDragEnd: (DragEndDetails details) {
         style.refresh();
       },
-      onTapDown: (details) {
+      onTapDown: (details) {},
+      onTapUp: (details) {
         double x = details.localPosition.dx +
             (-style.scrollOffset.dx) -
             layoutInfo.keyboardWidth;
