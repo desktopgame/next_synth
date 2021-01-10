@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:next_synth/piano_roll/note_drag_manager.dart';
 import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
 
 import 'piano_roll.dart';
@@ -9,16 +10,18 @@ import 'piano_roll_scroll.dart';
 import 'piano_roll_style.dart';
 
 class PianoRollEdietorState extends State<PianoRollScroll> {
-  PianoRoll pianoRoll;
-  GlobalKey pianoRollKey;
-  PianoRollModel model;
-  PianoRollStyle style;
-  PianoRollLayoutInfo layoutInfo;
+  final PianoRoll pianoRoll;
+  final GlobalKey pianoRollKey;
+  final PianoRollModel model;
+  final PianoRollStyle style;
+  final PianoRollLayoutInfo layoutInfo;
+  final NoteDragManager noteDragManager;
   int _scrollAmountX, _scrollAmountY;
   double _scrollX, _scrollY;
 
   PianoRollEdietorState(this.pianoRoll, this.pianoRollKey, this.model,
-      this.style, this.layoutInfo) {}
+      this.style, this.layoutInfo)
+      : noteDragManager = NoteDragManager(pianoRoll) {}
 
   void _clampScrollPos(PianoRoll p) {
     if (style.scrollOffset.dx > 0) {

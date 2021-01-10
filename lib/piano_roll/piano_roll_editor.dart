@@ -9,10 +9,10 @@ import './piano_roll_style.dart';
 import './tool_bar.dart';
 
 class PianoRollEditor extends StatelessWidget {
-  PianoRollModel _model;
-  PianoRollStyle _style;
-  PianoRollLayoutInfo _layoutInfo;
-  GlobalKey _pianoRollKey = GlobalKey();
+  final PianoRollModel _model;
+  final PianoRollStyle _style;
+  final PianoRollLayoutInfo _layoutInfo;
+  final GlobalKey _pianoRollKey = GlobalKey();
 
   PianoRollEditor(this._model, this._style, this._layoutInfo);
 
