@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:next_synth_midi/next_synth_midi.dart';
+
+import '../system/midi_helper.dart';
 
 class USBInfoPage extends StatelessWidget {
   Future<int> getDeviceCount() async {
@@ -32,6 +35,49 @@ class USBInfoPage extends StatelessWidget {
         });
   }
 
+  Widget _buildListSwitch(BuildContext context, int index) {
+    var streamCon = StreamController<int>();
+    return FutureBuilder(builder: (context, snapshot) {
+      return SizedBox(
+          width: 400,
+          height: 60,
+          child: StreamBuilder(
+            stream: streamCon.stream,
+            builder: (context, snapshot) {
+              var connected = MidiHelper.instance.isConnected(index);
+              var label = "接続状態: " + (connected ? "O" : "X") + "";
+              return SwitchListTile(
+                value: connected,
+                activeColor: Colors.blue,
+                activeTrackColor: Colors.cyan,
+                inactiveThumbColor: Colors.blue,
+                inactiveTrackColor: Colors.grey,
+                title: Text(label),
+                onChanged: (e) async {
+                  try {
+                    if (e) {
+                      await MidiHelper.instance.openPort(index, 0, -1);
+                    } else {
+                      await MidiHelper.instance.closePort(index, 0, -1);
+                    }
+                    streamCon.sink.add(0);
+                  } catch (ex) {
+                    Fluttertoast.showToast(
+                        msg: "エラーが発生しました。",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
+                },
+              );
+            },
+          ));
+    });
+  }
+
   Widget _buildListCell(BuildContext context, int index) {
     return FutureBuilder(
       future: NextSynthMidi.getDeviceName(index),
@@ -42,6 +88,7 @@ class USBInfoPage extends StatelessWidget {
           return Row(children: [
             Text(snapshot.data),
             Spacer(),
+            _buildListSwitch(context, index),
             _buildListCellInputs(context, index),
             _buildListCellOutputs(context, index),
           ]);

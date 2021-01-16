@@ -9,6 +9,7 @@ import './core/page/setting_page.dart';
 import './core/page/start_page.dart';
 import './core/page/usb_info_page.dart';
 import './core/system/app_data.save_data.dart';
+import './core/system/midi_helper.dart';
 import './core/system/project_list.save_data.dart';
 
 void main() async {
@@ -42,6 +43,8 @@ void main() async {
   // 終了前に保存する
   await AppDataProvider.save();
   await ProjectListProvider.save();
+  // MIDI接続を閉じる
+  MidiHelper.instance.closeAll();
 }
 
 class MyApp extends StatelessWidget {
