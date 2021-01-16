@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
-import 'package:next_synth_midi/next_synth_midi.dart';
 
 import './start_page.dart';
 import '../system/app_data.save_data.dart';
@@ -172,11 +171,7 @@ class StartPageState extends State<StartPage> {
       IconButton(
         icon: Icon(Icons.usb),
         onPressed: () async {
-          int devs = await NextSynthMidi.deviceCount;
-          for (int i = 0; i < devs; i++) {
-            String name = await NextSynthMidi.getDeviceName(i);
-            print("device=$name");
-          }
+          Navigator.pushNamed(context, "/usb");
         },
       ),
       IconButton(

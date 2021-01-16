@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import './core/page/edit_page.dart';
 import './core/page/setting_page.dart';
 import './core/page/start_page.dart';
+import './core/page/usb_info_page.dart';
 import './core/system/app_data.save_data.dart';
 import './core/system/project_list.save_data.dart';
 
@@ -69,7 +70,8 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         "/": (BuildContext context) => StartPage(),
         "/edit": (BuildContext context) => EditPage(),
-        "/setting": (BuildContext context) => SettingPage()
+        "/setting": (BuildContext context) => SettingPage(),
+        "/usb": (BuildContext context) => USBInfoPage()
       },
     );
   }
