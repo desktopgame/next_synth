@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -126,7 +127,24 @@ class USBInfoPage extends StatelessWidget {
       ),
       body: Center(
           child: Column(
-        children: [Text("認識されているMIDI機器"), _buildListView(context)],
+        children: [
+          Text("認識されているMIDI機器"),
+          _buildListView(context),
+          RaisedButton(
+            child: Text("発音テスト"),
+            onPressed: () async {
+              for (int devI in MidiHelper.instance.devices) {
+                NextSynthMidi.send(
+                    devI, 0, Uint8List.fromList([0x90, 60, 127]), 0, 3);
+              }
+              await Future.delayed(new Duration(seconds: 3));
+              for (int devI in MidiHelper.instance.devices) {
+                NextSynthMidi.send(
+                    devI, 0, Uint8List.fromList([0x80, 60, 0]), 0, 3);
+              }
+            },
+          )
+        ],
       )),
     );
   }

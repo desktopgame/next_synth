@@ -48,6 +48,10 @@ class MidiHelper {
     return await NextSynthMidi.closePort(deviceIndex, inputPort, outputPort);
   }
 
+  List<int> get devices {
+    return _connections.map((e) => e.deviceIndex).toList();
+  }
+
   bool isConnected(int deviceIndex) {
     return _connections
             .where((element) => element.deviceIndex == deviceIndex)
