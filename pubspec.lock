@@ -324,6 +324,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.7"
+  next_synth_midi:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "v0.0.1"
+      resolved-ref: f1106e152cbd24cbc94422c1224a4b09d7604010
+      url: "git@github.com:desktopgame/next_synth_midi.git"
+    source: git
+    version: "0.0.1"
   node_interop:
     dependency: transitive
     description:
@@ -660,4 +669,4 @@ packages:
     version: "2.2.1"
 sdks:
   dart: ">=2.10.0 <2.11.0"
-  flutter: ">=1.17.0 <2.0.0"
+  flutter: ">=1.20.0 <2.0.0"
