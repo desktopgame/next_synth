@@ -85,7 +85,11 @@ class ToolBarState extends State<ToolBar>
                 );
               }).toList();
             },
-          )
+          ),
+          Container(
+            child: Text("ここをスワイプでリサイズ"),
+            color: Colors.white,
+          ),
         ],
       ),
       color: Colors.cyan,
