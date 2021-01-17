@@ -25,6 +25,7 @@ class NoteDragManager {
     this._baseY = 0;
     this._currentX = 0;
     this._currentY = 0;
+    this._hasFocus = false;
     this._listenerList = EventListenerList();
   }
 
@@ -99,7 +100,7 @@ class NoteDragManager {
       }
     }
     _dragTargets.clear();
-    this._hasFocus = true;
+    this._hasFocus = false;
     this._baseNote = null;
     var e = NoteDragEvent(this);
     for (NoteDragListener listener

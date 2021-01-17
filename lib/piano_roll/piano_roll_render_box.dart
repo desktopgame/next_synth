@@ -15,9 +15,11 @@ class PianoRollRenderBox extends RenderBox
     implements PianoRollModelListener, P.NotificationListener<PianoRollStyle> {
   PianoRoll _pianoRoll;
   List<Rect> _highlightRects;
+  List<Rect> _ghostRects;
 
   PianoRollRenderBox(this._pianoRoll) {
     this._highlightRects = List<Rect>();
+    this._ghostRects = List<Rect>();
     _pianoRoll.style.addNotificationListener(this);
     _pianoRoll.model.addPianoRollModelListener(this);
   }
@@ -86,6 +88,7 @@ class PianoRollRenderBox extends RenderBox
       y = nextY;
       index++;
     }
+    _drawNoteGhosts(canvas, size);
   }
 
   void _drawBackground(Canvas canvas, Size size) {
@@ -208,6 +211,24 @@ class PianoRollRenderBox extends RenderBox
           rect.left + rect.width - 1, rect.top + rect.height - 1);
       canvas.drawRect(innerRect, _pianoRoll.style.noteFramePaint2);
     }
+  }
+
+  void _drawNoteGhosts(Canvas canvas, Size size) {
+    var nd = pianoRoll.style.noteDragManager;
+    int diffX = nd.currentX - nd.baseX;
+    int diffY = nd.currentY - nd.baseY;
+    for (var target in nd.targets) {
+      var rect =
+          pianoRoll.computeNoteRect(target, target.offset, target.length);
+      rect = rect.translate(diffX.toDouble(), diffY.toDouble());
+      _drawNoteGhost(canvas, size, target, rect);
+      _ghostRects.add(rect);
+    }
+    _ghostRects.clear();
+  }
+
+  void _drawNoteGhost(Canvas canvas, Size size, Note note, Rect rect) {
+    canvas.drawRect(rect, Paint()..color = Colors.grey);
   }
 
   Paint _getPaintForKey(KeyColor color) {

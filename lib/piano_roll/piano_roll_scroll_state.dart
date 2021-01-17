@@ -21,7 +21,9 @@ class PianoRollEdietorState extends State<PianoRollScroll> {
 
   PianoRollEdietorState(this.pianoRoll, this.pianoRollKey, this.model,
       this.style, this.layoutInfo)
-      : noteDragManager = NoteDragManager(pianoRoll) {}
+      : noteDragManager = NoteDragManager(pianoRoll) {
+    style.noteDragManager = noteDragManager;
+  }
 
   void _clampScrollPos(PianoRoll p) {
     if (style.scrollOffset.dx > 0) {
@@ -57,6 +59,17 @@ class PianoRollEdietorState extends State<PianoRollScroll> {
         this._scrollX = details.localPosition.dx;
       },
       onHorizontalDragUpdate: (DragUpdateDetails details) {
+        if (noteDragManager.hasFocus) {
+          double x = details.localPosition.dx +
+              (-style.scrollOffset.dx) -
+              layoutInfo.keyboardWidth;
+          double y = details.localPosition.dy +
+              (-style.scrollOffset.dy) -
+              layoutInfo.toolBarHeight;
+          noteDragManager.move(x.toInt(), y.toInt());
+          style.refresh();
+          return;
+        }
         style.scrollOffset = style.scrollOffset
             .translate(-(_scrollX - details.localPosition.dx), 0);
         _clampScrollPos(pianoRoll);
@@ -66,6 +79,9 @@ class PianoRollEdietorState extends State<PianoRollScroll> {
         }
       },
       onHorizontalDragEnd: (DragEndDetails details) {
+        if (noteDragManager.hasFocus) {
+          noteDragManager.stop();
+        }
         style.refresh();
       },
       onVerticalDragStart: (DragStartDetails details) {
@@ -73,6 +89,17 @@ class PianoRollEdietorState extends State<PianoRollScroll> {
         this._scrollY = details.localPosition.dy;
       },
       onVerticalDragUpdate: (DragUpdateDetails details) {
+        if (noteDragManager.hasFocus) {
+          double x = details.localPosition.dx +
+              (-style.scrollOffset.dx) -
+              layoutInfo.keyboardWidth;
+          double y = details.localPosition.dy +
+              (-style.scrollOffset.dy) -
+              layoutInfo.toolBarHeight;
+          noteDragManager.move(x.toInt(), y.toInt());
+          style.refresh();
+          return;
+        }
         style.scrollOffset = style.scrollOffset
             .translate(0, -(_scrollY - details.localPosition.dy));
         _clampScrollPos(pianoRoll);
@@ -82,9 +109,28 @@ class PianoRollEdietorState extends State<PianoRollScroll> {
         }
       },
       onVerticalDragEnd: (DragEndDetails details) {
+        if (noteDragManager.hasFocus) {
+          noteDragManager.stop();
+        }
         style.refresh();
       },
-      onTapDown: (details) {},
+      onTapDown: (details) {
+        double x = details.localPosition.dx +
+            (-style.scrollOffset.dx) -
+            layoutInfo.keyboardWidth;
+        double y = details.localPosition.dy +
+            (-style.scrollOffset.dy) -
+            layoutInfo.toolBarHeight;
+        var notes = PianoRollUtilities.getAllNoteList(model)
+            .where((element) => element.selected)
+            .toList();
+        var onNotes = pianoRoll.getNotesAt(x, y);
+        if (notes.length > 0 && (onNotes.length > 0 && onNotes[0].selected)) {
+          this.noteDragManager.start(x.toInt(), y.toInt());
+          this.noteDragManager.touchAll(notes);
+          style.refresh();
+        }
+      },
       onTapUp: (details) {
         double x = details.localPosition.dx +
             (-style.scrollOffset.dx) -
