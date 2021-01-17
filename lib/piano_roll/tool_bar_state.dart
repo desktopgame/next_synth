@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:next_synth/piano_roll/piano_roll_selection_mode.dart';
+import 'package:next_synth/piano_roll/piano_roll_style.dart';
 
 import './tool_bar.dart';
 import '../undo/undoable_edit_event.dart';
@@ -12,12 +14,13 @@ import 'piano_roll_model_listener.dart';
 class ToolBarState extends State<ToolBar>
     implements PianoRollModelListener, UndoableEditListener {
   final PianoRollModel _model;
+  final PianoRollStyle _style;
   final StreamController<UndoableEditEvent> _undoController;
   final StreamController<UndoableEditEvent> _redoController;
   var _selectedValue = 'タップ選択';
-  var _usStates = ["タップ選択", "矩形選択", "ドラッグドロップ"];
+  var _usStates = ["タップ選択", "矩形選択"];
 
-  ToolBarState(this._model)
+  ToolBarState(this._model, this._style)
       : this._undoController = StreamController<UndoableEditEvent>(),
         this._redoController = StreamController<UndoableEditEvent>() {
     _model.addPianoRollModelListener(this);
@@ -62,10 +65,16 @@ class ToolBarState extends State<ToolBar>
           IconButton(onPressed: () {}, icon: Icon(Icons.pause)),
           IconButton(onPressed: () {}, icon: Icon(Icons.stop)),
           PopupMenuButton<String>(
-            initialValue: _selectedValue,
+            initialValue: _style.selectionMode == PianoRollSelectionMode.tap
+                ? _usStates[0]
+                : _usStates[1],
             onSelected: (String s) {
               setState(() {
-                _selectedValue = s;
+                if (s == _usStates[0]) {
+                  _style.selectionMode = PianoRollSelectionMode.tap;
+                } else if (s == _usStates[1]) {
+                  _style.selectionMode = PianoRollSelectionMode.rect;
+                }
               });
             },
             itemBuilder: (BuildContext context) {

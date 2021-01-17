@@ -36,7 +36,7 @@ class PianoRollEditor extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: SizedBox(
             height: _layoutInfo.toolBarHeight,
-            child: ToolBar(_model),
+            child: ToolBar(_model, _style),
           ),
         )
       ],

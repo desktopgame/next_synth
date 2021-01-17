@@ -1,0 +1,4 @@
+enum PianoRollSelectionMode {
+  tap,
+  rect,
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:next_synth/event/notification_listener.dart' as P;
 import 'package:next_synth/piano_roll/note_drag_manager.dart';
 
+import './piano_roll_selection_mode.dart';
 import '../event/event_listener_list.dart';
 import '../event/notification_event.dart';
 
@@ -31,11 +32,13 @@ class PianoRollStyle {
     ..strokeWidth = 2;
   Offset scrollOffset = Offset(0, 0);
   NoteDragManager noteDragManager;
+  PianoRollSelectionMode selectionMode;
   PianoRollStyle() {
     this._listenerList = EventListenerList();
     this.beatWidth = 96;
     this.beatHeight = 16;
     this.beatSplitCount = 4;
+    this.selectionMode = PianoRollSelectionMode.tap;
   }
 
   void addNotificationListener(
