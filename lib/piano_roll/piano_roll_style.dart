@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:next_synth/event/notification_listener.dart' as P;
 import 'package:next_synth/piano_roll/note_drag_manager.dart';
@@ -31,6 +33,9 @@ class PianoRollStyle {
     ..color = Colors.yellow
     ..strokeWidth = 2;
   Offset scrollOffset = Offset(0, 0);
+  Offset rectStart = Offset(0, 0);
+  Offset rectEnd = Offset(0, 0);
+  bool rectSelectEnabled;
   NoteDragManager noteDragManager;
   PianoRollSelectionMode selectionMode;
   PianoRollStyle() {
@@ -39,6 +44,19 @@ class PianoRollStyle {
     this.beatHeight = 16;
     this.beatSplitCount = 4;
     this.selectionMode = PianoRollSelectionMode.tap;
+    this.rectSelectEnabled = false;
+  }
+
+  Rect get selectionRect {
+    double minX = min(rectStart.dx, rectEnd.dx);
+    double minY = min(rectStart.dy, rectEnd.dy);
+    double maxX = max(rectStart.dx, rectEnd.dx);
+    double maxY = max(rectStart.dy, rectEnd.dy);
+    double x = minX;
+    double y = minY;
+    double w = maxX - minX;
+    double h = maxY - minY;
+    return Rect.fromLTRB(x, y, x + w, y + h);
   }
 
   void addNotificationListener(
