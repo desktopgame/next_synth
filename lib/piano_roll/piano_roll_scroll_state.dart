@@ -10,7 +10,7 @@ import 'piano_roll_model.dart';
 import 'piano_roll_scroll.dart';
 import 'piano_roll_style.dart';
 
-class PianoRollEdietorState extends State<PianoRollScroll> {
+class PianoRollScrollState extends State<PianoRollScroll> {
   final PianoRoll pianoRoll;
   final GlobalKey pianoRollKey;
   final PianoRollModel model;
@@ -20,7 +20,7 @@ class PianoRollEdietorState extends State<PianoRollScroll> {
   int _scrollAmountX, _scrollAmountY;
   double _scrollX, _scrollY;
 
-  PianoRollEdietorState(this.pianoRoll, this.pianoRollKey, this.model,
+  PianoRollScrollState(this.pianoRoll, this.pianoRollKey, this.model,
       this.style, this.layoutInfo)
       : noteDragManager = NoteDragManager(pianoRoll) {
     style.noteDragManager = noteDragManager;

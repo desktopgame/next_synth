@@ -16,7 +16,7 @@ class PianoRollScroll extends StatefulWidget {
       this.layoutInfo);
   @override
   State<StatefulWidget> createState() {
-    return PianoRollEdietorState(
+    return PianoRollScrollState(
         pianoRoll, pianoRollKey, model, style, layoutInfo);
   }
 }
