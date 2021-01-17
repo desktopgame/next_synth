@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart' hide Key;
 import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
 import 'package:next_synth/undo/undo_manager.dart';
 import 'package:optional/optional.dart';
@@ -273,7 +272,8 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
           var srcBeat = srcMeasure.getBeatAt(k);
           for (int L = 0; L < srcBeat.noteCount; L++) {
             var srcNote = srcBeat.getNoteAt(L);
-            dstBeat.generateNote(srcNote.offset, srcNote.length);
+            dstBeat.generateNote(srcNote.offset, srcNote.length)
+              ..selected = srcNote.selected;
             n++;
           }
         }

@@ -1,9 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:save_data_annotation/save_data_annotation.dart';
-import 'package:next_synth/piano_roll/piano_roll_model.dart';
 import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
+import 'package:next_synth/piano_roll/piano_roll_model.dart';
 import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
+
 import './note_data.dart';
+
 part 'piano_roll_data.g.dart';
 
 @JsonSerializable(anyMap: true)
@@ -30,6 +31,7 @@ class PianoRollData {
             ..keyIndex = e.beat.measure.key.index
             ..measureIndex = e.beat.measure.index
             ..beatIndex = e.beat.index
+            ..selected = e.selected
             ..offset = e.offset
             ..length = e.length)
           .toList();
@@ -42,7 +44,10 @@ class PianoRollData {
       var k = model.getKeyAt(note.keyIndex);
       var m = k.getMeasureAt(note.measureIndex);
       var b = m.getBeatAt(note.beatIndex);
-      b.generateNote(note.offset, note.length);
+      if (note.selected == null) {
+        note.selected = false;
+      }
+      b.generateNote(note.offset, note.length)..selected = note.selected;
     }
     return model;
   }

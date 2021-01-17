@@ -115,7 +115,7 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
               style.refresh();
             });
           },
-          onCreated: (t) {
+          onCreated: (t) async {
             var track = TrackData()
               ..name = _newTrackName(proj)
               ..pianoRollData = PianoRollData.fromModel(DefaultPianoRollModel(
@@ -124,9 +124,14 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
                   appData.beatCount));
             proj.tracks.add(track);
             t.model = track.pianoRollData.toModel();
+            await ProjectListProvider.save();
           },
-          onRemoved: (i) {
+          onRemoved: (i) async {
+            setState(() {
+              _trackIndex = 0;
+            });
             proj.tracks.removeAt(i);
+            await ProjectListProvider.save();
           },
         ),
         Expanded(child: PianoRollEditor(model, style, layoutInfo))

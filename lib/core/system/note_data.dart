@@ -7,6 +7,7 @@ class NoteData {
   int keyIndex;
   int measureIndex;
   int beatIndex;
+  bool selected;
   int offset;
   double length;
 
@@ -14,6 +15,7 @@ class NoteData {
     this.keyIndex = 0;
     this.measureIndex = 0;
     this.beatIndex = 0;
+    this.selected = false;
     this.offset = 0;
     this.length = 0;
   }
