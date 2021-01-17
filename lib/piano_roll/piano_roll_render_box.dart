@@ -89,8 +89,8 @@ class PianoRollRenderBox extends RenderBox
       index++;
     }
     _drawNoteGhosts(canvas, size);
-    if (style.rectSelectEnabled) {
-      canvas.drawRect(style.selectionRect,
+    if (style.rectSelectManager.enabled) {
+      canvas.drawRect(style.rectSelectManager.selectionRect,
           Paint()..color = Color.fromARGB(128, 20, 20, 200));
     }
   }
