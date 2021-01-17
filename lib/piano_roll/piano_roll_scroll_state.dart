@@ -132,6 +132,10 @@ class PianoRollEdietorState extends State<PianoRollScroll> {
         }
       },
       onTapUp: (details) {
+        if (noteDragManager.hasFocus) {
+          noteDragManager.stop();
+          return;
+        }
         double x = details.localPosition.dx +
             (-style.scrollOffset.dx) -
             layoutInfo.keyboardWidth;
