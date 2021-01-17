@@ -44,6 +44,8 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
       ..beatWidth = appData.beatWidth
       ..beatHeight = appData.beatHeight
       ..beatSplitCount = appData.beatSplitCount;
+    style.scrollOffset = style.scrollOffset
+        .translate(0, -appData.beatHeight * ((appData.keyCount / 2) * 12));
     this.layoutInfo = PianoRollLayoutInfo()
       ..toolBarHeight = appData.toolBarHeight.toDouble()
       ..keyboardWidth = appData.keyboardWidth.toDouble();
