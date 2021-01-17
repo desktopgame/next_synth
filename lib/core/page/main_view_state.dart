@@ -122,6 +122,7 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
                   appData.keyCount * 12,
                   appData.measureCount,
                   appData.beatCount));
+            t.name = track.name;
             proj.tracks.add(track);
             t.model = track.pianoRollData.toModel();
             await ProjectListProvider.save();
