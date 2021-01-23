@@ -56,6 +56,17 @@ class PianoRollScrollState extends State<PianoRollScroll> {
         pianoRollContext.range.scrollOffset.dy);
   }
 
+  void _dragNotes(DragUpdateDetails details) {
+    double x = details.localPosition.dx +
+        (-pianoRollContext.range.scrollOffset.dx) -
+        layoutInfo.keyboardWidth;
+    double y = details.localPosition.dy +
+        (-pianoRollContext.range.scrollOffset.dy) -
+        layoutInfo.toolBarHeight;
+    pianoRollContext.noteDragManager.move(x.toInt(), y.toInt());
+    style.refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -66,14 +77,7 @@ class PianoRollScrollState extends State<PianoRollScroll> {
       onHorizontalDragUpdate: (DragUpdateDetails details) {
         // ドラッグ中
         if (pianoRollContext.noteDragManager.hasFocus) {
-          double x = details.localPosition.dx +
-              (-pianoRollContext.range.scrollOffset.dx) -
-              layoutInfo.keyboardWidth;
-          double y = details.localPosition.dy +
-              (-pianoRollContext.range.scrollOffset.dy) -
-              layoutInfo.toolBarHeight;
-          pianoRollContext.noteDragManager.move(x.toInt(), y.toInt());
-          style.refresh();
+          _dragNotes(details);
           return;
         }
         // 矩形選択中
@@ -122,14 +126,7 @@ class PianoRollScrollState extends State<PianoRollScroll> {
         // ドラッグ中
         if (pianoRollContext.noteDragManager.hasFocus &&
             !pianoRollContext.rectSelectManager.enabled) {
-          double x = details.localPosition.dx +
-              (-pianoRollContext.range.scrollOffset.dx) -
-              layoutInfo.keyboardWidth;
-          double y = details.localPosition.dy +
-              (-pianoRollContext.range.scrollOffset.dy) -
-              layoutInfo.toolBarHeight;
-          pianoRollContext.noteDragManager.move(x.toInt(), y.toInt());
-          style.refresh();
+          _dragNotes(details);
           return;
         }
         // 矩形選択中
