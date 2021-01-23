@@ -21,6 +21,7 @@ class ToolBarState extends State<ToolBar>
   final StreamController<UndoableEditEvent> _redoController;
   var _resizeStartX = -1.0;
   var _resizeStarted = false;
+  var _resizeTicks = 0;
   var _selectedValue = 'タップ選択';
   var _usStates = ["タップ選択", "矩形選択"];
 
@@ -97,10 +98,15 @@ class ToolBarState extends State<ToolBar>
                         .where((element) => element.selected)
                         .toList());
                 _resizeStartX = details.localPosition.dx;
+                _resizeTicks = 0;
               },
               onHorizontalDragUpdate: (DragUpdateDetails details) {
                 double x = details.localPosition.dx;
                 double y = details.localPosition.dy;
+                if (this._resizeTicks < 10) {
+                  this._resizeTicks++;
+                  return;
+                }
                 if (!this._resizeStarted) {
                   this._resizeStarted = true;
                   if (x < _resizeStartX) {
