@@ -69,6 +69,7 @@ class PianoRollRenderBox extends RenderBox
         //Rect.fromLTRB(offset.dx, size.height - 20,
         //    offset.dx + (parW * this.size.width), size.height),
         Paint()..color = Color.fromARGB(128, 0, 0, 0));
+    offset = offset.translate(0, 50);
     canvas.drawRect(
         _pianoRoll.context.verticalScrollBarRect(offset,
             offset.dx + size.width - 20, offset.dx + size.width, size.height),
