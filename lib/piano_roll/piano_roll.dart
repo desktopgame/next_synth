@@ -8,10 +8,10 @@ import './note.dart';
 import './piano_roll_model.dart';
 import './piano_roll_render_box.dart';
 import './piano_roll_style.dart';
-import './piano_roll_utilities.dart';
+import './piano_roll_ui.dart';
 import 'piano_roll_render_box.dart';
 
-class PianoRoll extends SingleChildRenderObjectWidget {
+class PianoRoll extends SingleChildRenderObjectWidget implements PianoRollUI {
   final PianoRollContext _context;
 
   PianoRoll(this._context, {Key key}) : super(key: key) {}
@@ -25,84 +25,41 @@ class PianoRoll extends SingleChildRenderObjectWidget {
   PianoRollModel get model => _context.model;
   PianoRollStyle get style => _context.style;
 
-  int computeMaxWidth() => PianoRollUtilities.computeMaxWidth(model, style);
-
-  int computeMaxHeight() => PianoRollUtilities.computeMaxHeight(model, style);
-
-  int computeWidth(int measureCount) =>
-      PianoRollUtilities.computeWidth(model, style, measureCount);
-
-  int computeHeight(int keyCount) =>
-      PianoRollUtilities.computeHeight(style, keyCount);
-
-  int computeMeasureWidth() =>
-      PianoRollUtilities.computeMeasureWidth(model, style);
-
-  int computeKeyWidth() => PianoRollUtilities.computeKeyWidth(model, style);
-
-  Rect computeNoteRect(Note note, int offset, double length) =>
-      PianoRollUtilities.computeNoteRect(style, note, offset, length);
-
-  Optional<P.Key> getKeyAt(double y) {
-    int i = y ~/ style.beatHeight;
-    if (i < 0 || i >= model.keyCount) {
-      return Optional.empty();
-    }
-    return Optional.of(model.getKeyAt(i));
-  }
-
-  Optional<int> getMeasureIndexAt(double x) {
-    int i =
-        x ~/ (style.beatWidth * model.getKeyAt(0).getMeasureAt(0).beatCount);
-    if (i < 0 || i >= model.getKeyAt(0).measureCount) {
-      return Optional.empty();
-    }
-    return Optional.of(i);
-  }
-
-  Optional<Measure> getMeasureAt(double x, double y) {
-    var optI = getMeasureIndexAt(x);
-    if (optI.isPresent) {
-      return getKeyAt(y).map((P.Key e) => e.getMeasureAt(optI.value));
-    }
-    return Optional.empty();
-  }
-
-  List<Note> getNotesAt(double x, double y) {
-    var notes = List<Note>();
-    getKeyAt(y).ifPresent((P.Key e) {
-      for (int i = 0; i < e.measureCount; i++) {
-        var m = e.getMeasureAt(i);
-        int measureOffset = (style.beatWidth * m.beatCount) * i;
-        for (int j = 0; j < m.beatCount; j++) {
-          var b = m.getBeatAt(j);
-          int beatOffset = measureOffset + (style.beatWidth * j);
-          for (int k = 0; k < b.noteCount; k++) {
-            var n = b.getNoteAt(k);
-            int sx = beatOffset + n.offset;
-            int ex =
-                sx + PianoRollUtilities.scaledNoteLength(n, style.beatWidth);
-            if (x >= sx && x < ex) {
-              notes.add(n);
-            }
-          }
-        }
-      }
-    });
-    return notes;
-  }
-
-  int computeRelativeBeatIndex(double x) =>
-      PianoRollUtilities.computeRelativeBeatIndex(model, style, x);
-
-  double measureIndexToXOffset(int i) =>
-      PianoRollUtilities.measureIndexToXOffset(model, style, i);
-
-  double relativeBeatIndexToXOffset(int i) =>
-      PianoRollUtilities.relativeBeatIndexToXOffset(style, i);
-
   @override
   RenderObject createRenderObject(BuildContext context) {
     return PianoRollRenderBox(this);
   }
+
+  @override
+  int computeMaxWidth() => _context.computeMaxWidth();
+  @override
+  int computeMaxHeight() => _context.computeMaxWidth();
+  @override
+  int computeWidth(int measureCount) => _context.computeWidth(measureCount);
+  @override
+  int computeHeight(int keyCount) => _context.computeHeight(keyCount);
+  @override
+  int computeMeasureWidth() => _context.computeMeasureWidth();
+  @override
+  int computeKeyWidth() => _context.computeKeyWidth();
+  @override
+  Rect computeNoteRect(Note note, int offset, double length) =>
+      _context.computeNoteRect(note, offset, length);
+  @override
+  Optional<P.Key> getKeyAt(double y) => _context.getKeyAt(y);
+  @override
+  Optional<int> getMeasureIndexAt(double x) => _context.getMeasureIndexAt(x);
+  @override
+  Optional<Measure> getMeasureAt(double x, double y) =>
+      _context.getMeasureAt(x, y);
+  @override
+  List<Note> getNotesAt(double x, double y) => _context.getNotesAt(x, y);
+  @override
+  int computeRelativeBeatIndex(double x) =>
+      _context.computeRelativeBeatIndex(x);
+  @override
+  double measureIndexToXOffset(int i) => _context.measureIndexToXOffset(i);
+  @override
+  double relativeBeatIndexToXOffset(int i) =>
+      _context.relativeBeatIndexToXOffset(i);
 }
