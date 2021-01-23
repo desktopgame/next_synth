@@ -3,6 +3,7 @@ import 'package:logging/logging.dart';
 import 'package:next_synth/core/system/project_list.save_data.dart';
 import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
 import 'package:next_synth/piano_roll/default_track_list_model.dart';
+import 'package:next_synth/piano_roll/piano_roll_context.dart';
 import 'package:next_synth/piano_roll/piano_roll_editor.dart';
 import 'package:next_synth/piano_roll/piano_roll_layout_info.dart';
 import 'package:next_synth/piano_roll/piano_roll_model.dart';
@@ -21,8 +22,7 @@ import '../system/track_data.dart';
 class MainViewState extends State<MainView> implements PianoRollModelListener {
   int _projectIndex;
   int _trackIndex;
-  PianoRollModel model;
-  PianoRollStyle style;
+  PianoRollContext _context;
   PianoRollLayoutInfo layoutInfo;
   TrackListModel trackListModel;
   final logger = new Logger('MainViewState');
@@ -30,6 +30,9 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
   MainViewState(this._projectIndex) {
 //    this.model = Reference();
   }
+
+  PianoRollModel get model => _context == null ? null : _context.model;
+  PianoRollStyle get style => _context == null ? null : _context.style;
 
   @override
   void initState() {
@@ -40,7 +43,7 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
     final appData = AppDataProvider.provide().value;
     this.trackListModel = DefaultTrackListModel();
     //this.model = DefaultPianoRollModel(11 * 12, 4, 4);
-    this.style = PianoRollStyle()
+    var style = PianoRollStyle()
       ..beatWidth = appData.beatWidth
       ..beatHeight = appData.beatHeight
       ..beatSplitCount = appData.beatSplitCount;
@@ -49,17 +52,18 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
     this.layoutInfo = PianoRollLayoutInfo()
       ..toolBarHeight = appData.toolBarHeight.toDouble()
       ..keyboardWidth = appData.keyboardWidth.toDouble();
-    this.model = null;
+    PianoRollModel model = null;
     for (var t in proj.tracks) {
       var track = trackListModel.createTrack();
       track.name = t.name;
       track.isMute = t.isMute;
       track.model = t.pianoRollData.toModel();
       // プロジェクトを開いたときに必ず0番目が選択状態になるため、対応するモデルを持っておく
-      if (this.model == null) {
-        this.model = track.model.duplicate();
+      if (model == null) {
+        model = track.model.duplicate();
         this._trackIndex = 0;
         model.addPianoRollModelListener(this);
+        this._context = PianoRollContext(model, style);
       }
     }
   }
@@ -137,7 +141,7 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
             await ProjectListProvider.save();
           },
         ),
-        Expanded(child: PianoRollEditor(model, style, layoutInfo))
+        Expanded(child: PianoRollEditor(_context, layoutInfo))
       ],
     );
   }

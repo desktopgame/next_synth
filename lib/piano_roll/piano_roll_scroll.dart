@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:next_synth/piano_roll/piano_roll_context.dart';
 import 'package:next_synth/piano_roll/piano_roll_scroll_state.dart';
 
 import 'piano_roll.dart';
 import 'piano_roll_layout_info.dart';
-import 'piano_roll_model.dart';
-import 'piano_roll_style.dart';
 
 class PianoRollScroll extends StatefulWidget {
   final PianoRoll pianoRoll;
   final GlobalKey pianoRollKey;
-  final PianoRollModel model;
-  final PianoRollStyle style;
+  final PianoRollContext context;
   final PianoRollLayoutInfo layoutInfo;
-  PianoRollScroll(this.pianoRoll, this.pianoRollKey, this.model, this.style,
-      this.layoutInfo);
+  PianoRollScroll(
+      this.pianoRoll, this.pianoRollKey, this.context, this.layoutInfo);
   @override
   State<StatefulWidget> createState() {
-    return PianoRollScrollState(
-        pianoRoll, pianoRollKey, model, style, layoutInfo);
+    return PianoRollScrollState(pianoRoll, pianoRollKey, context, layoutInfo);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:next_synth/piano_roll/piano_roll_context.dart';
 import 'package:optional/optional.dart';
 
 import './key.dart' as P;
@@ -11,10 +12,9 @@ import './piano_roll_utilities.dart';
 import 'piano_roll_render_box.dart';
 
 class PianoRoll extends SingleChildRenderObjectWidget {
-  final PianoRollModel _model;
-  final PianoRollStyle _style;
+  final PianoRollContext _context;
 
-  PianoRoll(this._model, this._style, {Key key}) : super(key: key) {}
+  PianoRoll(this._context, {Key key}) : super(key: key) {}
 
   @override
   void updateRenderObject(
@@ -22,8 +22,8 @@ class PianoRoll extends SingleChildRenderObjectWidget {
     renderObject.pianoRoll = this;
   }
 
-  PianoRollModel get model => _model;
-  PianoRollStyle get style => _style;
+  PianoRollModel get model => _context.model;
+  PianoRollStyle get style => _context.style;
 
   int computeMaxWidth() => PianoRollUtilities.computeMaxWidth(model, style);
 

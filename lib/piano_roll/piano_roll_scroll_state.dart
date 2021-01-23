@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:next_synth/piano_roll/note_drag_manager.dart';
 import 'package:next_synth/piano_roll/note_resize_manager.dart';
+import 'package:next_synth/piano_roll/piano_roll_context.dart';
 import 'package:next_synth/piano_roll/piano_roll_selection_mode.dart';
 import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
 import 'package:next_synth/piano_roll/rect_select_manager.dart';
@@ -15,8 +16,7 @@ import 'piano_roll_style.dart';
 class PianoRollScrollState extends State<PianoRollScroll> {
   final PianoRoll pianoRoll;
   final GlobalKey pianoRollKey;
-  final PianoRollModel model;
-  final PianoRollStyle style;
+  final PianoRollContext pianoRollContext;
   final PianoRollLayoutInfo layoutInfo;
   final RectSelectManager rectSelectManager;
   final NoteDragManager noteDragManager;
@@ -24,8 +24,8 @@ class PianoRollScrollState extends State<PianoRollScroll> {
   int _scrollAmountX, _scrollAmountY;
   double _scrollX, _scrollY;
 
-  PianoRollScrollState(this.pianoRoll, this.pianoRollKey, this.model,
-      this.style, this.layoutInfo)
+  PianoRollScrollState(
+      this.pianoRoll, this.pianoRollKey, this.pianoRollContext, this.layoutInfo)
       : rectSelectManager = RectSelectManager(),
         noteDragManager = NoteDragManager(pianoRoll),
         noteResizeManager = NoteResizeManager() {
@@ -33,6 +33,9 @@ class PianoRollScrollState extends State<PianoRollScroll> {
     style.noteResizeManager = noteResizeManager;
     style.rectSelectManager = rectSelectManager;
   }
+
+  PianoRollStyle get style => pianoRollContext.style;
+  PianoRollModel get model => pianoRollContext.model;
 
   void _clampScrollPos(PianoRoll p) {
     if (style.scrollOffset.dx > 0) {

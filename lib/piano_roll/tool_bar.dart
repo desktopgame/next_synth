@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:next_synth/piano_roll/piano_roll_context.dart';
 
 import './tool_bar_state.dart';
-import 'piano_roll_model.dart';
-import 'piano_roll_style.dart';
 
 class ToolBar extends StatefulWidget {
-  final PianoRollModel _model;
-  final PianoRollStyle _style;
+  final PianoRollContext _context;
 
-  ToolBar(this._model, this._style);
+  ToolBar(this._context);
 
   @override
   State<StatefulWidget> createState() {
-    return ToolBarState(_model, _style);
+    return ToolBarState(_context);
   }
 }

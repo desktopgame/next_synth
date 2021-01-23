@@ -9,14 +9,14 @@ import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
 import './tool_bar.dart';
 import '../undo/undoable_edit_event.dart';
 import '../undo/undoable_edit_listener.dart';
+import 'piano_roll_context.dart';
 import 'piano_roll_model.dart';
 import 'piano_roll_model_event.dart';
 import 'piano_roll_model_listener.dart';
 
 class ToolBarState extends State<ToolBar>
     implements PianoRollModelListener, UndoableEditListener {
-  final PianoRollModel _model;
-  final PianoRollStyle _style;
+  final PianoRollContext _context;
   final StreamController<UndoableEditEvent> _undoController;
   final StreamController<UndoableEditEvent> _redoController;
   var _resizeStartX = -1.0;
@@ -25,12 +25,16 @@ class ToolBarState extends State<ToolBar>
   var _selectedValue = 'タップ選択';
   var _usStates = ["タップ選択", "矩形選択"];
 
-  ToolBarState(this._model, this._style)
+  ToolBarState(this._context)
       : this._undoController = StreamController<UndoableEditEvent>(),
         this._redoController = StreamController<UndoableEditEvent>() {
     _model.addPianoRollModelListener(this);
     _model.addUndoableEditListener(this);
   }
+
+  PianoRollModel get _model => _context.model;
+  PianoRollStyle get _style => _context.style;
+
   @override
   Widget build(BuildContext context) {
     return Container(
