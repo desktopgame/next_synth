@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:next_synth/piano_roll/note_drag_manager.dart';
+import 'package:next_synth/piano_roll/note_resize_manager.dart';
 import 'package:next_synth/piano_roll/piano_roll_selection_mode.dart';
 import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
 import 'package:next_synth/piano_roll/rect_select_manager.dart';
@@ -19,14 +20,17 @@ class PianoRollScrollState extends State<PianoRollScroll> {
   final PianoRollLayoutInfo layoutInfo;
   final RectSelectManager rectSelectManager;
   final NoteDragManager noteDragManager;
+  final NoteResizeManager noteResizeManager;
   int _scrollAmountX, _scrollAmountY;
   double _scrollX, _scrollY;
 
   PianoRollScrollState(this.pianoRoll, this.pianoRollKey, this.model,
       this.style, this.layoutInfo)
       : rectSelectManager = RectSelectManager(),
-        noteDragManager = NoteDragManager(pianoRoll) {
+        noteDragManager = NoteDragManager(pianoRoll),
+        noteResizeManager = NoteResizeManager() {
     style.noteDragManager = noteDragManager;
+    style.noteResizeManager = noteResizeManager;
     style.rectSelectManager = rectSelectManager;
   }
 

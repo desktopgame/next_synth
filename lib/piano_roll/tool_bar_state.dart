@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:next_synth/piano_roll/note_resize_manager.dart';
 import 'package:next_synth/piano_roll/piano_roll_selection_mode.dart';
 import 'package:next_synth/piano_roll/piano_roll_style.dart';
+import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
 
 import './tool_bar.dart';
 import '../undo/undoable_edit_event.dart';
@@ -17,6 +19,8 @@ class ToolBarState extends State<ToolBar>
   final PianoRollStyle _style;
   final StreamController<UndoableEditEvent> _undoController;
   final StreamController<UndoableEditEvent> _redoController;
+  var _resizeStartX = -1.0;
+  var _resizeStarted = false;
   var _selectedValue = 'タップ選択';
   var _usStates = ["タップ選択", "矩形選択"];
 
@@ -86,10 +90,37 @@ class ToolBarState extends State<ToolBar>
               }).toList();
             },
           ),
-          Container(
-            child: Text("ここをスワイプでリサイズ"),
-            color: Colors.white,
-          ),
+          GestureDetector(
+              onHorizontalDragStart: (DragStartDetails details) {
+                _style.noteResizeManager.touchAll(
+                    PianoRollUtilities.getAllNoteList(_model)
+                        .where((element) => element.selected)
+                        .toList());
+                _resizeStartX = details.localPosition.dx;
+              },
+              onHorizontalDragUpdate: (DragUpdateDetails details) {
+                double x = details.localPosition.dx;
+                double y = details.localPosition.dy;
+                if (!this._resizeStarted) {
+                  this._resizeStarted = true;
+                  if (x < _resizeStartX) {
+                    _style.noteResizeManager
+                        .start(NoteResizeType.move, x.toInt());
+                  } else {
+                    _style.noteResizeManager
+                        .start(NoteResizeType.resize, x.toInt());
+                  }
+                } else {
+                  _style.noteResizeManager.resize(x.toInt(), _style.beatWidth);
+                }
+              },
+              onHorizontalDragEnd: (DragEndDetails details) {
+                this._resizeStarted = false;
+              },
+              child: Container(
+                child: Text("ここをスワイプでリサイズ"),
+                color: Colors.white,
+              )),
         ],
       ),
       color: Colors.cyan,

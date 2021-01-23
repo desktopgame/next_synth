@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:next_synth/event/notification_listener.dart' as P;
 import 'package:next_synth/piano_roll/note_drag_manager.dart';
+import 'package:next_synth/piano_roll/note_resize_manager.dart';
 import 'package:next_synth/piano_roll/rect_select_manager.dart';
 
 import './piano_roll_selection_mode.dart';
@@ -34,6 +35,7 @@ class PianoRollStyle {
   Offset scrollOffset = Offset(0, 0);
   RectSelectManager rectSelectManager;
   NoteDragManager noteDragManager;
+  NoteResizeManager noteResizeManager;
   PianoRollSelectionMode selectionMode;
   PianoRollStyle() {
     this._listenerList = EventListenerList();
