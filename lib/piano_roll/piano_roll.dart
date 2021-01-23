@@ -35,7 +35,7 @@ class PianoRoll extends SingleChildRenderObjectWidget implements PianoRollUI {
   @override
   int computeMaxWidth() => _context.computeMaxWidth();
   @override
-  int computeMaxHeight() => _context.computeMaxWidth();
+  int computeMaxHeight() => _context.computeMaxHeight();
   @override
   int computeWidth(int measureCount) => _context.computeWidth(measureCount);
   @override
