@@ -153,6 +153,7 @@ class PianoRollContext implements PianoRollUI {
     var mh = computeMaxHeight();
     var parH = height / mh;
     offset = offset.translate(0, -((range.scrollOffset.dy * parH)));
-    return Rect.fromLTRB(left, offset.dy, right, offset.dy + (parH * height));
+    return Rect.fromLTRB(
+        left, offset.dy, right, (offset.dy - 50) + (parH * height));
   }
 }
