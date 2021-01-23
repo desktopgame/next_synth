@@ -67,6 +67,25 @@ class PianoRollScrollState extends State<PianoRollScroll> {
     style.refresh();
   }
 
+  void _rectSelect(DragUpdateDetails details) {
+    double x = details.localPosition.dx +
+        (-pianoRollContext.range.scrollOffset.dx) -
+        layoutInfo.keyboardWidth;
+    double y = details.localPosition.dy +
+        (-pianoRollContext.range.scrollOffset.dy) -
+        layoutInfo.toolBarHeight;
+    pianoRollContext.rectSelectManager.rectEnd = Offset(x, y);
+    var selRect = pianoRollContext.rectSelectManager.selectionRect;
+
+    var notes = PianoRollUtilities.getAllNoteList(model).where((element) =>
+        selRect.overlaps(pianoRoll.computeNoteRect(
+            element, element.offset, element.length)));
+    for (var note in notes) {
+      note.selected = true;
+    }
+    style.refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -82,22 +101,7 @@ class PianoRollScrollState extends State<PianoRollScroll> {
         }
         // 矩形選択中
         if (pianoRollContext.rectSelectManager.enabled) {
-          double x = details.localPosition.dx +
-              (-pianoRollContext.range.scrollOffset.dx) -
-              layoutInfo.keyboardWidth;
-          double y = details.localPosition.dy +
-              (-pianoRollContext.range.scrollOffset.dy) -
-              layoutInfo.toolBarHeight;
-          pianoRollContext.rectSelectManager.rectEnd = Offset(x, y);
-          var selRect = pianoRollContext.rectSelectManager.selectionRect;
-
-          var notes = PianoRollUtilities.getAllNoteList(model).where(
-              (element) => selRect.overlaps(pianoRoll.computeNoteRect(
-                  element, element.offset, element.length)));
-          for (var note in notes) {
-            note.selected = true;
-          }
-          style.refresh();
+          _rectSelect(details);
           return;
         }
         pianoRollContext.range.scrollOffset = pianoRollContext
@@ -131,22 +135,7 @@ class PianoRollScrollState extends State<PianoRollScroll> {
         }
         // 矩形選択中
         if (pianoRollContext.rectSelectManager.enabled) {
-          double x = details.localPosition.dx +
-              (-pianoRollContext.range.scrollOffset.dx) -
-              layoutInfo.keyboardWidth;
-          double y = details.localPosition.dy +
-              (-pianoRollContext.range.scrollOffset.dy) -
-              layoutInfo.toolBarHeight;
-          pianoRollContext.rectSelectManager.rectEnd = Offset(x, y);
-          var selRect = pianoRollContext.rectSelectManager.selectionRect;
-
-          var notes = PianoRollUtilities.getAllNoteList(model).where(
-              (element) => selRect.overlaps(pianoRoll.computeNoteRect(
-                  element, element.offset, element.length)));
-          for (var note in notes) {
-            note.selected = true;
-          }
-          style.refresh();
+          _rectSelect(details);
           return;
         }
         pianoRollContext.range.scrollOffset = pianoRollContext
