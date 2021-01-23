@@ -25,11 +25,13 @@ class PianoRollScrollState extends State<PianoRollScroll> {
   PianoRollModel get model => pianoRollContext.model;
 
   void _clampScrollPos(PianoRoll p) {
-    if (style.scrollOffset.dx > 0) {
-      style.scrollOffset = Offset(0, style.scrollOffset.dy);
+    if (pianoRollContext.range.scrollOffset.dx > 0) {
+      pianoRollContext.range.scrollOffset =
+          Offset(0, pianoRollContext.range.scrollOffset.dy);
     }
-    if (style.scrollOffset.dy > 0) {
-      style.scrollOffset = Offset(style.scrollOffset.dx, 0);
+    if (pianoRollContext.range.scrollOffset.dy > 0) {
+      pianoRollContext.range.scrollOffset =
+          Offset(pianoRollContext.range.scrollOffset.dx, 0);
     }
     RenderBox box = pianoRollKey.currentContext.findRenderObject();
     double addW = 0;
@@ -41,13 +43,17 @@ class PianoRollScrollState extends State<PianoRollScroll> {
     double width = p.computeMaxWidth().toDouble() - (addW);
     double height =
         p.computeMaxHeight().toDouble() - (addH - layoutInfo.toolBarHeight);
-    if (style.scrollOffset.dx < -width) {
-      style.scrollOffset = Offset(-width, style.scrollOffset.dy);
+    if (pianoRollContext.range.scrollOffset.dx < -width) {
+      pianoRollContext.range.scrollOffset =
+          Offset(-width, pianoRollContext.range.scrollOffset.dy);
     }
-    if (style.scrollOffset.dy < -height) {
-      style.scrollOffset = Offset(style.scrollOffset.dx, -height);
+    if (pianoRollContext.range.scrollOffset.dy < -height) {
+      pianoRollContext.range.scrollOffset =
+          Offset(pianoRollContext.range.scrollOffset.dx, -height);
     }
-    style.scrollOffset = Offset(style.scrollOffset.dx, style.scrollOffset.dy);
+    pianoRollContext.range.scrollOffset = Offset(
+        pianoRollContext.range.scrollOffset.dx,
+        pianoRollContext.range.scrollOffset.dy);
   }
 
   @override
@@ -61,10 +67,10 @@ class PianoRollScrollState extends State<PianoRollScroll> {
         // ドラッグ中
         if (pianoRollContext.noteDragManager.hasFocus) {
           double x = details.localPosition.dx +
-              (-style.scrollOffset.dx) -
+              (-pianoRollContext.range.scrollOffset.dx) -
               layoutInfo.keyboardWidth;
           double y = details.localPosition.dy +
-              (-style.scrollOffset.dy) -
+              (-pianoRollContext.range.scrollOffset.dy) -
               layoutInfo.toolBarHeight;
           pianoRollContext.noteDragManager.move(x.toInt(), y.toInt());
           style.refresh();
@@ -73,10 +79,10 @@ class PianoRollScrollState extends State<PianoRollScroll> {
         // 矩形選択中
         if (pianoRollContext.rectSelectManager.enabled) {
           double x = details.localPosition.dx +
-              (-style.scrollOffset.dx) -
+              (-pianoRollContext.range.scrollOffset.dx) -
               layoutInfo.keyboardWidth;
           double y = details.localPosition.dy +
-              (-style.scrollOffset.dy) -
+              (-pianoRollContext.range.scrollOffset.dy) -
               layoutInfo.toolBarHeight;
           pianoRollContext.rectSelectManager.rectEnd = Offset(x, y);
           var selRect = pianoRollContext.rectSelectManager.selectionRect;
@@ -90,7 +96,8 @@ class PianoRollScrollState extends State<PianoRollScroll> {
           style.refresh();
           return;
         }
-        style.scrollOffset = style.scrollOffset
+        pianoRollContext.range.scrollOffset = pianoRollContext
+            .range.scrollOffset
             .translate(-(_scrollX - details.localPosition.dx), 0);
         _clampScrollPos(pianoRoll);
         this._scrollX = details.localPosition.dx;
@@ -116,10 +123,10 @@ class PianoRollScrollState extends State<PianoRollScroll> {
         if (pianoRollContext.noteDragManager.hasFocus &&
             !pianoRollContext.rectSelectManager.enabled) {
           double x = details.localPosition.dx +
-              (-style.scrollOffset.dx) -
+              (-pianoRollContext.range.scrollOffset.dx) -
               layoutInfo.keyboardWidth;
           double y = details.localPosition.dy +
-              (-style.scrollOffset.dy) -
+              (-pianoRollContext.range.scrollOffset.dy) -
               layoutInfo.toolBarHeight;
           pianoRollContext.noteDragManager.move(x.toInt(), y.toInt());
           style.refresh();
@@ -128,10 +135,10 @@ class PianoRollScrollState extends State<PianoRollScroll> {
         // 矩形選択中
         if (pianoRollContext.rectSelectManager.enabled) {
           double x = details.localPosition.dx +
-              (-style.scrollOffset.dx) -
+              (-pianoRollContext.range.scrollOffset.dx) -
               layoutInfo.keyboardWidth;
           double y = details.localPosition.dy +
-              (-style.scrollOffset.dy) -
+              (-pianoRollContext.range.scrollOffset.dy) -
               layoutInfo.toolBarHeight;
           pianoRollContext.rectSelectManager.rectEnd = Offset(x, y);
           var selRect = pianoRollContext.rectSelectManager.selectionRect;
@@ -145,7 +152,8 @@ class PianoRollScrollState extends State<PianoRollScroll> {
           style.refresh();
           return;
         }
-        style.scrollOffset = style.scrollOffset
+        pianoRollContext.range.scrollOffset = pianoRollContext
+            .range.scrollOffset
             .translate(0, -(_scrollY - details.localPosition.dy));
         _clampScrollPos(pianoRoll);
         this._scrollY = details.localPosition.dy;
@@ -164,10 +172,10 @@ class PianoRollScrollState extends State<PianoRollScroll> {
       },
       onTapDown: (details) {
         double x = details.localPosition.dx +
-            (-style.scrollOffset.dx) -
+            (-pianoRollContext.range.scrollOffset.dx) -
             layoutInfo.keyboardWidth;
         double y = details.localPosition.dy +
-            (-style.scrollOffset.dy) -
+            (-pianoRollContext.range.scrollOffset.dy) -
             layoutInfo.toolBarHeight;
         var notes = PianoRollUtilities.getAllNoteList(model)
             .where((element) => element.selected)
@@ -200,10 +208,10 @@ class PianoRollScrollState extends State<PianoRollScroll> {
         }
         if (pianoRollContext.selectionMode == PianoRollSelectionMode.tap) {
           double x = details.localPosition.dx +
-              (-style.scrollOffset.dx) -
+              (-pianoRollContext.range.scrollOffset.dx) -
               layoutInfo.keyboardWidth;
           double y = details.localPosition.dy +
-              (-style.scrollOffset.dy) -
+              (-pianoRollContext.range.scrollOffset.dy) -
               layoutInfo.toolBarHeight;
           var notes = pianoRoll.getNotesAt(x, y);
           if (notes.isNotEmpty) {
@@ -213,10 +221,10 @@ class PianoRollScrollState extends State<PianoRollScroll> {
       },
       onDoubleTapDown: (details) {
         double x = details.localPosition.dx +
-            (-style.scrollOffset.dx) -
+            (-pianoRollContext.range.scrollOffset.dx) -
             layoutInfo.keyboardWidth;
         double y = details.localPosition.dy +
-            (-style.scrollOffset.dy) -
+            (-pianoRollContext.range.scrollOffset.dy) -
             layoutInfo.toolBarHeight;
         PianoRollUtilities.generateOrRemoveAt(pianoRoll, x, y, 0.25);
       },

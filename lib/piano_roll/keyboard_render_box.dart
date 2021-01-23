@@ -29,7 +29,7 @@ class KeyboardRenderBox extends RenderBox {
     var pModel = p.model;
     int bw = p.style.beatWidth;
     int bh = p.style.beatHeight;
-    int y = p.style.scrollOffset.dy.toInt() + 50;
+    int y = p.context.range.scrollOffset.dy.toInt() + 50;
     for (int i = pModel.keyCount - 1; i >= 0; i--) {
       var k = pModel.getKeyAt(i);
       int nextY = y + bh;
@@ -47,7 +47,7 @@ class KeyboardRenderBox extends RenderBox {
           Offset(offset.dx + 48, y.toDouble()), Paint()..color = Colors.black);
       y = nextY;
     }
-    y = p.style.scrollOffset.dy.toInt() + 50;
+    y = p.context.range.scrollOffset.dy.toInt() + 50;
     for (int i = pModel.keyCount - 1; i >= 0; i--) {
       var k = pModel.getKeyAt(i);
       int indexInBwTable = i % KeyTable.basic.length;

@@ -43,8 +43,8 @@ class PianoRollRenderBox extends RenderBox
   }
 
   Rect computeClipRect() {
-    double sx = -_pianoRoll.style.scrollOffset.dx;
-    double sy = -_pianoRoll.style.scrollOffset.dy;
+    double sx = -_pianoRoll.context.range.scrollOffset.dx;
+    double sy = -_pianoRoll.context.range.scrollOffset.dy;
     double w = size.width;
     double h = size.height;
     return Rect.fromLTWH(sx, sy, w, h);
@@ -54,14 +54,27 @@ class PianoRollRenderBox extends RenderBox
   void paint(PaintingContext context, Offset offset) {
     var canvas = context.canvas;
 
-    double sx = _pianoRoll.style.scrollOffset.dx;
-    double sy = _pianoRoll.style.scrollOffset.dy;
+    double sx = _pianoRoll.context.range.scrollOffset.dx;
+    double sy = _pianoRoll.context.range.scrollOffset.dy;
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(
         offset.dx, offset.dy, size.width + offset.dx, size.height));
     canvas.translate(sx + offset.dx, sy + offset.dy + 50);
     _paintImpl(context, offset);
     canvas.restore();
+    // スクロールバーの描画
+    canvas.drawRect(
+        _pianoRoll.context.horizontalScrollBarRect(
+            offset, size.height - 20, size.height, size.width),
+        //Rect.fromLTRB(offset.dx, size.height - 20,
+        //    offset.dx + (parW * this.size.width), size.height),
+        Paint()..color = Color.fromARGB(128, 0, 0, 0));
+    canvas.drawRect(
+        _pianoRoll.context.verticalScrollBarRect(offset,
+            offset.dx + size.width - 20, offset.dx + size.width, size.height),
+        //Rect.fromLTRB(offset.dx + size.width - 20, offset.dy,
+        //    offset.dx + size.width, offset.dy + (parH * this.size.height)),
+        Paint()..color = Color.fromARGB(128, 0, 0, 0));
   }
 
   void _paintImpl(PaintingContext context, Offset offset) {

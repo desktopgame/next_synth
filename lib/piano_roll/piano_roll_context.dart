@@ -10,6 +10,7 @@ import './key.dart' as P;
 import './measure.dart';
 import './note.dart';
 import './piano_roll_model.dart';
+import './piano_roll_range.dart';
 import './piano_roll_style.dart';
 import './piano_roll_ui.dart';
 import './piano_roll_utilities.dart';
@@ -17,13 +18,15 @@ import './piano_roll_utilities.dart';
 class PianoRollContext implements PianoRollUI {
   final PianoRollModel model;
   final PianoRollStyle style;
+  final PianoRollRange range;
   RectSelectManager _rectSelectManager;
   NoteDragManager _noteDragManager;
   NoteResizeManager _noteResizeManager;
   PianoRollSelectionMode selectionMode;
 
   PianoRollContext(this.model, this.style)
-      : selectionMode = PianoRollSelectionMode.tap {}
+      : range = PianoRollRange(),
+        selectionMode = PianoRollSelectionMode.tap {}
 
   RectSelectManager get rectSelectManager {
     if (_rectSelectManager == null) {
@@ -135,4 +138,20 @@ class PianoRollContext implements PianoRollUI {
   @override
   double relativeBeatIndexToXOffset(int i) =>
       PianoRollUtilities.relativeBeatIndexToXOffset(style, i);
+
+  Rect horizontalScrollBarRect(
+      Offset offset, double top, double bottom, double width) {
+    var mw = computeMaxWidth();
+    var parW = width / mw;
+    //var offset = range.scrollOffset;
+    return Rect.fromLTRB(offset.dx, top, offset.dx + (parW * width), bottom);
+  }
+
+  Rect verticalScrollBarRect(
+      Offset offset, double left, double right, double height) {
+    var mh = computeMaxHeight();
+    var parH = height / mh;
+    //var offset = range.scrollOffset;
+    return Rect.fromLTRB(left, offset.dy, right, offset.dy + (parH * height));
+  }
 }

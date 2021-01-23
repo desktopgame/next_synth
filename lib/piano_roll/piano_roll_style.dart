@@ -32,7 +32,6 @@ class PianoRollStyle {
   Paint verticalHighlightLinePaint = Paint()
     ..color = Colors.yellow
     ..strokeWidth = 2;
-  Offset scrollOffset = Offset(0, 0);
   PianoRollStyle() {
     this._listenerList = EventListenerList();
     this.beatWidth = 96;
