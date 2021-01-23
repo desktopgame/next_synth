@@ -98,10 +98,10 @@ class NoteResizeManager {
     }
   }
 
-  get baseNote => _baseNote;
-  get targets => _notes;
-  get currentX => _currentX;
-  get baseX => _baseX;
-  get type => _type;
-  get hasFocus => _hasFocus;
+  Note get baseNote => _baseNote;
+  List<Note> get targets => _notes;
+  int get currentX => _currentX;
+  int get baseX => _baseX;
+  NoteResizeType get type => _type;
+  bool get hasFocus => _hasFocus;
 }
