@@ -4,8 +4,10 @@ import 'package:optional/optional.dart';
 import './key.dart' as P;
 import './measure.dart';
 import './note.dart';
+import './piano_roll_style.dart';
 
 abstract class PianoRollUI {
+  PianoRollStyle get style;
   int computeMaxWidth();
   int computeMaxHeight();
   int computeWidth(int measureCount);

@@ -1,11 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:next_synth/piano_roll/note_drag_manager.dart';
-import 'package:next_synth/piano_roll/note_resize_manager.dart';
 import 'package:next_synth/piano_roll/piano_roll_context.dart';
 import 'package:next_synth/piano_roll/piano_roll_selection_mode.dart';
 import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
-import 'package:next_synth/piano_roll/rect_select_manager.dart';
 
 import 'piano_roll.dart';
 import 'piano_roll_layout_info.dart';
@@ -18,21 +15,11 @@ class PianoRollScrollState extends State<PianoRollScroll> {
   final GlobalKey pianoRollKey;
   final PianoRollContext pianoRollContext;
   final PianoRollLayoutInfo layoutInfo;
-  final RectSelectManager rectSelectManager;
-  final NoteDragManager noteDragManager;
-  final NoteResizeManager noteResizeManager;
   int _scrollAmountX, _scrollAmountY;
   double _scrollX, _scrollY;
 
-  PianoRollScrollState(
-      this.pianoRoll, this.pianoRollKey, this.pianoRollContext, this.layoutInfo)
-      : rectSelectManager = RectSelectManager(),
-        noteDragManager = NoteDragManager(pianoRoll),
-        noteResizeManager = NoteResizeManager() {
-    style.noteDragManager = noteDragManager;
-    style.noteResizeManager = noteResizeManager;
-    style.rectSelectManager = rectSelectManager;
-  }
+  PianoRollScrollState(this.pianoRoll, this.pianoRollKey, this.pianoRollContext,
+      this.layoutInfo) {}
 
   PianoRollStyle get style => pianoRollContext.style;
   PianoRollModel get model => pianoRollContext.model;
@@ -72,27 +59,27 @@ class PianoRollScrollState extends State<PianoRollScroll> {
       },
       onHorizontalDragUpdate: (DragUpdateDetails details) {
         // ドラッグ中
-        if (noteDragManager.hasFocus) {
+        if (pianoRollContext.noteDragManager.hasFocus) {
           double x = details.localPosition.dx +
               (-style.scrollOffset.dx) -
               layoutInfo.keyboardWidth;
           double y = details.localPosition.dy +
               (-style.scrollOffset.dy) -
               layoutInfo.toolBarHeight;
-          noteDragManager.move(x.toInt(), y.toInt());
+          pianoRollContext.noteDragManager.move(x.toInt(), y.toInt());
           style.refresh();
           return;
         }
         // 矩形選択中
-        if (rectSelectManager.enabled) {
+        if (pianoRollContext.rectSelectManager.enabled) {
           double x = details.localPosition.dx +
               (-style.scrollOffset.dx) -
               layoutInfo.keyboardWidth;
           double y = details.localPosition.dy +
               (-style.scrollOffset.dy) -
               layoutInfo.toolBarHeight;
-          rectSelectManager.rectEnd = Offset(x, y);
-          var selRect = rectSelectManager.selectionRect;
+          pianoRollContext.rectSelectManager.rectEnd = Offset(x, y);
+          var selRect = pianoRollContext.rectSelectManager.selectionRect;
 
           var notes = PianoRollUtilities.getAllNoteList(model).where(
               (element) => selRect.overlaps(pianoRoll.computeNoteRect(
@@ -112,11 +99,11 @@ class PianoRollScrollState extends State<PianoRollScroll> {
         }
       },
       onHorizontalDragEnd: (DragEndDetails details) {
-        if (noteDragManager.hasFocus) {
-          noteDragManager.stop();
+        if (pianoRollContext.noteDragManager.hasFocus) {
+          pianoRollContext.noteDragManager.stop();
         }
-        if (rectSelectManager.enabled) {
-          rectSelectManager.enabled = false;
+        if (pianoRollContext.rectSelectManager.enabled) {
+          pianoRollContext.rectSelectManager.enabled = false;
         }
         style.refresh();
       },
@@ -126,27 +113,28 @@ class PianoRollScrollState extends State<PianoRollScroll> {
       },
       onVerticalDragUpdate: (DragUpdateDetails details) {
         // ドラッグ中
-        if (noteDragManager.hasFocus && !rectSelectManager.enabled) {
+        if (pianoRollContext.noteDragManager.hasFocus &&
+            !pianoRollContext.rectSelectManager.enabled) {
           double x = details.localPosition.dx +
               (-style.scrollOffset.dx) -
               layoutInfo.keyboardWidth;
           double y = details.localPosition.dy +
               (-style.scrollOffset.dy) -
               layoutInfo.toolBarHeight;
-          noteDragManager.move(x.toInt(), y.toInt());
+          pianoRollContext.noteDragManager.move(x.toInt(), y.toInt());
           style.refresh();
           return;
         }
         // 矩形選択中
-        if (rectSelectManager.enabled) {
+        if (pianoRollContext.rectSelectManager.enabled) {
           double x = details.localPosition.dx +
               (-style.scrollOffset.dx) -
               layoutInfo.keyboardWidth;
           double y = details.localPosition.dy +
               (-style.scrollOffset.dy) -
               layoutInfo.toolBarHeight;
-          rectSelectManager.rectEnd = Offset(x, y);
-          var selRect = rectSelectManager.selectionRect;
+          pianoRollContext.rectSelectManager.rectEnd = Offset(x, y);
+          var selRect = pianoRollContext.rectSelectManager.selectionRect;
 
           var notes = PianoRollUtilities.getAllNoteList(model).where(
               (element) => selRect.overlaps(pianoRoll.computeNoteRect(
@@ -166,11 +154,11 @@ class PianoRollScrollState extends State<PianoRollScroll> {
         }
       },
       onVerticalDragEnd: (DragEndDetails details) {
-        if (noteDragManager.hasFocus) {
-          noteDragManager.stop();
+        if (pianoRollContext.noteDragManager.hasFocus) {
+          pianoRollContext.noteDragManager.stop();
         }
-        if (rectSelectManager.enabled) {
-          rectSelectManager.enabled = false;
+        if (pianoRollContext.rectSelectManager.enabled) {
+          pianoRollContext.rectSelectManager.enabled = false;
         }
         style.refresh();
       },
@@ -187,28 +175,30 @@ class PianoRollScrollState extends State<PianoRollScroll> {
         var onNotes = pianoRoll.getNotesAt(x, y);
         // タップ先にノートがあり、選択されていて、既に選択済みのノートがある
         if (notes.length > 0 && (onNotes.length > 0 && onNotes[0].selected)) {
-          this.noteDragManager.start(x.toInt(), y.toInt());
-          this.noteDragManager.touchAll(notes);
+          pianoRollContext.noteDragManager.start(x.toInt(), y.toInt());
+          pianoRollContext.noteDragManager.touchAll(notes);
           style.refresh();
           // タップ先にノートがなく、選択モードが矩形選択
         } else if (onNotes.length == 0 &&
-            style.selectionMode == PianoRollSelectionMode.rect) {
-          rectSelectManager.rectStart = Offset(x.toDouble(), y.toDouble());
-          rectSelectManager.rectEnd = Offset(x.toDouble(), y.toDouble());
-          rectSelectManager.enabled = true;
+            pianoRollContext.selectionMode == PianoRollSelectionMode.rect) {
+          pianoRollContext.rectSelectManager.rectStart =
+              Offset(x.toDouble(), y.toDouble());
+          pianoRollContext.rectSelectManager.rectEnd =
+              Offset(x.toDouble(), y.toDouble());
+          pianoRollContext.rectSelectManager.enabled = true;
           style.refresh();
         }
       },
       onTapUp: (details) {
-        if (noteDragManager.hasFocus) {
-          noteDragManager.stop();
+        if (pianoRollContext.noteDragManager.hasFocus) {
+          pianoRollContext.noteDragManager.stop();
           return;
         }
-        if (rectSelectManager.enabled) {
-          rectSelectManager.enabled = false;
+        if (pianoRollContext.rectSelectManager.enabled) {
+          pianoRollContext.rectSelectManager.enabled = false;
           return;
         }
-        if (style.selectionMode == PianoRollSelectionMode.tap) {
+        if (pianoRollContext.selectionMode == PianoRollSelectionMode.tap) {
           double x = details.localPosition.dx +
               (-style.scrollOffset.dx) -
               layoutInfo.keyboardWidth;

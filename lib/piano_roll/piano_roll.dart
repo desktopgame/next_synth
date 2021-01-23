@@ -16,6 +16,8 @@ class PianoRoll extends SingleChildRenderObjectWidget implements PianoRollUI {
 
   PianoRoll(this._context, {Key key}) : super(key: key) {}
 
+  PianoRollContext get context => _context;
+
   @override
   void updateRenderObject(
       BuildContext context, covariant PianoRollRenderBox renderObject) {

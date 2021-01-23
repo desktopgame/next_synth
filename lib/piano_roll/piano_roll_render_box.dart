@@ -89,8 +89,8 @@ class PianoRollRenderBox extends RenderBox
       index++;
     }
     _drawNoteGhosts(canvas, size);
-    if (style.rectSelectManager.enabled) {
-      canvas.drawRect(style.rectSelectManager.selectionRect,
+    if (pianoRoll.context.rectSelectManager.enabled) {
+      canvas.drawRect(pianoRoll.context.rectSelectManager.selectionRect,
           Paint()..color = Color.fromARGB(128, 20, 20, 200));
     }
   }
@@ -218,7 +218,7 @@ class PianoRollRenderBox extends RenderBox
   }
 
   void _drawNoteGhosts(Canvas canvas, Size size) {
-    var nd = pianoRoll.style.noteDragManager;
+    var nd = pianoRoll.context.noteDragManager;
     int diffX = nd.currentX - nd.baseX;
     int diffY = nd.currentY - nd.baseY;
     for (var target in nd.targets) {

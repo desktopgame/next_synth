@@ -33,16 +33,11 @@ class PianoRollStyle {
     ..color = Colors.yellow
     ..strokeWidth = 2;
   Offset scrollOffset = Offset(0, 0);
-  RectSelectManager rectSelectManager;
-  NoteDragManager noteDragManager;
-  NoteResizeManager noteResizeManager;
-  PianoRollSelectionMode selectionMode;
   PianoRollStyle() {
     this._listenerList = EventListenerList();
     this.beatWidth = 96;
     this.beatHeight = 16;
     this.beatSplitCount = 4;
-    this.selectionMode = PianoRollSelectionMode.tap;
   }
 
   void addNotificationListener(

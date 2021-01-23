@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:next_synth/piano_roll/note_drag_manager.dart';
+import 'package:next_synth/piano_roll/note_resize_manager.dart';
+import 'package:next_synth/piano_roll/piano_roll_selection_mode.dart';
+import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
+import 'package:next_synth/piano_roll/rect_select_manager.dart';
 import 'package:optional/optional.dart';
 
 import './key.dart' as P;
@@ -12,8 +17,34 @@ import './piano_roll_utilities.dart';
 class PianoRollContext implements PianoRollUI {
   final PianoRollModel model;
   final PianoRollStyle style;
+  RectSelectManager _rectSelectManager;
+  NoteDragManager _noteDragManager;
+  NoteResizeManager _noteResizeManager;
+  PianoRollSelectionMode selectionMode;
 
-  PianoRollContext(this.model, this.style);
+  PianoRollContext(this.model, this.style)
+      : selectionMode = PianoRollSelectionMode.tap {}
+
+  RectSelectManager get rectSelectManager {
+    if (_rectSelectManager == null) {
+      _rectSelectManager = RectSelectManager();
+    }
+    return _rectSelectManager;
+  }
+
+  NoteDragManager get noteDragManager {
+    if (_noteDragManager == null) {
+      _noteDragManager = NoteDragManager(this);
+    }
+    return _noteDragManager;
+  }
+
+  NoteResizeManager get noteResizeManager {
+    if (_noteResizeManager == null) {
+      _noteResizeManager = NoteResizeManager();
+    }
+    return _noteResizeManager;
+  }
 
   @override
   int computeMaxWidth() => PianoRollUtilities.computeMaxWidth(model, style);

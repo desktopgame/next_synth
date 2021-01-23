@@ -7,9 +7,10 @@ import './note.dart';
 import './note_drag_event.dart';
 import './note_drag_listener.dart';
 import '../event/event_listener_list.dart';
+import './piano_roll_ui.dart';
 
 class NoteDragManager {
-  PianoRoll _pianoRoll;
+  PianoRollUI _pianoRollUI;
   List<Note> _dragTargets;
   int _baseX;
   int _baseY;
@@ -19,7 +20,7 @@ class NoteDragManager {
   EventListenerList _listenerList;
   Note _baseNote;
 
-  NoteDragManager(this._pianoRoll) {
+  NoteDragManager(this._pianoRollUI) {
     this._dragTargets = List<Note>();
     this._baseX = 0;
     this._baseY = 0;
@@ -84,15 +85,15 @@ class NoteDragManager {
     int diffX = (_currentX - _baseX);
     int diffY = (_currentY - _baseY);
     for (Note note in _dragTargets) {
-      var rect = _pianoRoll.computeNoteRect(note, note.offset, note.length);
+      var rect = _pianoRollUI.computeNoteRect(note, note.offset, note.length);
       rect = rect.translate(diffX.toDouble(), diffY.toDouble());
-      var measureOpt = _pianoRoll.getMeasureAt(rect.left, rect.top);
+      var measureOpt = _pianoRollUI.getMeasureAt(rect.left, rect.top);
       measureOpt.ifPresent((measure) {
-        double xOffset = _pianoRoll.measureIndexToXOffset(measure.index);
-        xOffset += _pianoRoll.style.beatWidth *
-            _pianoRoll.computeRelativeBeatIndex(rect.left);
+        double xOffset = _pianoRollUI.measureIndexToXOffset(measure.index);
+        xOffset += _pianoRollUI.style.beatWidth *
+            _pianoRollUI.computeRelativeBeatIndex(rect.left);
         measure
-            .getBeatAt(_pianoRoll.computeRelativeBeatIndex(rect.left))
+            .getBeatAt(_pianoRollUI.computeRelativeBeatIndex(rect.left))
             .generateNote((rect.left - xOffset).toInt(), note.length);
       });
       if (measureOpt.isPresent) {

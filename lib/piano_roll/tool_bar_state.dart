@@ -74,15 +74,15 @@ class ToolBarState extends State<ToolBar>
           IconButton(onPressed: () {}, icon: Icon(Icons.pause)),
           IconButton(onPressed: () {}, icon: Icon(Icons.stop)),
           PopupMenuButton<String>(
-            initialValue: _style.selectionMode == PianoRollSelectionMode.tap
+            initialValue: _context.selectionMode == PianoRollSelectionMode.tap
                 ? _usStates[0]
                 : _usStates[1],
             onSelected: (String s) {
               setState(() {
                 if (s == _usStates[0]) {
-                  _style.selectionMode = PianoRollSelectionMode.tap;
+                  _context.selectionMode = PianoRollSelectionMode.tap;
                 } else if (s == _usStates[1]) {
-                  _style.selectionMode = PianoRollSelectionMode.rect;
+                  _context.selectionMode = PianoRollSelectionMode.rect;
                 }
               });
             },
@@ -97,7 +97,7 @@ class ToolBarState extends State<ToolBar>
           ),
           GestureDetector(
               onHorizontalDragStart: (DragStartDetails details) {
-                _style.noteResizeManager.touchAll(
+                _context.noteResizeManager.touchAll(
                     PianoRollUtilities.getAllNoteList(_model)
                         .where((element) => element.selected)
                         .toList());
@@ -114,14 +114,15 @@ class ToolBarState extends State<ToolBar>
                 if (!this._resizeStarted) {
                   this._resizeStarted = true;
                   if (x < _resizeStartX) {
-                    _style.noteResizeManager
+                    _context.noteResizeManager
                         .start(NoteResizeType.move, x.toInt());
                   } else {
-                    _style.noteResizeManager
+                    _context.noteResizeManager
                         .start(NoteResizeType.resize, x.toInt());
                   }
                 } else {
-                  _style.noteResizeManager.resize(x.toInt(), _style.beatWidth);
+                  _context.noteResizeManager
+                      .resize(x.toInt(), _style.beatWidth);
                 }
               },
               onHorizontalDragEnd: (DragEndDetails details) {
