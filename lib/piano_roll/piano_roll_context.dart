@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:next_synth/piano_roll/note_drag_manager.dart';
 import 'package:next_synth/piano_roll/note_resize_manager.dart';
 import 'package:next_synth/piano_roll/piano_roll_selection_mode.dart';
+import 'package:next_synth/piano_roll/piano_roll_sequencer.dart';
 import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
 import 'package:next_synth/piano_roll/rect_select_manager.dart';
 import 'package:optional/optional.dart';
@@ -23,6 +24,7 @@ class PianoRollContext implements PianoRollUI {
   NoteDragManager _noteDragManager;
   NoteResizeManager _noteResizeManager;
   PianoRollSelectionMode selectionMode;
+  PianoRollSequencer _sequencer;
 
   PianoRollContext(this.model, this.style)
       : range = PianoRollRange(),
@@ -47,6 +49,20 @@ class PianoRollContext implements PianoRollUI {
       _noteResizeManager = NoteResizeManager();
     }
     return _noteResizeManager;
+  }
+
+  PianoRollSequencer get sequencer {
+    if (_sequencer == null) {
+      _sequencer = PianoRollSequencer(this, onTick: () {
+        if (_sequencer.position > computeMaxWidth()) {
+          _sequencer.position = 0;
+          _sequencer.stop();
+          style.refresh();
+        }
+        style.refresh();
+      });
+    }
+    return _sequencer;
   }
 
   @override

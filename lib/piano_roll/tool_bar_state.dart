@@ -70,9 +70,39 @@ class ToolBarState extends State<ToolBar>
                 );
               }),
           Divider(color: Colors.black),
-          IconButton(onPressed: () {}, icon: Icon(Icons.play_arrow)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.pause)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.stop)),
+          StreamBuilder(
+              stream: _context.sequencer.playingStream,
+              builder: (builder, snapshot) {
+                return IconButton(
+                    onPressed: _context.sequencer.isPlaying
+                        ? null
+                        : () {
+                            setState(() {
+                              _context.sequencer.start();
+                            });
+                          },
+                    icon: Icon(Icons.play_arrow));
+              }),
+          StreamBuilder(
+              stream: _context.sequencer.playingStream,
+              builder: (builder, snapshot) {
+                return IconButton(
+                    onPressed: !_context.sequencer.isPlaying
+                        ? null
+                        : () {
+                            setState(() {
+                              _context.sequencer.pause();
+                            });
+                          },
+                    icon: Icon(Icons.pause));
+              }),
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  _context.sequencer.stop();
+                });
+              },
+              icon: Icon(Icons.stop)),
           PopupMenuButton<String>(
             initialValue: _context.selectionMode == PianoRollSelectionMode.tap
                 ? _usStates[0]
