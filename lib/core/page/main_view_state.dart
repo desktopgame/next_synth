@@ -1,8 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:next_synth/core/system/midi_helper.dart';
 import 'package:next_synth/core/system/project_list.save_data.dart';
 import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
 import 'package:next_synth/piano_roll/default_track_list_model.dart';
+import 'package:next_synth/piano_roll/note_play_event.dart';
+import 'package:next_synth/piano_roll/note_play_event_type.dart';
+import 'package:next_synth/piano_roll/note_play_listener.dart';
 import 'package:next_synth/piano_roll/piano_roll_context.dart';
 import 'package:next_synth/piano_roll/piano_roll_editor.dart';
 import 'package:next_synth/piano_roll/piano_roll_layout_info.dart';
@@ -12,6 +18,7 @@ import 'package:next_synth/piano_roll/piano_roll_model_listener.dart';
 import 'package:next_synth/piano_roll/piano_roll_style.dart';
 import 'package:next_synth/piano_roll/track_list.dart';
 import 'package:next_synth/piano_roll/track_list_model.dart';
+import 'package:next_synth_midi/next_synth_midi.dart';
 
 import './main_view.dart';
 import '../system/app_data.save_data.dart';
@@ -19,7 +26,8 @@ import '../system/piano_roll_data.dart';
 import '../system/project.dart';
 import '../system/track_data.dart';
 
-class MainViewState extends State<MainView> implements PianoRollModelListener {
+class MainViewState extends State<MainView>
+    implements PianoRollModelListener, NotePlayListener {
   int _projectIndex;
   int _trackIndex;
   PianoRollContext _context;
@@ -66,12 +74,14 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
             .translate(0, -appData.beatHeight * ((appData.keyCount / 2) * 12));
       }
     }
+    _context.sequencer.addNotePlayListener(this);
   }
 
   @override
   void dispose() {
     super.dispose();
     stopListen();
+    _context.sequencer.removeNotePlayListener(this);
   }
 
   void stopListen() {
@@ -152,5 +162,20 @@ class MainViewState extends State<MainView> implements PianoRollModelListener {
     final proj = projList.data[_projectIndex];
     proj.tracks[_trackIndex].pianoRollData = PianoRollData.fromModel(model);
     await ProjectListProvider.save();
+  }
+
+  @override
+  void notePlay(NotePlayEvent e) {
+    if (MidiHelper.instance.devices.length == 0) {
+      return;
+    }
+    int i = MidiHelper.instance.devices[0];
+    int height = e.note.beat.measure.key.model
+        .getKeyHeight(e.note.beat.measure.key.index);
+    if (e.type == NotePlayEventType.noteOn) {
+      NextSynthMidi.send(i, 0, Uint8List.fromList([0x90, height, 127]), 0, 3);
+    } else {
+      NextSynthMidi.send(i, 0, Uint8List.fromList([0x80, height, 127]), 0, 3);
+    }
   }
 }
