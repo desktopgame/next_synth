@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import './core/page/code_page.dart';
 import './core/page/edit_page.dart';
 import './core/page/setting_page.dart';
 import './core/page/start_page.dart';
@@ -74,7 +75,8 @@ class MyApp extends StatelessWidget {
         "/": (BuildContext context) => StartPage(),
         "/edit": (BuildContext context) => EditPage(),
         "/setting": (BuildContext context) => SettingPage(),
-        "/usb": (BuildContext context) => USBInfoPage()
+        "/usb": (BuildContext context) => USBInfoPage(),
+        "/code": (BuildContext context) => CodePage()
       },
     );
   }

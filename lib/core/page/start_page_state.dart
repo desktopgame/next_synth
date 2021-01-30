@@ -180,6 +180,12 @@ class StartPageState extends State<StartPage> {
           Navigator.pushNamed(context, "/setting");
         },
       ),
+      IconButton(
+        icon: Icon(Icons.code),
+        onPressed: () {
+          Navigator.pushNamed(context, "/code");
+        },
+      ),
     ];
   }
 
