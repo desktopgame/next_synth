@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:highlighter_coachmark/highlighter_coachmark.dart';
 import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
 
 import './start_page.dart';
+import './tutorial.dart';
 import '../system/app_data.save_data.dart';
 import '../system/piano_roll_data.dart';
 import '../system/project.dart';
@@ -228,61 +228,13 @@ class StartPageState extends State<StartPage> {
   }
 
   void _runTutorial() {
-    _highlightSequence(0, [
-      _addButtonKey,
-      _delButtonKey,
-      _midiButtonKey,
-      _settingButtonKey,
-      _codeButtonKey
-    ], [
-      "プロジェクトを作成できます。",
-      "プロジェクトを削除できます。",
-      "MIDI機器との接続を設定できます。",
-      "アプリケーション全体の設定を編集できます。",
-      "セーブデータのバックアップ/移行のために使用できます。"
-    ])();
-  }
-
-  void Function() _highlightSequence(
-    int index,
-    List<GlobalKey> keys,
-    List<String> labels,
-  ) {
-    if (index >= keys.length) {
-      return () {};
-    }
-    return () {
-      _highlight(keys[index], labels[index],
-          callback: _highlightSequence(index + 1, keys, labels));
-    };
-  }
-
-  void _highlight(GlobalKey key, String label,
-      {double top = 25, double right = 10, void Function() callback}) {
-    CoachMark coachMark = CoachMark();
-    RenderBox target = key.currentContext.findRenderObject();
-    Rect markRect = target.localToGlobal(Offset.zero) & target.size;
-    markRect = Rect.fromCircle(
-        center: markRect.center, radius: markRect.longestSide * 0.6);
-    coachMark.show(
-        targetContext: _addButtonKey.currentContext,
-        markRect: markRect,
-        children: [
-          Positioned(
-              top: markRect.top - top,
-              right: right,
-              child: Text(label,
-                  style: const TextStyle(
-                    fontSize: 24.0,
-                    fontStyle: FontStyle.italic,
-                    color: Colors.white,
-                  )))
-        ],
-        duration: null,
-        onClose: () {
-          if (callback != null) callback();
-          //appState.setCoachMarkIsShown(true);
-        });
+    Tutorial.run([
+      TutorialPhase(_addButtonKey, "プロジェクトを作成できます。"),
+      TutorialPhase(_delButtonKey, "プロジェクトを削除できます。"),
+      TutorialPhase(_midiButtonKey, "MIDI機器との接続を設定できます。"),
+      TutorialPhase(_settingButtonKey, "アプリケーション全体の設定を編集できます。"),
+      TutorialPhase(_codeButtonKey, "セーブデータのバックアップ/移行のために使用できます。"),
+    ]);
   }
 
   @override
