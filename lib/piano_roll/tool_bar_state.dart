@@ -7,6 +7,7 @@ import 'package:next_synth/piano_roll/piano_roll_style.dart';
 import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
 
 import './tool_bar.dart';
+import '../core/page/tutorial.dart';
 import '../undo/undoable_edit_event.dart';
 import '../undo/undoable_edit_listener.dart';
 import 'piano_roll_context.dart';
@@ -19,6 +20,12 @@ class ToolBarState extends State<ToolBar>
   final PianoRollContext _context;
   final StreamController<UndoableEditEvent> _undoController;
   final StreamController<UndoableEditEvent> _redoController;
+  GlobalKey _undoButtonKey = GlobalKey();
+  GlobalKey _redoButtonKey = GlobalKey();
+  GlobalKey _playButtonKey = GlobalKey();
+  GlobalKey _pauseButtonKey = GlobalKey();
+  GlobalKey _stopButtonKey = GlobalKey();
+  GlobalKey _popupButtonKey = GlobalKey();
   var _resizeStartX = -1.0;
   var _resizeStarted = false;
   var _resizeTicks = 0;
@@ -42,13 +49,31 @@ class ToolBarState extends State<ToolBar>
         alignment: MainAxisAlignment.start,
         children: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              final top = -25.0;
+              final right = 15.0;
+              Tutorial.run([
+                TutorialPhase(_undoButtonKey, "処理を戻せます。",
+                    top: top, right: right),
+                TutorialPhase(_redoButtonKey, "処理をやり直せます。",
+                    top: top, right: right),
+                TutorialPhase(_playButtonKey, "シーケンサを再生します。",
+                    top: top, right: right),
+                TutorialPhase(_pauseButtonKey, "シーケンサを一時停止します。",
+                    top: top, right: right),
+                TutorialPhase(_stopButtonKey, "シーケンサを停止します。",
+                    top: top, right: right),
+                TutorialPhase(_popupButtonKey, "ノートの選択モードを変更します。",
+                    top: top, right: right),
+              ]);
+            },
             icon: Icon(Icons.help),
           ),
           StreamBuilder(
               stream: _undoController.stream,
               builder: (builder, snapshot) {
                 return IconButton(
+                  key: _undoButtonKey,
                   onPressed: _model.canUndo
                       ? () {
                           _model.undo();
@@ -61,6 +86,7 @@ class ToolBarState extends State<ToolBar>
               stream: _redoController.stream,
               builder: (builder, snapshot) {
                 return IconButton(
+                  key: _redoButtonKey,
                   onPressed: _model.canRedo
                       ? () {
                           _model.redo();
@@ -74,6 +100,7 @@ class ToolBarState extends State<ToolBar>
               stream: _context.sequencer.playingStream,
               builder: (builder, snapshot) {
                 return IconButton(
+                    key: _playButtonKey,
                     onPressed: _context.sequencer.isPlaying
                         ? null
                         : () {
@@ -87,6 +114,7 @@ class ToolBarState extends State<ToolBar>
               stream: _context.sequencer.playingStream,
               builder: (builder, snapshot) {
                 return IconButton(
+                    key: _pauseButtonKey,
                     onPressed: !_context.sequencer.isPlaying
                         ? null
                         : () {
@@ -97,6 +125,7 @@ class ToolBarState extends State<ToolBar>
                     icon: Icon(Icons.pause));
               }),
           IconButton(
+              key: _stopButtonKey,
               onPressed: () {
                 setState(() {
                   _context.sequencer.stop();
@@ -104,6 +133,7 @@ class ToolBarState extends State<ToolBar>
               },
               icon: Icon(Icons.stop)),
           PopupMenuButton<String>(
+            key: _popupButtonKey,
             initialValue: _context.selectionMode == PianoRollSelectionMode.tap
                 ? _usStates[0]
                 : _usStates[1],

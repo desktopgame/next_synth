@@ -28,6 +28,8 @@ class Tutorial {
     }
     return () {
       _runHighlight(phases[index].key, phases[index].label,
+          top: phases[index].top,
+          right: phases[index].right,
           callback: _runSequence(index + 1, phases));
     };
   }
