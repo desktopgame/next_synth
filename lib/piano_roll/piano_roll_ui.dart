@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:next_synth/piano_roll/piano_roll_model_provider.dart';
 import 'package:optional/optional.dart';
 
 import './key.dart' as P;
@@ -7,7 +8,9 @@ import './note.dart';
 import './piano_roll_style.dart';
 
 abstract class PianoRollUI {
+  PianoRollModelProvider get provider;
   PianoRollStyle get style;
+  void swapModel(int i);
   int computeMaxWidth();
   int computeMaxHeight();
   int computeWidth(int measureCount);

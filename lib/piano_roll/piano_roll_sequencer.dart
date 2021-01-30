@@ -18,7 +18,7 @@ class PianoRollSequencer {
   PianoRollUI _ui;
   Timer _timer;
   bool _isPlaying;
-  List<Note> _cachedNotes;
+  List<List<Note>> _cachedNotesList;
   EventListenerList _listenerList;
   BehaviorSubject<bool> _playingController;
 
@@ -31,7 +31,7 @@ class PianoRollSequencer {
     this.updateRate = UpdateRate.bpmToUpdateRate(480, 120);
     this._isPlaying = false;
     this._playingController = BehaviorSubject();
-    this._cachedNotes = List<Note>();
+    this._cachedNotesList = List<List<Note>>();
     this._listenerList = EventListenerList();
   }
 
@@ -94,28 +94,39 @@ class PianoRollSequencer {
 
   void _doStep() {
     this.position++;
-    //int index = _ui.computeRelativeBeatIndex(this.position.toDouble());
-    var allNotes = List<Note>();
-    for (int y = 0; y < _ui.computeMaxHeight(); y += _ui.style.beatHeight) {
-      var sub = _ui.getNotesAt(this.position.toDouble(), y.toDouble());
-      allNotes.addAll(sub);
-    }
-    var notes = List<Note>()
-      ..addAll(allNotes)
-      ..toSet()
-      ..toList();
-    for (Note note in notes) {
-      if (!_cachedNotes.contains(note)) {
-        _fireNotePlay(note, NotePlayEventType.noteOn);
+    for (int p = 0; p < _ui.provider.count; p++) {
+      _ui.swapModel(p);
+      if (_cachedNotesList.length <= p) {
+        _cachedNotesList.add(List<Note>());
       }
+      var _cachedNotes = _cachedNotesList[p];
+      //int index = _ui.computeRelativeBeatIndex(this.position.toDouble());
+      var allNotes = List<Note>();
+      for (int y = 0; y < _ui.computeMaxHeight(); y += _ui.style.beatHeight) {
+        var sub = _ui.getNotesAt(this.position.toDouble(), y.toDouble());
+        allNotes.addAll(sub);
+      }
+      var notes = List<Note>()
+        ..addAll(allNotes)
+        ..toSet()
+        ..toList();
+      for (Note note in notes) {
+        if (!_cachedNotes.contains(note)) {
+          _fireNotePlay(note, NotePlayEventType.noteOn);
+        }
+      }
+      var noteOffList =
+          _cachedNotes.where((element) => !notes.contains(element));
+      for (Note note in noteOffList) {
+        _fireNotePlay(note, NotePlayEventType.noteOff);
+      }
+      _cachedNotes.removeWhere((element) => !notes.contains(element));
+      _cachedNotes.addAll(notes);
+      _cachedNotes = _cachedNotes.toSet().toList();
+      _cachedNotesList[p].clear();
+      _cachedNotesList[p].addAll(_cachedNotes);
     }
-    var noteOffList = _cachedNotes.where((element) => !notes.contains(element));
-    for (Note note in noteOffList) {
-      _fireNotePlay(note, NotePlayEventType.noteOff);
-    }
-    _cachedNotes.removeWhere((element) => !notes.contains(element));
-    _cachedNotes.addAll(notes);
-    _cachedNotes = _cachedNotes.toSet().toList();
+    _ui.swapModel(-1);
   }
 
   void _fireNotePlay(Note note, NotePlayEventType type) {

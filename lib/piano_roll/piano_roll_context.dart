@@ -11,13 +11,15 @@ import './key.dart' as P;
 import './measure.dart';
 import './note.dart';
 import './piano_roll_model.dart';
+import './piano_roll_model_provider.dart';
 import './piano_roll_range.dart';
 import './piano_roll_style.dart';
 import './piano_roll_ui.dart';
 import './piano_roll_utilities.dart';
 
 class PianoRollContext implements PianoRollUI {
-  final PianoRollModel model;
+  final PianoRollModelProvider provider;
+  final PianoRollModel mainModel;
   final PianoRollStyle style;
   final PianoRollRange range;
   RectSelectManager _rectSelectManager;
@@ -25,10 +27,18 @@ class PianoRollContext implements PianoRollUI {
   NoteResizeManager _noteResizeManager;
   PianoRollSelectionMode selectionMode;
   PianoRollSequencer _sequencer;
+  int _swapIndex = -1;
 
-  PianoRollContext(this.model, this.style)
+  PianoRollContext(this.provider, this.mainModel, this.style)
       : range = PianoRollRange(),
         selectionMode = PianoRollSelectionMode.tap {}
+
+  PianoRollModel get model {
+    if (_swapIndex >= 0) {
+      return provider.getModelAt(_swapIndex);
+    }
+    return mainModel;
+  }
 
   RectSelectManager get rectSelectManager {
     if (_rectSelectManager == null) {
@@ -63,6 +73,11 @@ class PianoRollContext implements PianoRollUI {
       });
     }
     return _sequencer;
+  }
+
+  @override
+  void swapModel(int i) {
+    _swapIndex = i;
   }
 
   @override

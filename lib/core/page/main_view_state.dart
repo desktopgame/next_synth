@@ -15,6 +15,7 @@ import 'package:next_synth/piano_roll/piano_roll_layout_info.dart';
 import 'package:next_synth/piano_roll/piano_roll_model.dart';
 import 'package:next_synth/piano_roll/piano_roll_model_event.dart';
 import 'package:next_synth/piano_roll/piano_roll_model_listener.dart';
+import 'package:next_synth/piano_roll/piano_roll_model_provider.dart';
 import 'package:next_synth/piano_roll/piano_roll_style.dart';
 import 'package:next_synth/piano_roll/track_list.dart';
 import 'package:next_synth/piano_roll/track_list_model.dart';
@@ -27,17 +28,19 @@ import '../system/project.dart';
 import '../system/track_data.dart';
 
 class MainViewState extends State<MainView>
-    implements PianoRollModelListener, NotePlayListener {
+    implements
+        PianoRollModelListener,
+        NotePlayListener,
+        PianoRollModelProvider {
   int _projectIndex;
   int _trackIndex;
   PianoRollContext _context;
   PianoRollLayoutInfo layoutInfo;
   TrackListModel trackListModel;
+  List<PianoRollModel> _modelCache;
   final logger = new Logger('MainViewState');
 
-  MainViewState(this._projectIndex) {
-//    this.model = Reference();
-  }
+  MainViewState(this._projectIndex) : _modelCache = List<PianoRollModel>() {}
 
   PianoRollModel get model => _context == null ? null : _context.model;
   PianoRollStyle get style => _context == null ? null : _context.style;
@@ -69,7 +72,7 @@ class MainViewState extends State<MainView>
         model = track.model.duplicate();
         this._trackIndex = 0;
         model.addPianoRollModelListener(this);
-        this._context = PianoRollContext(model, style);
+        this._context = PianoRollContext(this, model, style);
         _context.range.scrollOffset = _context.range.scrollOffset
             .translate(0, -appData.beatHeight * ((appData.keyCount / 2) * 12));
       }
@@ -177,5 +180,17 @@ class MainViewState extends State<MainView>
     } else {
       NextSynthMidi.send(i, 0, Uint8List.fromList([0x80, height, 127]), 0, 3);
     }
+  }
+
+  @override
+  int get count =>
+      ProjectListProvider.provide().value.data[_projectIndex].tracks.length;
+
+  @override
+  PianoRollModel getModelAt(int i) {
+    if (i == _trackIndex) {
+      return _context.mainModel;
+    }
+    return trackListModel.getTrackAt(i).model;
   }
 }

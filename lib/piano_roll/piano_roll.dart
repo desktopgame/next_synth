@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:next_synth/piano_roll/piano_roll_context.dart';
+import 'package:next_synth/piano_roll/piano_roll_model_provider.dart';
 import 'package:optional/optional.dart';
 
 import './key.dart' as P;
@@ -24,6 +25,8 @@ class PianoRoll extends SingleChildRenderObjectWidget implements PianoRollUI {
     renderObject.pianoRoll = this;
   }
 
+  @override
+  PianoRollModelProvider get provider => _context.provider;
   PianoRollModel get model => _context.model;
   PianoRollStyle get style => _context.style;
 
@@ -32,6 +35,8 @@ class PianoRoll extends SingleChildRenderObjectWidget implements PianoRollUI {
     return PianoRollRenderBox(this);
   }
 
+  @override
+  void swapModel(int i) => _context.swapModel(i);
   @override
   int computeMaxWidth() => _context.computeMaxWidth();
   @override
