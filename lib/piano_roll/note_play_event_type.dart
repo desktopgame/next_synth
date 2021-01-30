@@ -1,0 +1,4 @@
+enum NotePlayEventType {
+  noteOn,
+  noteOff
+}
