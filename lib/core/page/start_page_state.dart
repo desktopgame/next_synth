@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:highlighter_coachmark/highlighter_coachmark.dart';
 import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
 
 import './start_page.dart';
@@ -11,6 +12,11 @@ import '../system/track_data.dart';
 
 class StartPageState extends State<StartPage> {
   int _selectedProjectIndex;
+  GlobalKey _addButtonKey = GlobalKey();
+  GlobalKey _delButtonKey = GlobalKey();
+  GlobalKey _midiButtonKey = GlobalKey();
+  GlobalKey _settingButtonKey = GlobalKey();
+  GlobalKey _codeButtonKey = GlobalKey();
 
   @override
   void initState() {
@@ -149,6 +155,13 @@ class StartPageState extends State<StartPage> {
   List<Widget> _buildFooterButtons(BuildContext context) {
     return <Widget>[
       IconButton(
+        icon: Icon(Icons.help),
+        onPressed: () {
+          _runTutorial();
+        },
+      ),
+      IconButton(
+        key: _addButtonKey,
         icon: Icon(Icons.add),
         onPressed: () {
           _showConfirmDialog(context, "プロジェクト名",
@@ -161,6 +174,7 @@ class StartPageState extends State<StartPage> {
         },
       ),
       IconButton(
+        key: _delButtonKey,
         icon: Icon(Icons.delete),
         onPressed: _selectedProjectIndex == -1
             ? null
@@ -169,18 +183,21 @@ class StartPageState extends State<StartPage> {
               },
       ),
       IconButton(
+        key: _midiButtonKey,
         icon: Icon(Icons.usb),
         onPressed: () async {
           Navigator.pushNamed(context, "/usb");
         },
       ),
       IconButton(
+        key: _settingButtonKey,
         icon: Icon(Icons.settings),
         onPressed: () {
           Navigator.pushNamed(context, "/setting");
         },
       ),
       IconButton(
+        key: _codeButtonKey,
         icon: Icon(Icons.code),
         onPressed: () {
           Navigator.pushNamed(context, "/code");
@@ -208,6 +225,64 @@ class StartPageState extends State<StartPage> {
               ? Colors.blue
               : Colors.teal[100],
         ));
+  }
+
+  void _runTutorial() {
+    _highlightSequence(0, [
+      _addButtonKey,
+      _delButtonKey,
+      _midiButtonKey,
+      _settingButtonKey,
+      _codeButtonKey
+    ], [
+      "プロジェクトを作成できます。",
+      "プロジェクトを削除できます。",
+      "MIDI機器との接続を設定できます。",
+      "アプリケーション全体の設定を編集できます。",
+      "セーブデータのバックアップ/移行のために使用できます。"
+    ])();
+  }
+
+  void Function() _highlightSequence(
+    int index,
+    List<GlobalKey> keys,
+    List<String> labels,
+  ) {
+    if (index >= keys.length) {
+      return () {};
+    }
+    return () {
+      _highlight(keys[index], labels[index],
+          callback: _highlightSequence(index + 1, keys, labels));
+    };
+  }
+
+  void _highlight(GlobalKey key, String label,
+      {double top = 25, double right = 10, void Function() callback}) {
+    CoachMark coachMark = CoachMark();
+    RenderBox target = key.currentContext.findRenderObject();
+    Rect markRect = target.localToGlobal(Offset.zero) & target.size;
+    markRect = Rect.fromCircle(
+        center: markRect.center, radius: markRect.longestSide * 0.6);
+    coachMark.show(
+        targetContext: _addButtonKey.currentContext,
+        markRect: markRect,
+        children: [
+          Positioned(
+              top: markRect.top - top,
+              right: right,
+              child: Text(label,
+                  style: const TextStyle(
+                    fontSize: 24.0,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.white,
+                  )))
+        ],
+        duration: null,
+        onClose: () {
+          if (callback != null) callback();
+          //appState.setCoachMarkIsShown(true);
+        });
   }
 
   @override
