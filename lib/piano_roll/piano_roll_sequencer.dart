@@ -112,13 +112,13 @@ class PianoRollSequencer {
         ..toList();
       for (Note note in notes) {
         if (!_cachedNotes.contains(note)) {
-          _fireNotePlay(note, NotePlayEventType.noteOn);
+          _fireNotePlay(p, note, NotePlayEventType.noteOn);
         }
       }
       var noteOffList =
           _cachedNotes.where((element) => !notes.contains(element));
       for (Note note in noteOffList) {
-        _fireNotePlay(note, NotePlayEventType.noteOff);
+        _fireNotePlay(p, note, NotePlayEventType.noteOff);
       }
       _cachedNotes.removeWhere((element) => !notes.contains(element));
       _cachedNotes.addAll(notes);
@@ -129,8 +129,8 @@ class PianoRollSequencer {
     _ui.swapModel(-1);
   }
 
-  void _fireNotePlay(Note note, NotePlayEventType type) {
-    var evt = NotePlayEvent(this, note, type);
+  void _fireNotePlay(int trackIndex, Note note, NotePlayEventType type) {
+    var evt = NotePlayEvent(this, trackIndex, note, type);
     for (NotePlayListener listener
         in _listenerList.getListeners<NotePlayListener>()) {
       listener.notePlay(evt);
