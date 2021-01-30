@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:save_data_lib/save_data_lib.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './code_page.dart';
@@ -144,6 +145,8 @@ class CodePageState extends State<CodePage> {
                     backgroundColor: Colors.black,
                     textColor: Colors.white,
                     fontSize: 16.0);
+                await SaveData.instance.discard(key);
+                await SaveData.instance.load(key);
               },
             ),
           ],
