@@ -70,7 +70,7 @@ class CodePageState extends State<CodePage> {
             ],
           ),
           Text(
-            '※この操作は危険です。事前にバックアップしておくことを推奨します。',
+            '※この操作は危険です。注意して実行してください。',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 foreground: Paint()..color = Colors.red),
