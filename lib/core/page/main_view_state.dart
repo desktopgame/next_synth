@@ -176,9 +176,11 @@ class MainViewState extends State<MainView>
     int height = e.note.beat.measure.key.model
         .getKeyHeight(e.note.beat.measure.key.index);
     if (e.type == NotePlayEventType.noteOn) {
-      NextSynthMidi.send(i, 0, Uint8List.fromList([0x90, height, 127]), 0, 3);
+      NextSynthMidi.send(
+          i, 0, Uint8List.fromList([144 + e.trackIndex, height, 127]), 0, 3);
     } else {
-      NextSynthMidi.send(i, 0, Uint8List.fromList([0x80, height, 127]), 0, 3);
+      NextSynthMidi.send(
+          i, 0, Uint8List.fromList([128 + e.trackIndex, height, 127]), 0, 3);
     }
   }
 
