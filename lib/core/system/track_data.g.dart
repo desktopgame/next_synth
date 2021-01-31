@@ -10,6 +10,7 @@ TrackData _$TrackDataFromJson(Map json) {
   return TrackData()
     ..name = json['name'] as String
     ..isMute = json['isMute'] as bool
+    ..channel = json['channel'] as int
     ..pianoRollData = json['pianoRollData'] == null
         ? null
         : PianoRollData.fromJson(json['pianoRollData'] as Map);
@@ -18,5 +19,6 @@ TrackData _$TrackDataFromJson(Map json) {
 Map<String, dynamic> _$TrackDataToJson(TrackData instance) => <String, dynamic>{
       'name': instance.name,
       'isMute': instance.isMute,
+      'channel': instance.channel,
       'pianoRollData': instance.pianoRollData,
     };
