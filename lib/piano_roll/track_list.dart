@@ -9,19 +9,25 @@ class TrackList extends StatefulWidget {
   void Function(int) _onSelected;
   void Function(Track) _onCreated;
   void Function(int) _onRemoved;
+  void Function(int, Track) _onUpdated;
 
   TrackList(this._trackListModel,
       {void Function(int) onSelected,
       void Function(Track) onCreated,
-      void Function(int) onRemoved}) {
+      void Function(int) onRemoved,
+      void Function(int, Track) onUpdated}) {
     this._onSelected = onSelected;
     this._onCreated = onCreated;
     this._onRemoved = onRemoved;
+    this._onUpdated = onUpdated;
   }
 
   @override
   State<StatefulWidget> createState() {
     return TrackListState(_trackListModel,
-        onSelected: _onSelected, onCreated: _onCreated, onRemoved: _onRemoved);
+        onSelected: _onSelected,
+        onCreated: _onCreated,
+        onRemoved: _onRemoved,
+        onUpdated: _onUpdated);
   }
 }

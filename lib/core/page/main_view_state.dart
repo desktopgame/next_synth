@@ -112,53 +112,53 @@ class MainViewState extends State<MainView>
     var appData = AppDataProvider.provide().value;
     return Row(
       children: [
-        TrackList(
-          trackListModel,
-          onSelected: (index) {
-            if (!this.mounted) {
-              return;
-            }
-            setState(() {
-              stopListen();
-              //PianoRollUtilities.getAllNoteList(model).forEach((element) {
-              //  element.removeFromBeat();
-              //});
-              //this.model = proj.tracks[index].pianoRollData.toModel();
-              //trackListModel.getTrackAt(index).model = this.model;
-              trackListModel.getTrackAt(_trackIndex).model =
-                  this.model.duplicate();
-              this.model.clear();
-              this.model.merge(trackListModel.getTrackAt(index).model);
-              //this.model = DefaultPianoRollModel(11 * 12, 4, 4);
-              this._trackIndex = index;
-              model.addPianoRollModelListener(this);
-              style.refresh();
-            });
-          },
-          onCreated: (t) async {
-            var track = TrackData()
-              ..isMute = false
-              ..channel = 0
-              ..name = _newTrackName(proj)
-              ..pianoRollData = PianoRollData.fromModel(DefaultPianoRollModel(
-                  appData.keyCount * 12,
-                  appData.measureCount,
-                  appData.beatCount));
-            t.isMute = track.isMute;
-            t.name = track.name;
-            t.channel = track.channel;
-            t.model = track.pianoRollData.toModel();
-            proj.tracks.add(track);
-            await ProjectListProvider.save();
-          },
-          onRemoved: (i) async {
-            setState(() {
-              _trackIndex = 0;
-            });
-            proj.tracks.removeAt(i);
-            await ProjectListProvider.save();
-          },
-        ),
+        TrackList(trackListModel, onSelected: (index) {
+          if (!this.mounted) {
+            return;
+          }
+          setState(() {
+            stopListen();
+            //PianoRollUtilities.getAllNoteList(model).forEach((element) {
+            //  element.removeFromBeat();
+            //});
+            //this.model = proj.tracks[index].pianoRollData.toModel();
+            //trackListModel.getTrackAt(index).model = this.model;
+            trackListModel.getTrackAt(_trackIndex).model =
+                this.model.duplicate();
+            this.model.clear();
+            this.model.merge(trackListModel.getTrackAt(index).model);
+            //this.model = DefaultPianoRollModel(11 * 12, 4, 4);
+            this._trackIndex = index;
+            model.addPianoRollModelListener(this);
+            style.refresh();
+          });
+        }, onCreated: (t) async {
+          var track = TrackData()
+            ..isMute = false
+            ..channel = 0
+            ..name = _newTrackName(proj)
+            ..pianoRollData = PianoRollData.fromModel(DefaultPianoRollModel(
+                appData.keyCount * 12,
+                appData.measureCount,
+                appData.beatCount));
+          t.isMute = track.isMute;
+          t.name = track.name;
+          t.channel = track.channel;
+          t.model = track.pianoRollData.toModel();
+          proj.tracks.add(track);
+          await ProjectListProvider.save();
+        }, onRemoved: (i) async {
+          setState(() {
+            _trackIndex = 0;
+          });
+          proj.tracks.removeAt(i);
+          await ProjectListProvider.save();
+        }, onUpdated: (i, t) async {
+          proj.tracks[i]
+            ..name = t.name
+            ..isMute = t.isMute
+            ..channel = t.channel;
+        }),
         Expanded(child: PianoRollEditor(_context, layoutInfo))
       ],
     );

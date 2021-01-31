@@ -12,11 +12,13 @@ class TrackListState extends State<TrackList> {
   void Function(int) _onSelected;
   void Function(Track) _onCreated;
   void Function(int) _onRemoved;
+  void Function(int, Track) _onUpdated;
 
   TrackListState(this._trackListModel,
       {void Function(int) onSelected,
       void Function(Track) onCreated,
-      void Function(int) onRemoved}) {
+      void Function(int) onRemoved,
+      void Function(int, Track) onUpdated}) {
     this.selectedTrackIndex = -1;
     this._show = true;
     if (this._trackListModel.size > 0) {
@@ -25,6 +27,7 @@ class TrackListState extends State<TrackList> {
     this._onSelected = onSelected;
     this._onCreated = onCreated;
     this._onRemoved = onRemoved;
+    this._onUpdated = onUpdated;
   }
 
   int get selectedTrackIndex => _selectedTrackIndex;
@@ -208,17 +211,20 @@ class TrackListState extends State<TrackList> {
                       _inputString("名前", "", false, nameController, (e) {
                         setState(() {
                           track.name = e;
+                          _onUpdated(_selectedTrackIndex, track);
                         });
                       }),
                       _inputInt("チャンネル", "", false, chController, (e) {
                         setState(() {
                           track.channel = int.parse(e);
+                          _onUpdated(_selectedTrackIndex, track);
                         });
                       }),
                       StatefulBuilder(builder: (context, setState) {
                         return _inputBool("ミュート", track.isMute, (e) {
                           setState(() {
                             track.isMute = e;
+                            _onUpdated(_selectedTrackIndex, track);
                           });
                         });
                       }),
