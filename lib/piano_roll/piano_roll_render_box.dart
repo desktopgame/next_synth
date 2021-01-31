@@ -63,13 +63,16 @@ class PianoRollRenderBox extends RenderBox
     _paintImpl(context, offset);
     canvas.restore();
     // シーケンサー位置の描画
-    canvas.drawLine(
-        Offset(offset.dx + _pianoRoll.context.sequencer.position.toDouble(), 0),
-        Offset(offset.dx + _pianoRoll.context.sequencer.position.toDouble(),
-            size.height),
-        Paint()
-          ..color = Colors.red
-          ..strokeWidth = 2);
+    var seqX =
+        offset.dx + _pianoRoll.context.sequencer.position.toDouble() + sx;
+    if (seqX >= offset.dx) {
+      canvas.drawLine(
+          Offset(seqX, 0),
+          Offset(seqX, size.height),
+          Paint()
+            ..color = Colors.red
+            ..strokeWidth = 2);
+    }
     // スクロールバーの描画
     canvas.drawRect(
         _pianoRoll.context.horizontalScrollBarRect(
