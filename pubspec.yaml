@@ -54,9 +54,15 @@ dev_dependencies:
   build_runner: ^1.10.11
   save_data_generator: ^1.0.0
   property_ui_generator: ^1.0.2
+  flutter_launcher_icons: ^0.8.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: 'GIMP/icon.png'
 
 # The following section is specific to Flutter.
 flutter:
