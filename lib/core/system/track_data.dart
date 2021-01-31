@@ -8,11 +8,13 @@ part 'track_data.g.dart';
 class TrackData {
   String name;
   bool isMute;
+  int deviceIndex;
   int channel;
   PianoRollData pianoRollData;
 
   TrackData() {
     this.name = "";
+    this.deviceIndex = 0;
     this.channel = 0;
     this.isMute = false;
     this.pianoRollData = null;
