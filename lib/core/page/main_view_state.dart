@@ -64,6 +64,7 @@ class MainViewState extends State<MainView>
     PianoRollModel model = null;
     for (var t in proj.tracks) {
       var track = trackListModel.createTrack();
+      track.deviceIndex = 0;
       track.name = t.name;
       track.isMute = t.isMute;
       track.model = t.pianoRollData.toModel();
@@ -134,6 +135,7 @@ class MainViewState extends State<MainView>
           });
         }, onCreated: (t) async {
           var track = TrackData()
+            ..deviceIndex = 0
             ..isMute = false
             ..channel = 0
             ..name = _newTrackName(proj)
@@ -142,6 +144,7 @@ class MainViewState extends State<MainView>
                 appData.measureCount,
                 appData.beatCount));
           t.isMute = track.isMute;
+          t.deviceIndex = track.deviceIndex;
           t.name = track.name;
           t.channel = track.channel;
           t.model = track.pianoRollData.toModel();
@@ -155,6 +158,7 @@ class MainViewState extends State<MainView>
           await ProjectListProvider.save();
         }, onUpdated: (i, t) async {
           proj.tracks[i]
+            ..deviceIndex = t.deviceIndex
             ..name = t.name
             ..isMute = t.isMute
             ..channel = t.channel;
@@ -177,15 +181,21 @@ class MainViewState extends State<MainView>
     if (MidiHelper.instance.devices.length == 0) {
       return;
     }
-    int i = MidiHelper.instance.devices[0];
+    final projList = ProjectListProvider.provide().value;
+    final proj = projList.data[_projectIndex];
+    final track = proj.tracks[e.trackIndex];
+    if (track.isMute) {
+      return;
+    }
+    int i = MidiHelper.instance.devices[track.deviceIndex];
     int height = e.note.beat.measure.key.model
         .getKeyHeight(e.note.beat.measure.key.index);
     if (e.type == NotePlayEventType.noteOn) {
       NextSynthMidi.send(
-          i, 0, Uint8List.fromList([144 + e.trackIndex, height, 127]), 0, 3);
+          i, 0, Uint8List.fromList([144 + track.channel, height, 127]), 0, 3);
     } else {
       NextSynthMidi.send(
-          i, 0, Uint8List.fromList([128 + e.trackIndex, height, 127]), 0, 3);
+          i, 0, Uint8List.fromList([128 + track.channel, height, 127]), 0, 3);
     }
   }
 

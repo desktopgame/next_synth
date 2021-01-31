@@ -188,6 +188,8 @@ class TrackListState extends State<TrackList> {
   void _showTrackEditDialog(int trackIndex) {
     var track = _trackListModel.getTrackAt(trackIndex);
     var nameController = TextEditingController()..text = track.name;
+    var dvController = TextEditingController()
+      ..text = track.deviceIndex.toString();
     var chController = TextEditingController()..text = track.channel.toString();
     showDialog(
         builder: (context) {
@@ -201,7 +203,7 @@ class TrackListState extends State<TrackList> {
                 SingleChildScrollView(
                     child: Container(
                   width: double.infinity,
-                  height: 300,
+                  height: 380,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       color: Colors.lightBlue),
@@ -211,6 +213,12 @@ class TrackListState extends State<TrackList> {
                       _inputString("名前", "", false, nameController, (e) {
                         setState(() {
                           track.name = e;
+                          _onUpdated(_selectedTrackIndex, track);
+                        });
+                      }),
+                      _inputInt("デバイス番号", "", false, dvController, (e) {
+                        setState(() {
+                          track.deviceIndex = int.parse(e);
                           _onUpdated(_selectedTrackIndex, track);
                         });
                       }),
