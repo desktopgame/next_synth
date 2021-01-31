@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:next_synth/core/system/midi_helper.dart';
 import 'package:next_synth/piano_roll/track_list.dart';
 import 'package:next_synth/piano_roll/track_list_model.dart';
 
@@ -191,6 +192,7 @@ class TrackListState extends State<TrackList> {
     var dvController = TextEditingController()
       ..text = track.deviceIndex.toString();
     var chController = TextEditingController()..text = track.channel.toString();
+    var connections = MidiHelper.instance.getConnections();
     showDialog(
         builder: (context) {
           return Dialog(
@@ -216,12 +218,39 @@ class TrackListState extends State<TrackList> {
                           _onUpdated(_selectedTrackIndex, track);
                         });
                       }),
+                      StatefulBuilder(builder: (context, setState) {
+                        return _labelWith(
+                            "デバイス番号",
+                            DropdownButton<int>(
+                              value: track.deviceIndex,
+                              onChanged: (int newValue) {
+                                setState(() {
+                                  track.deviceIndex = newValue;
+                                  _onUpdated(_selectedTrackIndex, track);
+                                });
+                              },
+                              items: connections.map((DeviceConnection item) {
+                                return DropdownMenuItem(
+                                  value: item.deviceIndex,
+                                  child: Text(
+                                    item.name,
+                                    style: item.deviceIndex == track.deviceIndex
+                                        ? TextStyle(fontWeight: FontWeight.bold)
+                                        : TextStyle(
+                                            fontWeight: FontWeight.normal),
+                                  ),
+                                );
+                              }).toList(),
+                            ));
+                      }),
+                      /*
                       _inputInt("デバイス番号", "", false, dvController, (e) {
                         setState(() {
                           track.deviceIndex = int.parse(e);
                           _onUpdated(_selectedTrackIndex, track);
                         });
                       }),
+                      */
                       _inputInt("チャンネル", "", false, chController, (e) {
                         setState(() {
                           track.channel = int.parse(e);

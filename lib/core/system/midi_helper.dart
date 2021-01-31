@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:next_synth_midi/next_synth_midi.dart';
+import 'package:optional/optional.dart';
 
-class _DeviceConnection {
+class DeviceConnection {
   int deviceIndex;
   int inputPort;
   int outputPort;
+  String name;
 
-  _DeviceConnection(this.deviceIndex, this.inputPort, this.outputPort);
+  DeviceConnection(
+      this.deviceIndex, this.inputPort, this.outputPort, this.name);
 }
 
 class MidiHelper {
@@ -19,9 +22,9 @@ class MidiHelper {
     return _instance;
   }
 
-  List<_DeviceConnection> _connections;
+  List<DeviceConnection> _connections;
   MidiHelper._internal() {
-    this._connections = List<_DeviceConnection>();
+    this._connections = List<DeviceConnection>();
   }
 
   Future<void> openPort(int deviceIndex, int inputPort, int outputPort) async {
@@ -32,8 +35,24 @@ class MidiHelper {
       // 既に一度開いているので無視
       return;
     }
-    _connections.add(_DeviceConnection(deviceIndex, inputPort, outputPort));
+    var name = await NextSynthMidi.getDeviceName(deviceIndex);
+    _connections
+        .add(DeviceConnection(deviceIndex, inputPort, outputPort, name));
     return await NextSynthMidi.openPort(deviceIndex, inputPort, outputPort);
+  }
+
+  List<DeviceConnection> getConnections() {
+    return List()..addAll(_connections);
+  }
+
+  Optional<DeviceConnection> getConnection(int deviceIndex) {
+    var conns = _connections
+        .where((element) => element.deviceIndex == deviceIndex)
+        .toList();
+    if (conns.length == 0) {
+      return Optional.empty();
+    }
+    return Optional.of(conns[0]);
   }
 
   Future<int> closePort(int deviceIndex, int inputPort, int outputPort) async {
@@ -60,7 +79,7 @@ class MidiHelper {
   }
 
   Future<void> closeAll() async {
-    var tmp = new List<_DeviceConnection>()..addAll(_connections);
+    var tmp = new List<DeviceConnection>()..addAll(_connections);
     for (var i in tmp) {
       await closePort(i.deviceIndex, i.inputPort, i.outputPort);
     }
