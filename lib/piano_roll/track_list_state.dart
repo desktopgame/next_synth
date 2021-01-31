@@ -219,6 +219,10 @@ class TrackListState extends State<TrackList> {
                         });
                       }),
                       StatefulBuilder(builder: (context, setState) {
+                        if (connections.length == 0) {
+                          return _labelWith(
+                              "デバイス番号", Text("MIDI機器が接続されていません。"));
+                        }
                         return _labelWith(
                             "デバイス番号",
                             DropdownButton<int>(
