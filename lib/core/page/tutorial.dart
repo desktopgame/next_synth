@@ -7,7 +7,7 @@ class TutorialPhase {
   double top = 25;
   double right = 10;
 
-  TutorialPhase(this.key, this.label, {this.top, this.right});
+  TutorialPhase(this.key, this.label, {this.top = 25.0, this.right = 10.0});
 }
 
 class Tutorial {
