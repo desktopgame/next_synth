@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:next_synth/piano_roll/track_list.dart';
 import 'package:next_synth/piano_roll/track_list_model.dart';
 
@@ -111,7 +112,11 @@ class TrackListState extends State<TrackList> {
           ),
         )),
         RaisedButton(
-          onPressed: _trackListModel.size == 0 ? null : () {},
+          onPressed: _trackListModel.size == 0
+              ? null
+              : () {
+                  _showTrackEditDialog(selectedTrackIndex);
+                },
           child: Text('トラックの詳細設定'),
         ),
         RaisedButton(
@@ -124,5 +129,113 @@ class TrackListState extends State<TrackList> {
         )
       ],
     );
+  }
+
+  Widget _labelWith(String label, Widget widget) {
+    return Row(
+      children: [
+        SizedBox(
+            width: 100,
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+            )),
+        Expanded(child: widget)
+      ],
+    );
+  }
+
+  Widget _inputString(String name, String hint, bool readonly,
+      TextEditingController controller, void Function(String) onChanged) {
+    return _labelWith(
+        name,
+        TextField(
+          readOnly: readonly,
+          controller: controller,
+          decoration: new InputDecoration(labelText: hint),
+          onChanged: onChanged,
+        ));
+  }
+
+  Widget _inputInt(String name, String hint, bool readonly,
+      TextEditingController controller, void Function(String) onChanged) {
+    return _labelWith(
+        name,
+        TextField(
+          readOnly: readonly,
+          controller: controller,
+          decoration: new InputDecoration(labelText: hint),
+          onChanged: onChanged,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
+        ));
+  }
+
+  Widget _inputBool(String name, bool value, void Function(bool) onChanged) {
+    return _labelWith(
+        name,
+        Switch(
+          value: value,
+          onChanged: onChanged,
+        ));
+  }
+
+  void _showTrackEditDialog(int trackIndex) {
+    var track = _trackListModel.getTrackAt(trackIndex);
+    var nameController = TextEditingController()..text = track.name;
+    var chController = TextEditingController()..text = track.channel.toString();
+    showDialog(
+        builder: (context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding: EdgeInsets.all(10),
+            child: Stack(
+              overflow: Overflow.visible,
+              alignment: Alignment.center,
+              children: [
+                SingleChildScrollView(
+                    child: Container(
+                  width: double.infinity,
+                  height: 300,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.lightBlue),
+                  padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
+                  child: Column(
+                    children: [
+                      _inputString("名前", "", false, nameController, (e) {
+                        setState(() {
+                          track.name = e;
+                        });
+                      }),
+                      _inputInt("チャンネル", "", false, chController, (e) {
+                        setState(() {
+                          track.channel = int.parse(e);
+                        });
+                      }),
+                      StatefulBuilder(builder: (context, setState) {
+                        return _inputBool("ミュート", track.isMute, (e) {
+                          setState(() {
+                            track.isMute = e;
+                          });
+                        });
+                      }),
+                      new FlatButton(
+                        child: new Text("閉じる"),
+                        onPressed: () {
+                          //onApprrove(controller);
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                ))
+              ],
+            ),
+          );
+        },
+        context: context);
   }
 }

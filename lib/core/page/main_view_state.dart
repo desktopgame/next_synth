@@ -67,6 +67,7 @@ class MainViewState extends State<MainView>
       track.name = t.name;
       track.isMute = t.isMute;
       track.model = t.pianoRollData.toModel();
+      track.channel = t.channel;
       // プロジェクトを開いたときに必ず0番目が選択状態になるため、対応するモデルを持っておく
       if (model == null) {
         model = track.model.duplicate();
@@ -136,14 +137,18 @@ class MainViewState extends State<MainView>
           },
           onCreated: (t) async {
             var track = TrackData()
+              ..isMute = false
+              ..channel = 0
               ..name = _newTrackName(proj)
               ..pianoRollData = PianoRollData.fromModel(DefaultPianoRollModel(
                   appData.keyCount * 12,
                   appData.measureCount,
                   appData.beatCount));
+            t.isMute = track.isMute;
             t.name = track.name;
-            proj.tracks.add(track);
+            t.channel = track.channel;
             t.model = track.pianoRollData.toModel();
+            proj.tracks.add(track);
             await ProjectListProvider.save();
           },
           onRemoved: (i) async {
