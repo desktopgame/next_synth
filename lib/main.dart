@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:next_synth_midi/next_synth_midi.dart';
 
 import './core/page/code_page.dart';
 import './core/page/edit_page.dart';
@@ -26,6 +27,7 @@ void main() async {
   ProjectListProvider.setup();
   await AppDataProvider.load();
   await ProjectListProvider.load();
+  await NextSynthMidi.rehashDeviceList();
   // デバッグ時のみセーブデータ確認
   if (kDebugMode) {
     try {
@@ -38,14 +40,6 @@ void main() async {
     }
   }
   runApp(MyApp());
-  // 起動回数を数える
-  // 初回起動時のみチュートリアルなどあるため
-  AppDataProvider.provide().value.launchCount++;
-  // 終了前に保存する
-  await AppDataProvider.save();
-  await ProjectListProvider.save();
-  // MIDI接続を閉じる
-  MidiHelper.instance.closeAll();
 }
 
 class MyApp extends StatelessWidget {

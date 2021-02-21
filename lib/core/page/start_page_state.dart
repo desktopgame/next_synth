@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
+import 'package:next_synth_midi/next_synth_midi.dart';
 
 import './start_page.dart';
 import './tutorial.dart';
+import '../system/midi_helper.dart';
 import '../system/app_data.save_data.dart';
 import '../system/piano_roll_data.dart';
 import '../system/project.dart';
 import '../system/project_list.save_data.dart';
 import '../system/track_data.dart';
 
-class StartPageState extends State<StartPage> {
+class StartPageState extends State<StartPage> with WidgetsBindingObserver {
   int _selectedProjectIndex;
   GlobalKey _addButtonKey = GlobalKey();
   GlobalKey _delButtonKey = GlobalKey();
@@ -22,6 +24,29 @@ class StartPageState extends State<StartPage> {
   void initState() {
     super.initState();
     this._selectedProjectIndex = -1;
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state != AppLifecycleState.detached) {
+      return;
+    }
+    // 起動回数を数える
+    // 初回起動時のみチュートリアルなどあるため
+    AppDataProvider.provide().value.launchCount++;
+    // 終了前に保存する
+    await AppDataProvider.save();
+    await ProjectListProvider.save();
+    // MIDI接続を閉じる
+    await NextSynthMidi.unregisterDeviceCallback();
+    MidiHelper.instance.closeAll();
   }
 
   static void _showConfirmDialog(BuildContext context, String placeholder,
