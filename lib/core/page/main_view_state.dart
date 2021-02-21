@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -38,6 +39,7 @@ class MainViewState extends State<MainView>
   PianoRollLayoutInfo layoutInfo;
   TrackListModel trackListModel;
   List<PianoRollModel> _modelCache;
+  Timer _timer;
   final logger = new Logger('MainViewState');
 
   MainViewState(this._projectIndex) : _modelCache = List<PianoRollModel>() {}
@@ -80,12 +82,46 @@ class MainViewState extends State<MainView>
       }
     }
     _context.sequencer.addNotePlayListener(this);
+    // MIDI機器の接続状態が変わったらアプリ終了
+    this._timer = Timer.periodic(
+      Duration(seconds: 3),
+      (Timer timer) async {
+        await _onTimer(timer);
+      },
+    );
+  }
+
+  Future<void> _onTimer(Timer timer) async {
+    if (await NextSynthMidi.isDeviceListUpdated()) {
+      await NextSynthMidi.rehashDeviceList();
+      await showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+//          title: Text(""),
+            content: Text("MIDI機器の接続状態が変更されました。"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("OK"),
+                onPressed: () async {
+                  await MidiHelper.instance.closeAll();
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        },
+      );
+      _timer.cancel();
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
     stopListen();
+    _timer.cancel();
     _context.sequencer.removeNotePlayListener(this);
   }
 
