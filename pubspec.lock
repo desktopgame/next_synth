@@ -356,11 +356,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.0.2"
-      resolved-ref: a6bdcebd3eaf651b985f6cf20c10976c06c25023
+      ref: "v0.0.3"
+      resolved-ref: "580791e45663fa09a0c615efee39edaf172c2dfc"
       url: "git@github.com:desktopgame/next_synth_midi.git"
     source: git
-    version: "0.0.2"
+    version: "0.0.3"
   node_interop:
     dependency: transitive
     description:

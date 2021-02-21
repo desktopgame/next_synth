@@ -36,7 +36,7 @@ dependencies:
   next_synth_midi:
     git:
       url: git@github.com:desktopgame/next_synth_midi.git
-      ref: v0.0.2
+      ref: v0.0.3
   rxdart: ^0.25.0
   highlighter_coachmark: ^0.0.3
 
