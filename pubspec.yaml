@@ -39,6 +39,7 @@ dependencies:
       ref: v0.0.3
   rxdart: ^0.25.0
   highlighter_coachmark: ^0.0.3
+  url_launcher: ^5.7.10
 
 
   # The following adds the Cupertino Icons font to your application.
