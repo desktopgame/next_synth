@@ -260,6 +260,7 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
     return GestureDetector(
         onTap: () {
           if (index == _selectedProjectIndex) {
+            AppDataProvider.provide().value.lastOpenProjectIndex = index;
             Navigator.pushNamed(context, "/edit", arguments: index);
           } else {
             _selectProject(index);
