@@ -5,6 +5,7 @@ import 'package:next_synth/piano_roll/note_resize_manager.dart';
 import 'package:next_synth/piano_roll/piano_roll_selection_mode.dart';
 import 'package:next_synth/piano_roll/piano_roll_style.dart';
 import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import './tool_bar.dart';
 import '../core/page/tutorial.dart';
@@ -158,8 +159,18 @@ class ToolBarState extends State<ToolBar>
           ),
           IconButton(
               key: _settingButtonKey,
-              onPressed: () {
-                Navigator.pushNamed(context, "/project");
+              onPressed: () async {
+                await Navigator.pushNamed(context, "/project");
+                Fluttertoast.showToast(
+                    msg: "設定を適用するためにはプロジェクトを開き直してください。",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.black,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+                Navigator.popUntil(
+                    context, ModalRoute.withName(Navigator.defaultRouteName));
               },
               icon: Icon(Icons.settings)),
           GestureDetector(
