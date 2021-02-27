@@ -137,6 +137,9 @@ class CodePageState extends State<CodePage> {
                 final data = await Clipboard.getData("text/plain");
                 var prefs = await SharedPreferences.getInstance();
                 prefs.setString(key, data.text);
+                await SaveData.instance.discard(key);
+                await SaveData.instance.load(key);
+                Navigator.pop(context);
                 Fluttertoast.showToast(
                     msg: "セーブデータを上書きしました。",
                     toastLength: Toast.LENGTH_SHORT,
@@ -145,8 +148,6 @@ class CodePageState extends State<CodePage> {
                     backgroundColor: Colors.black,
                     textColor: Colors.white,
                     fontSize: 16.0);
-                await SaveData.instance.discard(key);
-                await SaveData.instance.load(key);
               },
             ),
           ],
