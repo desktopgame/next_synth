@@ -12,7 +12,12 @@ class SettingPageState extends State<SettingPage> {
         title: Text('NextSynth'),
       ),
       body: Center(
-        child: AppDataUI(AppDataProvider.provide().value),
+        child: AppDataUI(
+          AppDataProvider.provide().value,
+          onChanged: (v, e) async {
+            await AppDataProvider.save();
+          },
+        ),
       ),
     );
   }
