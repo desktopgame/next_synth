@@ -255,7 +255,7 @@ class TrackListState extends State<TrackList> {
                         });
                       }),
                       */
-                      _inputInt("チャンネル", "", false, chController, (e) {
+                      _inputInt("チャンネル(1~16)", "", false, chController, (e) {
                         setState(() {
                           track.channel = int.parse(e);
                           _onUpdated(_selectedTrackIndex, track);

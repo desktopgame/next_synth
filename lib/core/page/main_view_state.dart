@@ -173,7 +173,7 @@ class MainViewState extends State<MainView>
           var track = TrackData()
             ..deviceIndex = 0
             ..isMute = false
-            ..channel = 0
+            ..channel = 1
             ..name = _newTrackName(proj)
             ..pianoRollData = PianoRollData.fromModel(DefaultPianoRollModel(
                 appData.keyCount * 12,
@@ -226,12 +226,16 @@ class MainViewState extends State<MainView>
     int i = MidiHelper.instance.devices[track.deviceIndex];
     int height = e.note.beat.measure.key.model
         .getKeyHeight(e.note.beat.measure.key.index);
+    int ch = track.channel;
+    ch--;
+    if (ch < 0) ch = 0;
+    if (ch >= 16) ch = 15;
     if (e.type == NotePlayEventType.noteOn) {
       NextSynthMidi.send(
-          i, 0, Uint8List.fromList([144 + track.channel, height, 127]), 0, 3);
+          i, 0, Uint8List.fromList([144 + ch, height, 127]), 0, 3);
     } else {
       NextSynthMidi.send(
-          i, 0, Uint8List.fromList([128 + track.channel, height, 127]), 0, 3);
+          i, 0, Uint8List.fromList([128 + ch, height, 127]), 0, 3);
     }
   }
 

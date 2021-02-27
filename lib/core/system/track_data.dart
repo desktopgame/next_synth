@@ -15,7 +15,7 @@ class TrackData {
   TrackData() {
     this.name = "";
     this.deviceIndex = 0;
-    this.channel = 0;
+    this.channel = 1;
     this.isMute = false;
     this.pianoRollData = null;
   }
