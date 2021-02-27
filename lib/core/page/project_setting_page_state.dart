@@ -32,6 +32,11 @@ class ProjectSettingPageState extends State<ProjectSettingPage> {
             ..keyCount = proj.keyCount
             ..measureCount = proj.measureCount
             ..beatCount = proj.beatCount,
+          header: [
+            Center(
+              child: Text("プロジェクトごとの設定情報を編集できます。"),
+            )
+          ],
           onChanged: (v, e) async {
             proj
               ..keyCount = v.keyCount

@@ -14,11 +14,6 @@ class SettingPageState extends State<SettingPage> {
       body: Center(
         child: AppDataUI(
           AppDataProvider.provide().value,
-          header: [
-            Center(
-              child: Text("プロジェクトごとの設定情報を編集できます。"),
-            )
-          ],
           onChanged: (v, e) async {
             await AppDataProvider.save();
           },
