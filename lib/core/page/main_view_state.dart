@@ -250,4 +250,9 @@ class MainViewState extends State<MainView>
     }
     return trackListModel.getTrackAt(i).model;
   }
+
+  @override
+  Color getTrackSkinColor(int index) {
+    return trackListModel.getTrackSkinColor(index);
+  }
 }

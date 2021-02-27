@@ -3,6 +3,7 @@ import 'package:next_synth/piano_roll/piano_roll_model_event.dart';
 import 'package:next_synth/piano_roll/piano_roll_model_listener.dart';
 
 import './piano_roll_style.dart';
+import './piano_roll_model.dart';
 import '../event/notification_event.dart';
 import '../event/notification_listener.dart' as P;
 import 'key.dart' as P;
@@ -60,7 +61,16 @@ class PianoRollRenderBox extends RenderBox
     canvas.clipRect(Rect.fromLTWH(
         offset.dx, offset.dy, size.width + offset.dx, size.height));
     canvas.translate(sx + offset.dx, sy + offset.dy + 50);
-    _paintImpl(context, offset);
+    // オニオンスキンのために他のトラックも描画する
+    _drawBackground(canvas, size);
+    for (int i = 0; i < _pianoRoll.context.provider.count; i++) {
+      _pianoRoll.context.swapModel(i);
+      var model = _pianoRoll.context.model;
+      _paintImpl(context, model, true,
+          _pianoRoll.context.provider.getTrackSkinColor(i), offset);
+    }
+    _pianoRoll.context.swapModel(-1);
+    _paintImpl(context, _pianoRoll.model, false, null, offset);
     canvas.restore();
     // シーケンサー位置の描画
     var seqX =
@@ -89,10 +99,11 @@ class PianoRollRenderBox extends RenderBox
         Paint()..color = Color.fromARGB(128, 0, 0, 0));
   }
 
-  void _paintImpl(PaintingContext context, Offset offset) {
+  void _paintImpl(PaintingContext context, PianoRollModel model, bool skin,
+      Color skinColor, Offset offset) {
     var canvas = context.canvas;
     var style = _pianoRoll.style;
-    var model = _pianoRoll.model;
+    //var model = _pianoRoll.model;
     int bw = style.beatWidth;
     int bh = style.beatHeight;
     var clipRect = computeClipRect();
@@ -100,7 +111,7 @@ class PianoRollRenderBox extends RenderBox
     int endKey = (clipRect.top + clipRect.height).toInt();
     int y = 0;
     int index = 0;
-    _drawBackground(canvas, size);
+    //_drawBackground(canvas, size);
     for (int i = model.keyCount - 1; i >= 0; i--) {
       int nextY = y + bh;
       if (y < startKey || y >= endKey) {
@@ -109,7 +120,8 @@ class PianoRollRenderBox extends RenderBox
         continue;
       }
       // drawNotes
-      _drawNotes(canvas, size, model.getKeyAt(index), y, nextY, false, null);
+      _drawNotes(
+          canvas, size, model.getKeyAt(index), y, nextY, skin, skinColor);
       y = nextY;
       index++;
     }
@@ -226,20 +238,17 @@ class PianoRollRenderBox extends RenderBox
 
   void _drawNote(Canvas canvas, Size size, Note note, Rect rect, bool onionSkin,
       Color onionSkinColor) {
-    if (onionSkin) {
-      // TODO: オニオンスキン
-      return;
-    }
     var paint = note.selected
         ? _pianoRoll.style.selectedNotePaint
         : _pianoRoll.style.unselectedNotePaint;
-    canvas.drawRect(rect, paint);
-    if (!onionSkin) {
-      canvas.drawRect(rect, _pianoRoll.style.noteFramePaint1);
-      var innerRect = Rect.fromLTRB(rect.left + 1, rect.top + 1,
-          rect.left + rect.width - 1, rect.top + rect.height - 1);
-      canvas.drawRect(innerRect, _pianoRoll.style.noteFramePaint2);
+    if (onionSkin) {
+      paint = Paint()..color = onionSkinColor;
     }
+    canvas.drawRect(rect, paint);
+    canvas.drawRect(rect, _pianoRoll.style.noteFramePaint1);
+    var innerRect = Rect.fromLTRB(rect.left + 1, rect.top + 1,
+        rect.left + rect.width - 1, rect.top + rect.height - 1);
+    canvas.drawRect(innerRect, _pianoRoll.style.noteFramePaint2);
   }
 
   void _drawNoteGhosts(Canvas canvas, Size size) {
