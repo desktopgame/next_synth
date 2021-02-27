@@ -25,6 +25,9 @@ class AppData {
   int toolBarHeight;
   int launchCount;
 
+  @Property(displayName: "デバッグ表示", debug: true)
+  bool showDebugLabel;
+
   AppData() {
     this.keyCount = 11;
     this.beatWidth = 96;
@@ -35,6 +38,7 @@ class AppData {
     this.keyboardWidth = 48;
     this.toolBarHeight = 50;
     this.launchCount = 0;
+    this.showDebugLabel = true;
   }
 
   factory AppData.fromJson(Map json) => _$AppDataFromJson(json);

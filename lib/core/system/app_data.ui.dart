@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 import './app_data.dart';
 
 class AppDataUI extends StatefulWidget {
@@ -75,66 +76,77 @@ class AppDataUIState extends State<AppDataUI> {
 
   @override
   Widget build(BuildContext context) {
-    return _scrollableColumn(context, [
-      ..._header,
-      _inputInt("オクターブ数", "", false, _keyCountController, (e) {
-        this._target.keyCount = int.parse(e);
-        if (this._onChanged != null) {
-          this._onChanged(_target, "keyCount");
-        }
-      }),
-      Divider(),
-      _inputInt("拍の横幅", "", false, _beatWidthController, (e) {
-        this._target.beatWidth = int.parse(e);
-        if (this._onChanged != null) {
-          this._onChanged(_target, "beatWidth");
-        }
-      }),
-      Divider(),
-      _inputInt("拍の縦幅", "", false, _beatHeightController, (e) {
-        this._target.beatHeight = int.parse(e);
-        if (this._onChanged != null) {
-          this._onChanged(_target, "beatHeight");
-        }
-      }),
-      Divider(),
-      _inputInt("小節の数", "", false, _measureCountController, (e) {
-        this._target.measureCount = int.parse(e);
-        if (this._onChanged != null) {
-          this._onChanged(_target, "measureCount");
-        }
-      }),
-      Divider(),
-      _inputInt("小節内の拍の数", "", false, _beatCountController, (e) {
-        this._target.beatCount = int.parse(e);
-        if (this._onChanged != null) {
-          this._onChanged(_target, "beatCount");
-        }
-      }),
-      Divider(),
-      _inputInt("拍の分割数", "", false, _beatSplitCountController, (e) {
-        this._target.beatSplitCount = int.parse(e);
-        if (this._onChanged != null) {
-          this._onChanged(_target, "beatSplitCount");
-        }
-      }),
-      Divider(),
-      _inputInt("キーボードの横幅", "", false, _keyboardWidthController, (e) {
-        this._target.keyboardWidth = int.parse(e);
-        if (this._onChanged != null) {
-          this._onChanged(_target, "keyboardWidth");
-        }
-      }),
-      Divider(),
-      _inputInt("ツールバーの高さ", "", false, _toolBarHeightController, (e) {
-        this._target.toolBarHeight = int.parse(e);
-        if (this._onChanged != null) {
-          this._onChanged(_target, "toolBarHeight");
-        }
-      }),
-      Divider(),
-      ..._footer,
-    ]);
+    var widgets = List<Widget>();
+    widgets.addAll(_header);
+    widgets.add(_inputInt("オクターブ数", "", false, _keyCountController, (e) {
+      this._target.keyCount = int.parse(e);
+      if (this._onChanged != null) {
+        this._onChanged(_target, "keyCount");
+      }
+    }));
+    widgets.add(Divider());
+    widgets.add(_inputInt("拍の横幅", "", false, _beatWidthController, (e) {
+      this._target.beatWidth = int.parse(e);
+      if (this._onChanged != null) {
+        this._onChanged(_target, "beatWidth");
+      }
+    }));
+    widgets.add(Divider());
+    widgets.add(_inputInt("拍の縦幅", "", false, _beatHeightController, (e) {
+      this._target.beatHeight = int.parse(e);
+      if (this._onChanged != null) {
+        this._onChanged(_target, "beatHeight");
+      }
+    }));
+    widgets.add(Divider());
+    widgets.add(_inputInt("小節の数", "", false, _measureCountController, (e) {
+      this._target.measureCount = int.parse(e);
+      if (this._onChanged != null) {
+        this._onChanged(_target, "measureCount");
+      }
+    }));
+    widgets.add(Divider());
+    widgets.add(_inputInt("小節内の拍の数", "", false, _beatCountController, (e) {
+      this._target.beatCount = int.parse(e);
+      if (this._onChanged != null) {
+        this._onChanged(_target, "beatCount");
+      }
+    }));
+    widgets.add(Divider());
+    widgets.add(_inputInt("拍の分割数", "", false, _beatSplitCountController, (e) {
+      this._target.beatSplitCount = int.parse(e);
+      if (this._onChanged != null) {
+        this._onChanged(_target, "beatSplitCount");
+      }
+    }));
+    widgets.add(Divider());
+    widgets.add(_inputInt("キーボードの横幅", "", false, _keyboardWidthController, (e) {
+      this._target.keyboardWidth = int.parse(e);
+      if (this._onChanged != null) {
+        this._onChanged(_target, "keyboardWidth");
+      }
+    }));
+    widgets.add(Divider());
+    widgets.add(_inputInt("ツールバーの高さ", "", false, _toolBarHeightController, (e) {
+      this._target.toolBarHeight = int.parse(e);
+      if (this._onChanged != null) {
+        this._onChanged(_target, "toolBarHeight");
+      }
+    }));
+    widgets.add(Divider());
+    if (!kReleaseMode) {
+      widgets.add(_inputBool("デバッグ表示", _target.showDebugLabel, (e) {
+        setState(() {
+          this._target.showDebugLabel = e;
+          if (this._onChanged != null) {
+            this._onChanged(_target, "showDebugLabel");
+          }
+        });
+      }));
+      widgets.add(Divider());
+    }
+    widgets.addAll(_footer);
+    return _scrollableColumn(context, widgets);
   }
 
   // helper methods
