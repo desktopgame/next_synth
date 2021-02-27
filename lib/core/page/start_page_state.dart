@@ -246,8 +246,10 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
       IconButton(
         key: _codeButtonKey,
         icon: Icon(Icons.code),
-        onPressed: () {
-          Navigator.pushNamed(context, "/code");
+        onPressed: () async {
+          await Navigator.pushNamed(context, "/code");
+          // プロジェクト一覧を再読み込み
+          setState(() {});
         },
       ),
     ];
