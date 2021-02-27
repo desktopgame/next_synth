@@ -9,6 +9,7 @@ import './core/page/code_page.dart';
 import './core/page/edit_page.dart';
 import './core/page/setting_page.dart';
 import './core/page/start_page.dart';
+import './core/page/project_setting_page.dart';
 import './core/page/usb_info_page.dart';
 import './core/system/app_data.save_data.dart';
 import './core/system/midi_helper.dart';
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: <String, WidgetBuilder>{
         "/": (BuildContext context) => StartPage(),
+        "/project": (BuildContext context) => ProjectSettingPage(),
         "/edit": (BuildContext context) => EditPage(),
         "/setting": (BuildContext context) => SettingPage(),
         "/usb": (BuildContext context) => USBInfoPage(),

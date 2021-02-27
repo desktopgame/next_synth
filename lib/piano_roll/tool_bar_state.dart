@@ -26,6 +26,7 @@ class ToolBarState extends State<ToolBar>
   GlobalKey _pauseButtonKey = GlobalKey();
   GlobalKey _stopButtonKey = GlobalKey();
   GlobalKey _popupButtonKey = GlobalKey();
+  GlobalKey _settingButtonKey = GlobalKey();
   var _resizeStartX = -1.0;
   var _resizeStarted = false;
   var _resizeTicks = 0;
@@ -155,6 +156,12 @@ class ToolBarState extends State<ToolBar>
               }).toList();
             },
           ),
+          IconButton(
+              key: _settingButtonKey,
+              onPressed: () {
+                Navigator.pushNamed(context, "/project");
+              },
+              icon: Icon(Icons.settings)),
           GestureDetector(
               onHorizontalDragStart: (DragStartDetails details) {
                 _context.noteResizeManager.touchAll(
