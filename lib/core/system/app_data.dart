@@ -29,6 +29,8 @@ class AppData {
   @Property(displayName: "デバッグ表示", debug: true)
   bool showDebugLabel;
 
+  bool settingUpdated;
+
   AppData() {
     this.keyCount = 11;
     this.beatWidth = 96;
@@ -41,6 +43,7 @@ class AppData {
     this.launchCount = 0;
     this.lastOpenProjectIndex = -1;
     this.showDebugLabel = true;
+    this.settingUpdated = false;
   }
 
   factory AppData.fromJson(Map json) => _$AppDataFromJson(json);
