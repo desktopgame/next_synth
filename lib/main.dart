@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner:
           AppDataProvider.provide().value.showDebugLabel,
-      title: 'Flutter Demo',
+      title: 'NextSynth',
       theme: ThemeData(
         // This is the theme of your application.
         //
