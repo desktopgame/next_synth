@@ -105,8 +105,8 @@ class MainViewState extends State<MainView>
                 child: Text("OK"),
                 onPressed: () async {
                   await MidiHelper.instance.closeAll();
-                  Navigator.pop(context);
-                  Navigator.pop(context);
+                  Navigator.popUntil(
+                      context, ModalRoute.withName(Navigator.defaultRouteName));
                 },
               ),
             ],
