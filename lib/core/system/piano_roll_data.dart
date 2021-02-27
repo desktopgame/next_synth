@@ -41,8 +41,11 @@ class PianoRollData {
   PianoRollModel toModel() {
     var model = DefaultPianoRollModel(keyCount, measureCount, beatCount);
     for (var note in notes) {
+      if (note.keyIndex >= model.keyCount) continue;
       var k = model.getKeyAt(note.keyIndex);
+      if (note.measureIndex >= k.measureCount) continue;
       var m = k.getMeasureAt(note.measureIndex);
+      if (note.beatIndex >= m.beatCount) continue;
       var b = m.getBeatAt(note.beatIndex);
       if (note.selected == null) {
         note.selected = false;
