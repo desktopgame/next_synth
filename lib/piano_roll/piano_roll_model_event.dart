@@ -1,3 +1,5 @@
+import 'package:next_synth/piano_roll/beat_event.dart';
+import 'package:next_synth/piano_roll/measure_event.dart';
 import 'package:optional/optional.dart';
 
 import './key_event.dart';
@@ -14,4 +16,8 @@ class PianoRollModelEvent {
   PianoRollModel get source => _source;
   PianoRollModelEventType get type => _type;
   Optional<KeyEvent> get innerEvent => _innerEvent;
+  Optional<MeasureEvent> get measureEvent =>
+      _innerEvent.isPresent ? _innerEvent.value.innerEvent : Optional.empty();
+  Optional<BeatEvent> get beatEvent =>
+      measureEvent.isPresent ? measureEvent.value.innerEvent : Optional.empty();
 }

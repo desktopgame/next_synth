@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:next_synth/core/system/midi_helper.dart';
 import 'package:next_synth/core/system/project_list.save_data.dart';
+import 'package:next_synth/piano_roll/beat_event_type.dart';
 import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
 import 'package:next_synth/piano_roll/default_track_list_model.dart';
+import 'package:next_synth/piano_roll/key_event_type.dart';
 import 'package:next_synth/piano_roll/note_play_event.dart';
 import 'package:next_synth/piano_roll/note_play_event_type.dart';
 import 'package:next_synth/piano_roll/note_play_listener.dart';
@@ -15,9 +17,11 @@ import 'package:next_synth/piano_roll/piano_roll_editor.dart';
 import 'package:next_synth/piano_roll/piano_roll_layout_info.dart';
 import 'package:next_synth/piano_roll/piano_roll_model.dart';
 import 'package:next_synth/piano_roll/piano_roll_model_event.dart';
+import 'package:next_synth/piano_roll/piano_roll_model_event_type.dart';
 import 'package:next_synth/piano_roll/piano_roll_model_listener.dart';
 import 'package:next_synth/piano_roll/piano_roll_model_provider.dart';
 import 'package:next_synth/piano_roll/piano_roll_style.dart';
+import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
 import 'package:next_synth/piano_roll/track_list.dart';
 import 'package:next_synth/piano_roll/track_list_model.dart';
 import 'package:next_synth_midi/next_synth_midi.dart';
@@ -208,6 +212,11 @@ class MainViewState extends State<MainView>
   void pianoRollModelUpdate(PianoRollModelEvent e) async {
     final projList = ProjectListProvider.provide().value;
     final proj = projList.data[_projectIndex];
+    // ノート生成時に選択をリセット
+    if (e.beatEvent.isPresent &&
+        e.beatEvent.value.beatEventType == BeatEventType.noteCreated) {
+      PianoRollUtilities.clearAllNoteSelection(model);
+    }
     proj.tracks[_trackIndex].pianoRollData = PianoRollData.fromModel(model);
     await ProjectListProvider.save();
   }
