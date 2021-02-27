@@ -44,6 +44,7 @@ class AppDataUIState extends State<AppDataUI> {
   TextEditingController _keyboardWidthController;
   TextEditingController _toolBarHeightController;
   TextEditingController _launchCountController;
+  TextEditingController _lastOpenProjectIndexController;
   AppDataUIState(this._target,
       {List<Widget> header,
       List<Widget> footer,

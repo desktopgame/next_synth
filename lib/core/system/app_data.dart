@@ -24,6 +24,7 @@ class AppData {
   @Property(displayName: "ツールバーの高さ")
   int toolBarHeight;
   int launchCount;
+  int lastOpenProjectIndex;
 
   @Property(displayName: "デバッグ表示", debug: true)
   bool showDebugLabel;
@@ -38,6 +39,7 @@ class AppData {
     this.keyboardWidth = 48;
     this.toolBarHeight = 50;
     this.launchCount = 0;
+    this.lastOpenProjectIndex = -1;
     this.showDebugLabel = true;
   }
 
