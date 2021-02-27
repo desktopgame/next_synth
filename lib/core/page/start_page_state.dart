@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
 import 'package:next_synth_midi/next_synth_midi.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import './start_page.dart';
 import './tutorial.dart';
@@ -14,6 +16,7 @@ import '../system/track_data.dart';
 
 class StartPageState extends State<StartPage> with WidgetsBindingObserver {
   int _selectedProjectIndex;
+  GlobalKey _webButtonKey = GlobalKey();
   GlobalKey _addButtonKey = GlobalKey();
   GlobalKey _delButtonKey = GlobalKey();
   GlobalKey _midiButtonKey = GlobalKey();
@@ -186,6 +189,25 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
         },
       ),
       IconButton(
+        key: _webButtonKey,
+        icon: Icon(Icons.open_in_browser),
+        onPressed: () async {
+          const url = 'https://desktopgame.github.io/NextSynth';
+          if (await canLaunch(url)) {
+            await launch(url);
+          } else {
+            Fluttertoast.showToast(
+                msg: "ブラウザを起動できませんでした。",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          }
+        },
+      ),
+      IconButton(
         key: _addButtonKey,
         icon: Icon(Icons.add),
         onPressed: () {
@@ -254,6 +276,7 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
 
   void _runTutorial() {
     Tutorial.run([
+      TutorialPhase(_webButtonKey, "ヘルプページへ移動します。"),
       TutorialPhase(_addButtonKey, "プロジェクトを作成できます。"),
       TutorialPhase(_delButtonKey, "プロジェクトを削除できます。"),
       TutorialPhase(_midiButtonKey, "MIDI機器との接続を設定できます。"),
