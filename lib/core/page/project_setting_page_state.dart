@@ -33,7 +33,7 @@ class ProjectSettingPageState extends State<ProjectSettingPage> {
               ..beatCount = v.beatCount;
             for (var t in proj.tracks) {
               t.pianoRollData
-                ..keyCount = v.keyCount
+                ..keyCount = v.keyCount * 12
                 ..measureCount = v.measureCount
                 ..beatCount = v.beatCount;
             }
