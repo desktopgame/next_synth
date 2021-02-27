@@ -11,6 +11,12 @@ import '../system/project_list.save_data.dart';
 
 class ProjectSettingPageState extends State<ProjectSettingPage> {
   @override
+  void initState() {
+    super.initState();
+    AppDataProvider.provide().value.settingUpdated = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     var proj = ProjectListProvider.provide()
         .value
@@ -37,6 +43,7 @@ class ProjectSettingPageState extends State<ProjectSettingPage> {
                 ..measureCount = v.measureCount
                 ..beatCount = v.beatCount;
             }
+            AppDataProvider.provide().value.settingUpdated = true;
             await ProjectListProvider.save();
           },
         ),

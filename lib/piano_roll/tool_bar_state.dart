@@ -8,6 +8,7 @@ import 'package:next_synth/piano_roll/piano_roll_utilities.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import './tool_bar.dart';
+import '../core/system/app_data.save_data.dart';
 import '../core/page/tutorial.dart';
 import '../undo/undoable_edit_event.dart';
 import '../undo/undoable_edit_listener.dart';
@@ -161,16 +162,19 @@ class ToolBarState extends State<ToolBar>
               key: _settingButtonKey,
               onPressed: () async {
                 await Navigator.pushNamed(context, "/project");
-                Fluttertoast.showToast(
-                    msg: "設定を適用するためにはプロジェクトを開き直してください。",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.black,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
-                Navigator.popUntil(
-                    context, ModalRoute.withName(Navigator.defaultRouteName));
+                if (AppDataProvider.provide().value.settingUpdated) {
+                  AppDataProvider.provide().value.settingUpdated = false;
+                  Fluttertoast.showToast(
+                      msg: "設定を適用するためにはプロジェクトを開き直してください。",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.black,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                  Navigator.popUntil(
+                      context, ModalRoute.withName(Navigator.defaultRouteName));
+                }
               },
               icon: Icon(Icons.settings)),
           GestureDetector(
