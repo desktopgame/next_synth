@@ -68,6 +68,8 @@ class ToolBarState extends State<ToolBar>
                     top: top, right: right),
                 TutorialPhase(_popupButtonKey, "ノートの選択モードを変更します。",
                     top: top, right: right),
+                TutorialPhase(_settingButtonKey, "プロジェクトごとの設定を変更します。",
+                    top: top, right: right),
               ]);
             },
             icon: Icon(Icons.help),
