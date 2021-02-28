@@ -24,11 +24,11 @@ class PianoRollSequencer {
 
   Stream<bool> get playingStream => _playingController.stream;
 
-  PianoRollSequencer(this._ui, {void Function() onTick})
+  PianoRollSequencer(this._ui, {void Function() onTick, double bpm})
       : this._onTick = onTick {
     this.position = 0;
     this.step = 1;
-    this.updateRate = UpdateRate.bpmToUpdateRate(480, 120);
+    this.updateRate = UpdateRate.bpmToUpdateRate(480, bpm);
     this._isPlaying = false;
     this._playingController = BehaviorSubject();
     this._cachedNotesList = List<List<Note>>();

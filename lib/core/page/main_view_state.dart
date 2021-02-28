@@ -80,7 +80,8 @@ class MainViewState extends State<MainView>
         model = track.model.duplicate();
         this._trackIndex = 0;
         model.addPianoRollModelListener(this);
-        this._context = PianoRollContext(this, model, style);
+        this._context =
+            PianoRollContext(this, model, style, bpm: proj.bpm.toDouble());
         _context.range.scrollOffset = _context.range.scrollOffset
             .translate(0, -appData.beatHeight * ((appData.keyCount / 2) * 12));
       }

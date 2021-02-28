@@ -28,10 +28,13 @@ class PianoRollContext implements PianoRollUI {
   PianoRollSelectionMode selectionMode;
   PianoRollSequencer _sequencer;
   int _swapIndex = -1;
+  double _bpm;
 
-  PianoRollContext(this.provider, this.mainModel, this.style)
+  PianoRollContext(this.provider, this.mainModel, this.style,
+      {double bpm = 120})
       : range = PianoRollRange(),
-        selectionMode = PianoRollSelectionMode.tap {}
+        selectionMode = PianoRollSelectionMode.tap,
+        _bpm = bpm {}
 
   PianoRollModel get model {
     if (_swapIndex >= 0) {
@@ -70,7 +73,7 @@ class PianoRollContext implements PianoRollUI {
           style.refresh();
         }
         style.refresh();
-      });
+      }, bpm: _bpm);
     }
     return _sequencer;
   }
