@@ -9,12 +9,14 @@ part 'project.g.dart';
 class Project {
   String name;
   List<TrackData> tracks;
+  int bpm;
   int keyCount;
   int measureCount;
   int beatCount;
   Project() {
     this.name = "";
     this.tracks = [];
+    this.bpm = AppDataProvider.provide().value.bpm;
     this.keyCount = AppDataProvider.provide().value.keyCount;
     this.measureCount = AppDataProvider.provide().value.measureCount;
     this.beatCount = AppDataProvider.provide().value.beatCount;

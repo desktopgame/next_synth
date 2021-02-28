@@ -29,6 +29,7 @@ class ProjectSettingPageState extends State<ProjectSettingPage> {
       body: Center(
         child: TempProjectDataUI(
           TempProjectData()
+            ..bpm = proj.bpm
             ..keyCount = proj.keyCount
             ..measureCount = proj.measureCount
             ..beatCount = proj.beatCount,
@@ -39,6 +40,7 @@ class ProjectSettingPageState extends State<ProjectSettingPage> {
           ],
           onChanged: (v, e) async {
             proj
+              ..bpm = v.bpm
               ..keyCount = v.keyCount
               ..measureCount = v.measureCount
               ..beatCount = v.beatCount;

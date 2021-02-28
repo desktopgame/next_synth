@@ -35,6 +35,7 @@ class AppDataUIState extends State<AppDataUI> {
   List<Widget> _header;
   List<Widget> _footer;
   void Function(AppData, String) _onChanged;
+  TextEditingController _bpmController;
   TextEditingController _keyCountController;
   TextEditingController _beatWidthController;
   TextEditingController _beatHeightController;
@@ -57,6 +58,7 @@ class AppDataUIState extends State<AppDataUI> {
   @override
   void initState() {
     super.initState();
+    _bpmController = TextEditingController()..text = _target.bpm.toString();
     _keyCountController = TextEditingController()
       ..text = _target.keyCount.toString();
     _beatWidthController = TextEditingController()
@@ -79,6 +81,13 @@ class AppDataUIState extends State<AppDataUI> {
   Widget build(BuildContext context) {
     var widgets = List<Widget>();
     widgets.addAll(_header);
+    widgets.add(_inputInt("BPM", "", false, _bpmController, (e) {
+      this._target.bpm = int.parse(e);
+      if (this._onChanged != null) {
+        this._onChanged(_target, "bpm");
+      }
+    }));
+    widgets.add(Divider());
     widgets.add(_inputInt("オクターブ数", "", false, _keyCountController, (e) {
       this._target.keyCount = int.parse(e);
       if (this._onChanged != null) {

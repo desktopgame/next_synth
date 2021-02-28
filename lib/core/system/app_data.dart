@@ -7,6 +7,8 @@ part 'app_data.g.dart';
 @JsonSerializable(anyMap: true)
 @Content()
 class AppData {
+  @Property(displayName: "BPM")
+  int bpm;
   @Property(displayName: "オクターブ数")
   int keyCount;
   @Property(displayName: "拍の横幅")
@@ -32,6 +34,7 @@ class AppData {
   bool settingUpdated;
 
   AppData() {
+    this.bpm = 120;
     this.keyCount = 11;
     this.beatWidth = 96;
     this.beatHeight = 16;

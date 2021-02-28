@@ -12,6 +12,7 @@ Project _$ProjectFromJson(Map json) {
     ..tracks = (json['tracks'] as List)
         ?.map((e) => e == null ? null : TrackData.fromJson(e as Map))
         ?.toList()
+    ..bpm = json['bpm'] as int
     ..keyCount = json['keyCount'] as int
     ..measureCount = json['measureCount'] as int
     ..beatCount = json['beatCount'] as int;
@@ -20,6 +21,7 @@ Project _$ProjectFromJson(Map json) {
 Map<String, dynamic> _$ProjectToJson(Project instance) => <String, dynamic>{
       'name': instance.name,
       'tracks': instance.tracks,
+      'bpm': instance.bpm,
       'keyCount': instance.keyCount,
       'measureCount': instance.measureCount,
       'beatCount': instance.beatCount,

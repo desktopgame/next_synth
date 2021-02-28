@@ -35,6 +35,7 @@ class TempProjectDataUIState extends State<TempProjectDataUI> {
   List<Widget> _header;
   List<Widget> _footer;
   void Function(TempProjectData, String) _onChanged;
+  TextEditingController _bpmController;
   TextEditingController _keyCountController;
   TextEditingController _measureCountController;
   TextEditingController _beatCountController;
@@ -50,6 +51,7 @@ class TempProjectDataUIState extends State<TempProjectDataUI> {
   @override
   void initState() {
     super.initState();
+    _bpmController = TextEditingController()..text = _target.bpm.toString();
     _keyCountController = TextEditingController()
       ..text = _target.keyCount.toString();
     _measureCountController = TextEditingController()
@@ -62,6 +64,13 @@ class TempProjectDataUIState extends State<TempProjectDataUI> {
   Widget build(BuildContext context) {
     var widgets = List<Widget>();
     widgets.addAll(_header);
+    widgets.add(_inputInt("BPM", "", false, _bpmController, (e) {
+      this._target.bpm = int.parse(e);
+      if (this._onChanged != null) {
+        this._onChanged(_target, "bpm");
+      }
+    }));
+    widgets.add(Divider());
     widgets.add(_inputInt("オクターブ数", "", false, _keyCountController, (e) {
       this._target.keyCount = int.parse(e);
       if (this._onChanged != null) {
