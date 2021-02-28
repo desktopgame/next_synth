@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:next_synth/piano_roll/piano_roll_model_event.dart';
 import 'package:next_synth/piano_roll/piano_roll_model_listener.dart';
 
+import './piano_roll_utilities.dart';
 import './piano_roll_style.dart';
 import './piano_roll_model.dart';
 import '../event/notification_event.dart';
@@ -63,9 +64,13 @@ class PianoRollRenderBox extends RenderBox
     canvas.translate(sx + offset.dx, sy + offset.dy + 50);
     // オニオンスキンのために他のトラックも描画する
     _drawBackground(canvas, size);
+    var curModel = _pianoRoll.model;
     for (int i = 0; i < _pianoRoll.context.provider.count; i++) {
       _pianoRoll.context.swapModel(i);
       var model = _pianoRoll.context.model;
+      if (!PianoRollUtilities.equals(curModel, model)) {
+        continue;
+      }
       _paintImpl(context, model, true,
           _pianoRoll.context.provider.getTrackSkinColor(i), offset);
     }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:optional/optional.dart';
+import 'dart:math';
 
 import './beat.dart';
 import './key.dart' as P;
@@ -179,5 +180,31 @@ class PianoRollUtilities {
 
   static int scaledNoteLength(Note note, int beatWidth) {
     return (note.length * beatWidth.toDouble()).round();
+  }
+
+  static bool equals(PianoRollModel a, PianoRollModel b) {
+    var al = PianoRollUtilities.getAllNoteList(a);
+    var bl = PianoRollUtilities.getAllNoteList(b);
+    if (al.length != bl.length) {
+      return false;
+    }
+    if (a.keyCount != b.keyCount) {
+      return false;
+    }
+    for (int i = 0; i < al.length; i++) {
+      var ae = al[i];
+      var be = bl[i];
+      var maxLen = max(ae.length, be.length);
+      var minLen = min(ae.length, be.length);
+      if (ae.beat.index != be.beat.index ||
+          ae.beat.measure.index != be.beat.measure.index ||
+          ae.beat.measure.key.index != be.beat.measure.key.index ||
+          ae.selected != be.selected ||
+          maxLen - minLen >= 0.01) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
