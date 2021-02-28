@@ -68,7 +68,7 @@ class PianoRollRenderBox extends RenderBox
     for (int i = 0; i < _pianoRoll.context.provider.count; i++) {
       _pianoRoll.context.swapModel(i);
       var model = _pianoRoll.context.model;
-      if (!PianoRollUtilities.equals(curModel, model)) {
+      if (PianoRollUtilities.equals(curModel, model)) {
         continue;
       }
       _paintImpl(context, model, true,
