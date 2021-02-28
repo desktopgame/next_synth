@@ -181,6 +181,7 @@ class ToolBarState extends State<ToolBar>
               icon: Icon(Icons.settings)),
           GestureDetector(
               onHorizontalDragStart: (DragStartDetails details) {
+                _context.noteResizeManager.clear();
                 _context.noteResizeManager.touchAll(
                     PianoRollUtilities.getAllNoteList(_model)
                         .where((element) => element.selected)
