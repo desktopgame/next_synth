@@ -41,3 +41,6 @@ app.*.symbols
 app.*.map.json
 
 .metals
+
+*.jks
+keystore.properties
