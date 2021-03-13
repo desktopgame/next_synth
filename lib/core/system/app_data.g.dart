@@ -19,6 +19,7 @@ AppData _$AppDataFromJson(Map json) {
     ..toolBarHeight = json['toolBarHeight'] as int
     ..launchCount = json['launchCount'] as int
     ..lastOpenProjectIndex = json['lastOpenProjectIndex'] as int
+    ..darkTheme = json['darkTheme'] as bool
     ..showDebugLabel = json['showDebugLabel'] as bool
     ..settingUpdated = json['settingUpdated'] as bool;
 }
@@ -35,6 +36,7 @@ Map<String, dynamic> _$AppDataToJson(AppData instance) => <String, dynamic>{
       'toolBarHeight': instance.toolBarHeight,
       'launchCount': instance.launchCount,
       'lastOpenProjectIndex': instance.lastOpenProjectIndex,
+      'darkTheme': instance.darkTheme,
       'showDebugLabel': instance.showDebugLabel,
       'settingUpdated': instance.settingUpdated,
     };

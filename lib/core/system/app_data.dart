@@ -28,6 +28,9 @@ class AppData {
   int launchCount;
   int lastOpenProjectIndex;
 
+  @Property(displayName: "ダークテーマ")
+  bool darkTheme;
+
   @Property(displayName: "デバッグ表示", debug: true)
   bool showDebugLabel;
 
@@ -47,6 +50,7 @@ class AppData {
     this.lastOpenProjectIndex = -1;
     this.showDebugLabel = true;
     this.settingUpdated = false;
+    this.darkTheme = false;
   }
 
   factory AppData.fromJson(Map json) => _$AppDataFromJson(json);
@@ -65,6 +69,7 @@ class AppData {
     if (this.launchCount == null) return false;
     if (this.measureCount == null) return false;
     if (this.toolBarHeight == null) return false;
+    if (this.darkTheme == null) return false;
     return true;
   }
 }

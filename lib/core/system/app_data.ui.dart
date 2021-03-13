@@ -144,6 +144,15 @@ class AppDataUIState extends State<AppDataUI> {
       }
     }));
     widgets.add(Divider());
+    widgets.add(_inputBool("ダークテーマ", _target.darkTheme, (e) {
+      setState(() {
+        this._target.darkTheme = e;
+        if (this._onChanged != null) {
+          this._onChanged(_target, "darkTheme");
+        }
+      });
+    }));
+    widgets.add(Divider());
     if (!kReleaseMode) {
       widgets.add(_inputBool("デバッグ表示", _target.showDebugLabel, (e) {
         setState(() {
