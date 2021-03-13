@@ -200,6 +200,9 @@ class TrackListState extends State<TrackList> {
       ..text = track.deviceIndex.toString();
     var chController = TextEditingController()..text = track.channel.toString();
     var connections = MidiHelper.instance.getConnections();
+    var decoColor = AppDataProvider.provide().value.darkTheme
+        ? Colors.black
+        : Colors.lightBlue;
     showDialog(
         builder: (context) {
           return Dialog(
@@ -215,7 +218,7 @@ class TrackListState extends State<TrackList> {
                   height: 380,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: Colors.lightBlue),
+                      color: decoColor),
                   padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
                   child: Column(
                     children: [

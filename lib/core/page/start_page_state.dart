@@ -181,6 +181,9 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
   }
 
   List<Widget> _buildFooterButtons(BuildContext context) {
+    var dialogColor = AppDataProvider.provide().value.darkTheme
+        ? Colors.black
+        : Colors.lightBlue;
     return <Widget>[
       IconButton(
         icon: Icon(Icons.help),
@@ -217,7 +220,7 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
             _newProject(controller.text);
           }, onCancel: (TextEditingController controller) {
             Navigator.pop(context);
-          });
+          }, color: dialogColor);
         },
       ),
       IconButton(
