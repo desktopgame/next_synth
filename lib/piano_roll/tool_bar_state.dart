@@ -219,7 +219,9 @@ class ToolBarState extends State<ToolBar>
               )),
         ],
       ),
-      color: Colors.cyan,
+      color: AppDataProvider.provide().value.darkTheme
+          ? Colors.black
+          : Colors.cyan,
     );
   }
 

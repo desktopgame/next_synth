@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:next_synth/core/system/midi_helper.dart';
 import 'package:next_synth/piano_roll/track_list.dart';
 import 'package:next_synth/piano_roll/track_list_model.dart';
+import '../core/system/app_data.save_data.dart';
 
 import './track.dart';
 
@@ -59,9 +60,15 @@ class TrackListState extends State<TrackList> {
       children: [
         Container(
           decoration: BoxDecoration(
-              color: Colors.cyan,
-              border:
-                  Border.all(style: BorderStyle.solid, color: Colors.white)),
+              color: AppDataProvider.provide().value.darkTheme
+                  ? Colors.black
+                  : Colors.cyan,
+              border: Border.all(
+                style: BorderStyle.solid,
+                color: AppDataProvider.provide().value.darkTheme
+                    ? Colors.black
+                    : Colors.white,
+              )),
           //color: Colors.cyan,
           height: 50,
           child: ButtonBar(
