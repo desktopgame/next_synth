@@ -26,7 +26,10 @@ void main() async {
   //SaveData.instance.clear();
   AppDataProvider.setup();
   ProjectListProvider.setup();
-  await Future.wait([
+  await AppDataProvider.load();
+  await ProjectListProvider.load();
+  await NextSynthMidi.rehashDeviceList();
+  Future.wait([
     AppDataProvider.load(),
     ProjectListProvider.load(),
     NextSynthMidi.rehashDeviceList()
