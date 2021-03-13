@@ -92,7 +92,7 @@ class CodePageState extends State<CodePage> {
       context: context,
       builder: (_) {
         return AlertDialog(
-          title: Text("セーブデータをコピー"),
+          title: Row(children: [Icon(Icons.warning), Text("セーブデータをコピー")]),
           content: Text("セーブデータの内容をクリップボードへコピーします。\nよろしいですか？"),
           actions: <Widget>[
             // ボタン領域
@@ -153,7 +153,7 @@ class CodePageState extends State<CodePage> {
       context: context,
       builder: (_) {
         return AlertDialog(
-          title: Text("セーブデータを上書き"),
+          title: Row(children: [Icon(Icons.warning), Text("セーブデータを上書き")]),
           content: Text("セーブデータの内容をクリップボードの内容で上書きします。\nよろしいですか？"),
           actions: <Widget>[
             // ボタン領域
