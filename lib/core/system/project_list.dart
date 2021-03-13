@@ -15,4 +15,8 @@ class ProjectList {
   }
   factory ProjectList.fromJson(Map json) => _$ProjectListFromJson(json);
   Map<String, dynamic> toJson() => _$ProjectListToJson(this);
+
+  bool isValid() {
+    return data != null;
+  }
 }

@@ -51,4 +51,20 @@ class AppData {
 
   factory AppData.fromJson(Map json) => _$AppDataFromJson(json);
   Map<String, dynamic> toJson() => _$AppDataToJson(this);
+  bool isValid() {
+    if (this.settingUpdated == null) return false;
+    if (this.showDebugLabel == null) return false;
+    if (this.beatCount == null) return false;
+    if (this.beatHeight == null) return false;
+    if (this.beatSplitCount == null) return false;
+    if (this.beatWidth == null) return false;
+    if (this.bpm == null) return false;
+    if (this.keyCount == null) return false;
+    if (this.keyboardWidth == null) return false;
+    if (this.lastOpenProjectIndex == null) return false;
+    if (this.launchCount == null) return false;
+    if (this.measureCount == null) return false;
+    if (this.toolBarHeight == null) return false;
+    return true;
+  }
 }
