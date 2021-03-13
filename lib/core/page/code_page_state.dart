@@ -139,7 +139,7 @@ class CodePageState extends State<CodePage> {
     final prefs = await SharedPreferences.getInstance();
     if (!isValidSaveData(key, data.text)) {
       Fluttertoast.showToast(
-          msg: "クリップボードの内容がセーブデータとして認識できません。",
+          msg: "クリップボードの内容をセーブデータとして認識できません。",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
