@@ -72,7 +72,7 @@ class ToolBarState extends State<ToolBar>
                     top: top, right: right),
               ]);
             },
-            icon: Icon(Icons.help),
+            icon: const Icon(Icons.help),
           ),
           StreamBuilder(
               stream: _undoController.stream,
@@ -84,7 +84,7 @@ class ToolBarState extends State<ToolBar>
                           _model.undo();
                         }
                       : null,
-                  icon: Icon(Icons.undo),
+                  icon: const Icon(Icons.undo),
                 );
               }),
           StreamBuilder(
@@ -97,10 +97,10 @@ class ToolBarState extends State<ToolBar>
                           _model.redo();
                         }
                       : null,
-                  icon: Icon(Icons.redo),
+                  icon: const Icon(Icons.redo),
                 );
               }),
-          Divider(color: Colors.black),
+          const Divider(color: Colors.black),
           StreamBuilder(
               stream: _context.sequencer.playingStream,
               builder: (builder, snapshot) {
@@ -113,7 +113,7 @@ class ToolBarState extends State<ToolBar>
                               _context.sequencer.start();
                             });
                           },
-                    icon: Icon(Icons.play_arrow));
+                    icon: const Icon(Icons.play_arrow));
               }),
           StreamBuilder(
               stream: _context.sequencer.playingStream,
@@ -127,7 +127,7 @@ class ToolBarState extends State<ToolBar>
                               _context.sequencer.pause();
                             });
                           },
-                    icon: Icon(Icons.pause));
+                    icon: const Icon(Icons.pause));
               }),
           IconButton(
               key: _stopButtonKey,
@@ -136,7 +136,7 @@ class ToolBarState extends State<ToolBar>
                   _context.sequencer.stop();
                 });
               },
-              icon: Icon(Icons.stop)),
+              icon: const Icon(Icons.stop)),
           PopupMenuButton<String>(
             key: _popupButtonKey,
             initialValue: _context.selectionMode == PianoRollSelectionMode.tap
@@ -178,7 +178,7 @@ class ToolBarState extends State<ToolBar>
                       context, ModalRoute.withName(Navigator.defaultRouteName));
                 }
               },
-              icon: Icon(Icons.settings)),
+              icon: const Icon(Icons.settings)),
           GestureDetector(
               onHorizontalDragStart: (DragStartDetails details) {
                 _context.noteResizeManager.clear();
@@ -214,10 +214,10 @@ class ToolBarState extends State<ToolBar>
                 this._resizeStarted = false;
               },
               child: Container(
-                child: Text("ここをスワイプでリサイズ"),
                 color: AppDataProvider.provide().value.darkTheme
                     ? Colors.black
                     : Colors.white,
+                child: const Text('ここをスワイプでリサイズ'),
               )),
         ],
       ),

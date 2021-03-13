@@ -14,10 +14,9 @@ import './code_page.dart';
 class CodePageState extends State<CodePage> {
   @override
   Widget build(BuildContext context) {
-    final projectIndex = ModalRoute.of(context).settings.arguments as int;
     return Scaffold(
       appBar: AppBar(
-        title: Text('NextSynth'),
+        title: const Text('NextSynth'),
       ),
       //appBar: AppBar(
       //  // Here we take the value from the MyHomePage object that was created by
@@ -27,51 +26,51 @@ class CodePageState extends State<CodePage> {
       body: Center(
           child: Column(
         children: [
-          Text(
+          const Text(
             'セーブデータの編集',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           ButtonBar(
             alignment: MainAxisAlignment.start,
             children: [
-              Text('設定データJSON'),
+              const Text('設定データJSON'),
               Container(
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ElevatedButton(
                     onPressed: () async {
-                      await copyToClipboard("AppData");
+                      await copyToClipboard('AppData');
                     },
-                    child: Text('クリップボードにコピー'),
+                    child: const Text('クリップボードにコピー'),
                   )),
               Container(
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ElevatedButton(
                     onPressed: () async {
-                      await pasteFromClipboard("AppData");
+                      await pasteFromClipboard('AppData');
                     },
-                    child: Text('クリップボードから貼り付け'),
+                    child: const Text('クリップボードから貼り付け'),
                   )),
             ],
           ),
           Row(
             //alignment: MainAxisAlignment.start,
             children: [
-              Text('プロジェクトデータJSON'),
+              const Text('プロジェクトデータJSON'),
               Container(
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ElevatedButton(
                     onPressed: () async {
-                      await copyToClipboard("ProjectList");
+                      await copyToClipboard('ProjectList');
                     },
-                    child: Text('クリップボードにコピー'),
+                    child: const Text('クリップボードにコピー'),
                   )),
               Container(
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ElevatedButton(
                     onPressed: () async {
-                      await pasteFromClipboard("ProjectList");
+                      await pasteFromClipboard('ProjectList');
                     },
-                    child: Text('クリップボードから貼り付け'),
+                    child: const Text('クリップボードから貼り付け'),
                   )),
             ],
           ),
@@ -88,37 +87,36 @@ class CodePageState extends State<CodePage> {
   }
 
   Future<void> copyToClipboard(String key) async {
-    await showDialog(
+    await showDialog<dynamic>(
       context: context,
       builder: (_) {
         return AlertDialog(
-          title: Row(children: [Icon(Icons.warning), Text("セーブデータをコピー")]),
-          content: Text("セーブデータの内容をクリップボードへコピーします。\nよろしいですか？"),
+          title: Row(children: const [Icon(Icons.warning), Text('セーブデータをコピー')]),
+          content: const Text('セーブデータの内容をクリップボードへコピーします。\nよろしいですか？'),
           actions: <Widget>[
             // ボタン領域
             TextButton(
-              child: Text("Cancel"),
               onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
             ),
             TextButton(
-              child: Text("OK"),
               onPressed: () async {
-                var prefs = await SharedPreferences.getInstance();
+                final prefs = await SharedPreferences.getInstance();
                 var data = prefs.getString(key);
                 if (data == null) {
                   // まだ保存されてない場合へ変換
-                  if (key == "ProjectList") {
+                  if (key == 'ProjectList') {
                     data = json
                         .encode(ProjectListProvider.provide().value.toJson());
-                  } else if (key == "AppData") {
+                  } else if (key == 'AppData') {
                     data =
                         json.encode(AppDataProvider.provide().value.toJson());
                   }
                 }
                 await Clipboard.setData(ClipboardData(text: data));
                 Navigator.pop(context);
-                Fluttertoast.showToast(
-                    msg: "セーブデータからコピーしました。",
+                await Fluttertoast.showToast(
+                    msg: 'セーブデータからコピーしました。',
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.CENTER,
                     timeInSecForIosWeb: 1,
@@ -126,6 +124,7 @@ class CodePageState extends State<CodePage> {
                     textColor: Colors.white,
                     fontSize: 16.0);
               },
+              child: const Text('OK'),
             ),
           ],
         );
@@ -135,11 +134,11 @@ class CodePageState extends State<CodePage> {
 
   Future<void> pasteFromClipboard(String key) async {
     // 貼り付け時はデータを検証する必要がある
-    final data = await Clipboard.getData("text/plain");
+    final data = await Clipboard.getData('text/plain');
     final prefs = await SharedPreferences.getInstance();
     if (!isValidSaveData(key, data.text)) {
-      Fluttertoast.showToast(
-          msg: "クリップボードの内容をセーブデータとして認識できません。",
+      await Fluttertoast.showToast(
+          msg: 'クリップボードの内容をセーブデータとして認識できません。',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
@@ -149,27 +148,26 @@ class CodePageState extends State<CodePage> {
       return;
     }
     // データに問題がなければあとはユーザに確認
-    await showDialog(
+    await showDialog<dynamic>(
       context: context,
       builder: (_) {
         return AlertDialog(
-          title: Row(children: [Icon(Icons.warning), Text("セーブデータを上書き")]),
-          content: Text("セーブデータの内容をクリップボードの内容で上書きします。\nよろしいですか？"),
+          title: Row(children: const [Icon(Icons.warning), Text('セーブデータを上書き')]),
+          content: const Text('セーブデータの内容をクリップボードの内容で上書きします。\nよろしいですか？'),
           actions: <Widget>[
             // ボタン領域
             TextButton(
-              child: Text("Cancel"),
               onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
             ),
             TextButton(
-              child: Text("OK"),
               onPressed: () async {
-                prefs.setString(key, data.text);
-                await SaveData.instance.discard(key);
-                await SaveData.instance.load(key);
+                await prefs.setString(key, data.text);
+                SaveData.instance.discard(key);
+                await SaveData.instance.load<dynamic>(key);
                 Navigator.pop(context);
-                Fluttertoast.showToast(
-                    msg: "セーブデータを上書きしました。",
+                await Fluttertoast.showToast(
+                    msg: 'セーブデータを上書きしました。',
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.CENTER,
                     timeInSecForIosWeb: 1,
@@ -177,6 +175,7 @@ class CodePageState extends State<CodePage> {
                     textColor: Colors.white,
                     fontSize: 16.0);
               },
+              child: const Text('OK'),
             ),
           ],
         );
@@ -186,18 +185,18 @@ class CodePageState extends State<CodePage> {
 
   bool isValidSaveData(String key, String data) {
     try {
-      if (key == "ProjectList") {
+      if (key == 'ProjectList') {
         // JSONとしてパースできたがProjectListではない場合
         final plist = ProjectList.fromJson(json.decode(data));
         if (plist == null || !plist.isValid()) {
-          debugPrint("ProjectList is not valid");
+          debugPrint('ProjectList is not valid');
           return false;
         }
-      } else if (key == "AppData") {
+      } else if (key == 'AppData') {
         // JSONとしてパースできたがAppDataではない場合
         final appdata = AppData.fromJson(json.decode(data));
         if (appdata == null || !appdata.isValid()) {
-          debugPrint("AppData is not valid");
+          debugPrint('AppData is not valid');
           return false;
         }
       } else {
@@ -206,7 +205,7 @@ class CodePageState extends State<CodePage> {
       return true;
     } catch (FormatException) {
       // そもそもJSONではない場合
-      debugPrint("FormatException $key $data");
+      debugPrint('FormatException $key $data');
       return false;
     }
   }

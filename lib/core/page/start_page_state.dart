@@ -59,11 +59,11 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
       void Function(TextEditingController controller) onApprrove,
       void Function(TextEditingController controller) onCancel}) {
     var controller = TextEditingController();
-    showDialog(
+    showDialog<dynamic>(
         builder: (context) {
           return Dialog(
             backgroundColor: Colors.transparent,
-            insetPadding: EdgeInsets.all(10),
+            insetPadding: const EdgeInsets.all(10),
             child: Stack(
               overflow: Overflow.visible,
               alignment: Alignment.center,
@@ -74,26 +74,26 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
                   height: 200,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15), color: color),
-                  padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
-                  child: new Column(
+                  padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
+                  child: Column(
                     children: <Widget>[
-                      new TextField(
-                        decoration: new InputDecoration(hintText: placeholder),
+                      TextField(
+                        decoration: InputDecoration(hintText: placeholder),
                         controller: controller,
                       ),
                       Row(children: [
-                        Spacer(),
-                        new TextButton(
-                          child: new Text(cancelText),
+                        const Spacer(),
+                        TextButton(
                           onPressed: () {
                             onCancel(controller);
                           },
+                          child: Text(cancelText),
                         ),
-                        new TextButton(
-                          child: new Text(approveText),
+                        TextButton(
                           onPressed: () {
                             onApprrove(controller);
                           },
+                          child: Text(approveText),
                         ),
                       ]),
                     ],
@@ -107,9 +107,9 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
   }
 
   void _newProject(String name) {
-    if (name == null || name.length == 0) {
+    if (name == null || name.isEmpty) {
       Fluttertoast.showToast(
-          msg: "プロジェクト名が空です。",
+          msg: 'プロジェクト名が空です。',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
@@ -134,25 +134,25 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
   }
 
   void _cofirmDelete(BuildContext context, int i) {
-    showDialog(
+    showDialog<dynamic>(
       context: context,
       builder: (_) {
         return AlertDialog(
-          title: Text("本当に削除しますか？"),
+          title: const Text('本当に削除しますか？'),
           //content: Text("メッセージメッセージメッセージメッセージメッセージメッセージ"),
           actions: <Widget>[
             TextButton(
-              child: Text("Cancel"),
               onPressed: () {
                 Navigator.pop(context);
               },
+              child: const Text('Cancel'),
             ),
             TextButton(
-              child: Text("OK"),
               onPressed: () {
                 _deleteProject(i);
                 Navigator.pop(context);
               },
+              child: const Text('OK'),
             ),
           ],
         );
@@ -186,14 +186,14 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
         : Colors.lightBlue;
     return <Widget>[
       IconButton(
-        icon: Icon(Icons.help),
+        icon: const Icon(Icons.help),
         onPressed: () {
           _runTutorial();
         },
       ),
       IconButton(
         key: _webButtonKey,
-        icon: Icon(Icons.open_in_browser),
+        icon: const Icon(Icons.open_in_browser),
         onPressed: () async {
           const url = 'https://desktopgame.github.io/NextSynth';
           if (await canLaunch(url)) {
@@ -212,9 +212,9 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
       ),
       IconButton(
         key: _addButtonKey,
-        icon: Icon(Icons.add),
+        icon: const Icon(Icons.add),
         onPressed: () {
-          _showConfirmDialog(context, "プロジェクト名",
+          _showConfirmDialog(context, 'プロジェクト名',
               onApprrove: (TextEditingController controller) {
             Navigator.pop(context);
             _newProject(controller.text);
@@ -225,7 +225,7 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
       ),
       IconButton(
         key: _delButtonKey,
-        icon: Icon(Icons.delete),
+        icon: const Icon(Icons.delete),
         onPressed: _selectedProjectIndex == -1
             ? null
             : () {
@@ -234,23 +234,23 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
       ),
       IconButton(
         key: _midiButtonKey,
-        icon: Icon(Icons.usb),
+        icon: const Icon(Icons.usb),
         onPressed: () async {
-          Navigator.pushNamed(context, "/usb");
+          await Navigator.pushNamed(context, '/usb');
         },
       ),
       IconButton(
         key: _settingButtonKey,
-        icon: Icon(Icons.settings),
+        icon: const Icon(Icons.settings),
         onPressed: () {
-          Navigator.pushNamed(context, "/setting");
+          Navigator.pushNamed(context, '/setting');
         },
       ),
       IconButton(
         key: _codeButtonKey,
-        icon: Icon(Icons.code),
+        icon: const Icon(Icons.code),
         onPressed: () async {
-          await Navigator.pushNamed(context, "/code");
+          await Navigator.pushNamed(context, '/code');
           // プロジェクト一覧を再読み込み
           setState(() {});
         },
@@ -301,17 +301,17 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
     if (projects.length == 0) {
       return Scaffold(
           appBar: AppBar(
-            title: Text('NextSynth'),
+            title: const Text('NextSynth'),
           ),
           persistentFooterButtons: footerButtons,
-          body: Center(
-            child: Text("プロジェクトがありません。", textAlign: TextAlign.center),
+          body: const Center(
+            child: Text('プロジェクトがありません。', textAlign: TextAlign.center),
           ));
     }
     // プロジェクト一覧の表示
     return Scaffold(
       appBar: AppBar(
-        title: Text('NextSynth'),
+        title: const Text('NextSynth'),
       ),
       body: Center(
           child: GridView.builder(
@@ -321,7 +321,7 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
           return _buildGridTile(context, index);
         },
         itemCount: ProjectListProvider.provide().value.data.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
           crossAxisCount: 4,

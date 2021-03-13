@@ -82,7 +82,7 @@ class TrackListState extends State<TrackList> {
                     }
                   });
                 },
-                child: Text('+'),
+                child: const Text('+'),
               ),
               ElevatedButton(
                 onPressed: _trackListModel.size == 1 || selectedTrackIndex < 0
@@ -98,7 +98,7 @@ class TrackListState extends State<TrackList> {
                           }
                         });
                       },
-                child: Text('-'),
+                child: const Text('-'),
               )
             ],
           ),
@@ -128,7 +128,7 @@ class TrackListState extends State<TrackList> {
               : () {
                   _showTrackEditDialog(selectedTrackIndex);
                 },
-          child: Text('トラックの詳細設定'),
+          child: const Text('トラックの詳細設定'),
         ),
         ElevatedButton(
           onPressed: () {
@@ -136,7 +136,7 @@ class TrackListState extends State<TrackList> {
               this._show = false;
             });
           },
-          child: Text('サイドバーを閉じる'),
+          child: const Text('サイドバーを閉じる'),
         )
       ],
     );
@@ -207,7 +207,7 @@ class TrackListState extends State<TrackList> {
         builder: (context) {
           return Dialog(
             backgroundColor: Colors.transparent,
-            insetPadding: EdgeInsets.all(10),
+            insetPadding: const EdgeInsets.all(10),
             child: Stack(
               overflow: Overflow.visible,
               alignment: Alignment.center,
@@ -219,7 +219,7 @@ class TrackListState extends State<TrackList> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       color: decoColor),
-                  padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
+                  padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
                   child: Column(
                     children: [
                       _inputString("名前", "", false, nameController, (e) {
@@ -231,10 +231,10 @@ class TrackListState extends State<TrackList> {
                       StatefulBuilder(builder: (context, setState) {
                         if (connections.length == 0) {
                           return _labelWith(
-                              "デバイス番号", Text("MIDI機器が接続されていません。"));
+                              'デバイス番号', const Text('MIDI機器が接続されていません。'));
                         }
                         return _labelWith(
-                            "デバイス番号",
+                            'デバイス番号',
                             DropdownButton<int>(
                               value: track.deviceIndex,
                               onChanged: (int newValue) {
@@ -249,8 +249,9 @@ class TrackListState extends State<TrackList> {
                                   child: Text(
                                     item.name,
                                     style: item.deviceIndex == track.deviceIndex
-                                        ? TextStyle(fontWeight: FontWeight.bold)
-                                        : TextStyle(
+                                        ? const TextStyle(
+                                            fontWeight: FontWeight.bold)
+                                        : const TextStyle(
                                             fontWeight: FontWeight.normal),
                                   ),
                                 );
@@ -279,12 +280,12 @@ class TrackListState extends State<TrackList> {
                           });
                         });
                       }),
-                      new TextButton(
-                        child: new Text("閉じる"),
+                      TextButton(
                         onPressed: () {
                           //onApprrove(controller);
                           Navigator.pop(context);
                         },
+                        child: const Text('閉じる'),
                       ),
                     ],
                   ),

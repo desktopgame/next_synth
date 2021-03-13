@@ -24,7 +24,7 @@ class ProjectSettingPageState extends State<ProjectSettingPage> {
         .elementAt(AppDataProvider.provide().value.lastOpenProjectIndex);
     return Scaffold(
       appBar: AppBar(
-        title: Text('NextSynth'),
+        title: const Text('NextSynth'),
       ),
       body: Center(
         child: TempProjectDataUI(
@@ -33,9 +33,9 @@ class ProjectSettingPageState extends State<ProjectSettingPage> {
             ..keyCount = proj.keyCount
             ..measureCount = proj.measureCount
             ..beatCount = proj.beatCount,
-          header: [
+          header: const [
             Center(
-              child: Text("プロジェクトごとの設定情報を編集できます。"),
+              child: Text('プロジェクトごとの設定情報を編集できます。'),
             )
           ],
           onChanged: (v, e) async {

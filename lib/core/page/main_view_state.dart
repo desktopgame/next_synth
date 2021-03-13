@@ -8,7 +8,6 @@ import 'package:next_synth/core/system/project_list.save_data.dart';
 import 'package:next_synth/piano_roll/beat_event_type.dart';
 import 'package:next_synth/piano_roll/default_piano_roll_model.dart';
 import 'package:next_synth/piano_roll/default_track_list_model.dart';
-import 'package:next_synth/piano_roll/key_event_type.dart';
 import 'package:next_synth/piano_roll/note_play_event.dart';
 import 'package:next_synth/piano_roll/note_play_event_type.dart';
 import 'package:next_synth/piano_roll/note_play_listener.dart';
@@ -89,7 +88,7 @@ class MainViewState extends State<MainView>
     _context.sequencer.addNotePlayListener(this);
     // MIDI機器の接続状態が変わったらアプリ終了
     this._timer = Timer.periodic(
-      Duration(seconds: 3),
+      const Duration(seconds: 3),
       (Timer timer) async {
         await _onTimer(timer);
       },
@@ -99,20 +98,20 @@ class MainViewState extends State<MainView>
   Future<void> _onTimer(Timer timer) async {
     if (await NextSynthMidi.isDeviceListUpdated()) {
       await NextSynthMidi.rehashDeviceList();
-      await showDialog(
+      await showDialog<dynamic>(
         context: context,
         builder: (_) {
           return AlertDialog(
 //          title: Text(""),
-            content: Text("MIDI機器の接続状態が変更されました。"),
+            content: const Text('MIDI機器の接続状態が変更されました。'),
             actions: <Widget>[
               TextButton(
-                child: Text("OK"),
                 onPressed: () async {
                   await MidiHelper.instance.closeAll();
                   Navigator.popUntil(
                       context, ModalRoute.withName(Navigator.defaultRouteName));
                 },
+                child: const Text('OK'),
               ),
             ],
           );

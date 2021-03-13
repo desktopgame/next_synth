@@ -88,7 +88,7 @@ class USBInfoPage extends StatelessWidget {
         } else {
           return Row(children: [
             Text(snapshot.data),
-            Spacer(),
+            const Spacer(),
             _buildListSwitch(context, index),
             _buildListCellInputs(context, index),
             _buildListCellOutputs(context, index),
@@ -106,11 +106,11 @@ class USBInfoPage extends StatelessWidget {
             return Container();
           }
           if (snapshot.data as int <= 0) {
-            return Text("MIDI機器が接続されていません。");
+            return const Text('MIDI機器が接続されていません。');
           }
           return ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: snapshot.data as int,
               itemBuilder: (context, i) {
                 return _buildListCell(context, i);
@@ -123,26 +123,26 @@ class USBInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('NextSynth'),
+        title: const Text('NextSynth'),
       ),
       body: Center(
           child: Column(
         children: [
-          Text("認識されているMIDI機器"),
+          const Text('認識されているMIDI機器'),
           _buildListView(context),
           ElevatedButton(
-            child: Text("発音テスト"),
             onPressed: () async {
               for (int devI in MidiHelper.instance.devices) {
                 NextSynthMidi.send(
                     devI, 0, Uint8List.fromList([0x90, 60, 127]), 0, 3);
               }
-              await Future.delayed(new Duration(seconds: 3));
+              await Future<dynamic>.delayed(const Duration(seconds: 3));
               for (int devI in MidiHelper.instance.devices) {
                 NextSynthMidi.send(
                     devI, 0, Uint8List.fromList([0x80, 60, 0]), 0, 3);
               }
             },
+            child: const Text('発音テスト'),
           )
         ],
       )),
