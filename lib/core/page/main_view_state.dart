@@ -106,7 +106,7 @@ class MainViewState extends State<MainView>
 //          title: Text(""),
             content: Text("MIDI機器の接続状態が変更されました。"),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text("OK"),
                 onPressed: () async {
                   await MidiHelper.instance.closeAll();

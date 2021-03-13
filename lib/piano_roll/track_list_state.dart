@@ -276,7 +276,7 @@ class TrackListState extends State<TrackList> {
                           });
                         });
                       }),
-                      new FlatButton(
+                      new TextButton(
                         child: new Text("閉じる"),
                         onPressed: () {
                           //onApprrove(controller);

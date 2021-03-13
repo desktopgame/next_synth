@@ -96,11 +96,11 @@ class CodePageState extends State<CodePage> {
           content: Text("セーブデータの内容をクリップボードへコピーします。\nよろしいですか？"),
           actions: <Widget>[
             // ボタン領域
-            FlatButton(
+            TextButton(
               child: Text("Cancel"),
               onPressed: () => Navigator.pop(context),
             ),
-            FlatButton(
+            TextButton(
               child: Text("OK"),
               onPressed: () async {
                 var prefs = await SharedPreferences.getInstance();
@@ -157,11 +157,11 @@ class CodePageState extends State<CodePage> {
           content: Text("セーブデータの内容をクリップボードの内容で上書きします。\nよろしいですか？"),
           actions: <Widget>[
             // ボタン領域
-            FlatButton(
+            TextButton(
               child: Text("Cancel"),
               onPressed: () => Navigator.pop(context),
             ),
-            FlatButton(
+            TextButton(
               child: Text("OK"),
               onPressed: () async {
                 prefs.setString(key, data.text);

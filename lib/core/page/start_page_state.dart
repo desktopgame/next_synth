@@ -83,13 +83,13 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
                       ),
                       Row(children: [
                         Spacer(),
-                        new FlatButton(
+                        new TextButton(
                           child: new Text(cancelText),
                           onPressed: () {
                             onCancel(controller);
                           },
                         ),
-                        new FlatButton(
+                        new TextButton(
                           child: new Text(approveText),
                           onPressed: () {
                             onApprrove(controller);
@@ -141,13 +141,13 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
           title: Text("本当に削除しますか？"),
           //content: Text("メッセージメッセージメッセージメッセージメッセージメッセージ"),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text("Cancel"),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text("OK"),
               onPressed: () {
                 _deleteProject(i);
