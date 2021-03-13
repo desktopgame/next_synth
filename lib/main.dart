@@ -26,9 +26,11 @@ void main() async {
   //SaveData.instance.clear();
   AppDataProvider.setup();
   ProjectListProvider.setup();
-  await AppDataProvider.load();
-  await ProjectListProvider.load();
-  await NextSynthMidi.rehashDeviceList();
+  await Future.wait([
+    AppDataProvider.load(),
+    ProjectListProvider.load(),
+    NextSynthMidi.rehashDeviceList()
+  ]);
   // デバッグ時のみセーブデータ確認
   if (kDebugMode) {
     try {
