@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // セーブデータ読み込めない場合の対策
     bool darkTheme = AppDataProvider.provide().value.darkTheme;
     if (darkTheme == null) {
       AppDataProvider.provide().value.darkTheme = false;
