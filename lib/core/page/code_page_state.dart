@@ -41,8 +41,8 @@ class CodePageState extends State<CodePage> {
               Container(
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: RaisedButton(
-                    onPressed: () {
-                      pasteFromClipboard("AppData");
+                    onPressed: () async {
+                      await pasteFromClipboard("AppData");
                     },
                     child: Text('クリップボードから貼り付け'),
                   )),
@@ -55,8 +55,8 @@ class CodePageState extends State<CodePage> {
               Container(
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: RaisedButton(
-                    onPressed: () {
-                      copyToClipboard("ProjectList");
+                    onPressed: () async {
+                      await copyToClipboard("ProjectList");
                     },
                     child: Text('クリップボードにコピー'),
                   )),
@@ -82,8 +82,8 @@ class CodePageState extends State<CodePage> {
     );
   }
 
-  void copyToClipboard(String key) async {
-    showDialog(
+  Future<void> copyToClipboard(String key) async {
+    await showDialog(
       context: context,
       builder: (_) {
         return AlertDialog(
@@ -119,7 +119,7 @@ class CodePageState extends State<CodePage> {
   }
 
   Future<void> pasteFromClipboard(String key) async {
-    showDialog(
+    await showDialog(
       context: context,
       builder: (_) {
         return AlertDialog(
