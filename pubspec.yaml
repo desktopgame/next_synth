@@ -57,6 +57,7 @@ dev_dependencies:
   save_data_generator: ^1.0.0
   property_ui_generator: ^1.0.3
   flutter_launcher_icons: ^0.8.1
+  pedantic_mono: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
