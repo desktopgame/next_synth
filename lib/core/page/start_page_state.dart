@@ -257,6 +257,9 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
 
   Widget _buildGridTile(BuildContext context, int index) {
     var proj = ProjectListProvider.provide().value.data[index];
+    var notSelColor = AppDataProvider.provide().value.darkTheme
+        ? Colors.grey
+        : Colors.teal[100];
     return GestureDetector(
         onTap: () {
           if (index == _selectedProjectIndex) {
@@ -271,9 +274,8 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
         child: Container(
           padding: const EdgeInsets.all(8),
           child: Text('${proj.name}'),
-          color: index == this._selectedProjectIndex
-              ? Colors.blue
-              : Colors.teal[100],
+          color:
+              index == this._selectedProjectIndex ? Colors.blue : notSelColor,
         ));
   }
 
