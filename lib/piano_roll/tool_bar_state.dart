@@ -215,7 +215,9 @@ class ToolBarState extends State<ToolBar>
               },
               child: Container(
                 child: Text("ここをスワイプでリサイズ"),
-                color: Colors.white,
+                color: AppDataProvider.provide().value.darkTheme
+                    ? Colors.black
+                    : Colors.white,
               )),
         ],
       ),
