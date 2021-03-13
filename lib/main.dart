@@ -47,7 +47,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    if (AppDataProvider.provide().value.darkTheme) {
+    bool darkTheme = AppDataProvider.provide().value.darkTheme;
+    if (darkTheme == null) {
+      AppDataProvider.provide().value.darkTheme = false;
+    }
+    if (darkTheme != null && darkTheme) {
       return MaterialApp(
         debugShowCheckedModeBanner:
             AppDataProvider.provide().value.showDebugLabel,
