@@ -66,7 +66,7 @@ class TrackListState extends State<TrackList> {
           height: 50,
           child: ButtonBar(
             children: [
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   setState(() {
                     var track = _trackListModel.createTrack();
@@ -77,7 +77,7 @@ class TrackListState extends State<TrackList> {
                 },
                 child: Text('+'),
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: _trackListModel.size == 1 || selectedTrackIndex < 0
                     ? null
                     : () {
@@ -115,7 +115,7 @@ class TrackListState extends State<TrackList> {
             itemCount: _trackListModel.size,
           ),
         )),
-        RaisedButton(
+        ElevatedButton(
           onPressed: _trackListModel.size == 0
               ? null
               : () {
@@ -123,7 +123,7 @@ class TrackListState extends State<TrackList> {
                 },
           child: Text('トラックの詳細設定'),
         ),
-        RaisedButton(
+        ElevatedButton(
           onPressed: () {
             setState(() {
               this._show = false;

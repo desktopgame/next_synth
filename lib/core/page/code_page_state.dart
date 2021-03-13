@@ -37,7 +37,7 @@ class CodePageState extends State<CodePage> {
               Text('設定データJSON'),
               Container(
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () async {
                       await copyToClipboard("AppData");
                     },
@@ -45,7 +45,7 @@ class CodePageState extends State<CodePage> {
                   )),
               Container(
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () async {
                       await pasteFromClipboard("AppData");
                     },
@@ -59,7 +59,7 @@ class CodePageState extends State<CodePage> {
               Text('プロジェクトデータJSON'),
               Container(
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () async {
                       await copyToClipboard("ProjectList");
                     },
@@ -67,7 +67,7 @@ class CodePageState extends State<CodePage> {
                   )),
               Container(
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () async {
                       await pasteFromClipboard("ProjectList");
                     },

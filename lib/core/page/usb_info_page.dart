@@ -130,7 +130,7 @@ class USBInfoPage extends StatelessWidget {
         children: [
           Text("認識されているMIDI機器"),
           _buildListView(context),
-          RaisedButton(
+          ElevatedButton(
             child: Text("発音テスト"),
             onPressed: () async {
               for (int devI in MidiHelper.instance.devices) {
