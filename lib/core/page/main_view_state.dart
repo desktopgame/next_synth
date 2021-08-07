@@ -41,11 +41,10 @@ class MainViewState extends State<MainView>
   PianoRollContext _context;
   PianoRollLayoutInfo layoutInfo;
   TrackListModel trackListModel;
-  List<PianoRollModel> _modelCache;
   Timer _timer;
   final logger = new Logger('MainViewState');
 
-  MainViewState(this._projectIndex) : _modelCache = List<PianoRollModel>() {}
+  MainViewState(this._projectIndex) {}
 
   PianoRollModel get model => _context == null ? null : _context.model;
   PianoRollStyle get style => _context == null ? null : _context.style;
