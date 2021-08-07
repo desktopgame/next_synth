@@ -5,9 +5,9 @@ class CompoundUndoableEdit implements UndoableEdit {
 
   CompoundUndoableEdit({List<UndoableEdit> edits}) {
     if (edits == null) {
-      edits = List<UndoableEdit>();
+      edits = [];
     } else {
-      edits = List<UndoableEdit>()..addAll(edits);
+      edits = []..addAll(edits);
     }
     this._edits = edits;
   }
