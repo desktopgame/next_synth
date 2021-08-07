@@ -4,7 +4,7 @@ class EventListenerList {
   List<EventListener> _listeners;
 
   EventListenerList() {
-    this._listeners = List<EventListener>();
+    this._listeners = [];
   }
 
   void add(EventListener listener) {
@@ -20,7 +20,7 @@ class EventListenerList {
   }
 
   List<T> getListeners<T>() {
-    var ret = List<T>();
+    var ret = [];
     for (EventListener l in this._listeners) {
       if (l is T) {
         ret.add(l as T);
