@@ -57,7 +57,6 @@ class MainViewState extends State<MainView>
     final proj = projList.data[_projectIndex];
     final appData = AppDataProvider.provide().value;
     this.trackListModel = DefaultTrackListModel();
-    //this.model = DefaultPianoRollModel(11 * 12, 4, 4);
     var style = PianoRollStyle()
       ..beatWidth = appData.beatWidth
       ..beatHeight = appData.beatHeight
@@ -158,16 +157,10 @@ class MainViewState extends State<MainView>
           }
           setState(() {
             stopListen();
-            //PianoRollUtilities.getAllNoteList(model).forEach((element) {
-            //  element.removeFromBeat();
-            //});
-            //this.model = proj.tracks[index].pianoRollData.toModel();
-            //trackListModel.getTrackAt(index).model = this.model;
             trackListModel.getTrackAt(_trackIndex).model =
                 this.model.duplicate();
             this.model.clear();
             this.model.merge(trackListModel.getTrackAt(index).model);
-            //this.model = DefaultPianoRollModel(11 * 12, 4, 4);
             this._trackIndex = index;
             model.addPianoRollModelListener(this);
             style.refresh();
