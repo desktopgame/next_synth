@@ -29,7 +29,7 @@ void main() async {
   await AppDataProvider.load();
   await ProjectListProvider.load();
   await NextSynthMidi.rehashDeviceList();
-  Future.wait([
+  await Future.wait([
     AppDataProvider.load(),
     ProjectListProvider.load(),
     NextSynthMidi.rehashDeviceList()
