@@ -15,9 +15,9 @@ class UndoManager {
   UndoManager() {
     this._undoStack = Stack<UndoableEdit>();
     this._redoStack = Stack<UndoableEdit>();
-    this._edits = List<UndoableEdit>();
+    this._edits = [];
     this._mode = 0;
-    this._listeners = List<UndoableEditListener>();
+    this._listeners = [];
   }
 
   void addUndoableEditListener(UndoableEditListener listener) {
