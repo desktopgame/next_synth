@@ -49,7 +49,7 @@ class StartPageState extends State<StartPage> with WidgetsBindingObserver {
     await ProjectListProvider.save();
     // MIDI接続を閉じる
     await NextSynthMidi.unregisterDeviceCallback();
-    MidiHelper.instance.closeAll();
+    await MidiHelper.instance.closeAll();
   }
 
   static void _showConfirmDialog(BuildContext context, String placeholder,
