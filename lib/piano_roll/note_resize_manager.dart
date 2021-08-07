@@ -20,9 +20,9 @@ class NoteResizeManager {
 
   NoteResizeManager() {
     this._type = NoteResizeType.move;
-    this._notes = List<Note>();
-    this._offsetTable = List<int>();
-    this._lengthTable = List<double>();
+    this._notes = [];
+    this._offsetTable = [];
+    this._lengthTable = [];
     this._baseX = 0;
     this._currentX = 0;
     this._hasFocus = false;

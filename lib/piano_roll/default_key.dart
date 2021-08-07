@@ -22,7 +22,7 @@ class DefaultKey implements Key, MeasureListener {
   DefaultKey(
       PianoRollModel model, int measureCount, int beatCount, int height) {
     this._model = model;
-    this._measureList = List<Measure>();
+    this._measureList = [];
     this._height = height;
     this._measureCount = measureCount;
     this._beatCount = beatCount;

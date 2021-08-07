@@ -141,7 +141,7 @@ class PianoRollUtilities {
   }
 
   static List<Note> getNoteList(Beat beat) {
-    var ret = List<Note>();
+    var ret = [];
     for (int i = 0; i < beat.noteCount; i++) {
       ret.add(beat.getNoteAt(i));
     }
@@ -149,7 +149,7 @@ class PianoRollUtilities {
   }
 
   static List<Beat> getBeatList(Measure measure) {
-    var ret = List<Beat>();
+    var ret = [];
     for (int i = 0; i < measure.beatCount; i++) {
       ret.add(measure.getBeatAt(i));
     }
@@ -157,7 +157,7 @@ class PianoRollUtilities {
   }
 
   static List<Measure> getMeasureList(P.Key key) {
-    var ret = List<Measure>();
+    var ret = [];
     for (int i = 0; i < key.measureCount; i++) {
       ret.add(key.getMeasureAt(i));
     }
@@ -165,7 +165,7 @@ class PianoRollUtilities {
   }
 
   static List<P.Key> getKeyList(PianoRollModel model) {
-    var ret = List<P.Key>();
+    var ret = [];
     for (int i = 0; i < model.keyCount; i++) {
       ret.add(model.getKeyAt(i));
     }

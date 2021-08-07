@@ -97,16 +97,16 @@ class PianoRollSequencer {
     for (int p = 0; p < _ui.provider.count; p++) {
       _ui.swapModel(p);
       if (_cachedNotesList.length <= p) {
-        _cachedNotesList.add(List<Note>());
+        _cachedNotesList.add([]);
       }
       var _cachedNotes = _cachedNotesList[p];
       //int index = _ui.computeRelativeBeatIndex(this.position.toDouble());
-      var allNotes = List<Note>();
+      List<Note> allNotes = [];
       for (int y = 0; y < _ui.computeMaxHeight(); y += _ui.style.beatHeight) {
         var sub = _ui.getNotesAt(this.position.toDouble(), y.toDouble());
         allNotes.addAll(sub);
       }
-      var notes = List<Note>()
+      List<Note> notes = []
         ..addAll(allNotes)
         ..toSet()
         ..toList();

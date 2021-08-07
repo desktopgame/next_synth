@@ -21,7 +21,7 @@ class DefaultBeat implements Beat, NoteListener {
   DefaultBeat(Measure measure, int index) {
     this._measure = measure;
     this._index = index;
-    this._noteList = List<Note>();
+    this._noteList = [];
     this._listenerList = EventListenerList();
   }
 

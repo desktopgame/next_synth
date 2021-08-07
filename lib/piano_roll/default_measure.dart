@@ -22,7 +22,7 @@ class DefaultMeasure implements Measure, BeatListener {
     this._key = key;
     this._index = index;
     this._beatCount = beatCount;
-    this._beatList = List<Beat>();
+    this._beatList = [];
     this._listenerList = EventListenerList();
     for (int i = 0; i < beatCount; i++) {
       _addBeat(i);

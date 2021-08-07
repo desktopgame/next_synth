@@ -33,7 +33,7 @@ class DefaultPianoRollModel implements PianoRollModel, KeyListener {
   UndoManager _undoManager;
 
   DefaultPianoRollModel(int keyCount, int measureCount, int beatCount) {
-    this._keyList = List<Key>();
+    this._keyList = [];
     this._listenerList = EventListenerList();
     this._keyCount = keyCount;
     this._measureCount = measureCount;

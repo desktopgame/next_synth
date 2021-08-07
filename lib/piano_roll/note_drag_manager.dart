@@ -21,7 +21,7 @@ class NoteDragManager {
   Note _baseNote;
 
   NoteDragManager(this._pianoRollUI) {
-    this._dragTargets = List<Note>();
+    this._dragTargets = [];
     this._baseX = 0;
     this._baseY = 0;
     this._currentX = 0;
@@ -30,7 +30,7 @@ class NoteDragManager {
     this._listenerList = EventListenerList();
   }
 
-  List<Note> get targets => List<Note>()..addAll(_dragTargets);
+  List<Note> get targets => []..addAll(_dragTargets);
   bool get hasFocus => _hasFocus;
   int get baseX => _baseX;
   int get baseY => _baseY;

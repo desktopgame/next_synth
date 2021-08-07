@@ -20,8 +20,8 @@ class PianoRollRenderBox extends RenderBox
   List<Rect> _ghostRects;
 
   PianoRollRenderBox(this._pianoRoll) {
-    this._highlightRects = List<Rect>();
-    this._ghostRects = List<Rect>();
+    this._highlightRects = [];
+    this._ghostRects = [];
     _pianoRoll.style.addNotificationListener(this);
     _pianoRoll.model.addPianoRollModelListener(this);
   }

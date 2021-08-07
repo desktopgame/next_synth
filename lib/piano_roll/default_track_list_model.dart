@@ -12,8 +12,8 @@ class DefaultTrackListModel implements TrackListModel {
   Stack<Color> _colorBuf;
 
   DefaultTrackListModel()
-      : _tracks = List<Track>(),
-        _colorList = List<Color>(),
+      : _tracks = [],
+        _colorList = [],
         _colorBuf = Stack<Color>() {
     _colorBuf.push(Colors.red);
     _colorBuf.push(Colors.orange);
